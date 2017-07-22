@@ -9767,13 +9767,13 @@ var _reactDom = __webpack_require__(98);
 
 var _reactDom2 = _interopRequireDefault(_reactDom);
 
-var _App = __webpack_require__(184);
+var _tabs = __webpack_require__(184);
 
-var _App2 = _interopRequireDefault(_App);
+var _tabs2 = _interopRequireDefault(_tabs);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-_reactDom2.default.render(_react2.default.createElement(_App2.default, null), document.getElementById('root'));
+_reactDom2.default.render(_react2.default.createElement(_tabs2.default, null), document.getElementById('root'));
 
 /***/ }),
 /* 83 */
@@ -22418,6 +22418,8 @@ var _react = __webpack_require__(49);
 
 var _react2 = _interopRequireDefault(_react);
 
+var _zed = __webpack_require__(185);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -22426,34 +22428,55 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var App = function (_React$Component) {
-    _inherits(App, _React$Component);
+var Tabs = function (_React$Component) {
+    _inherits(Tabs, _React$Component);
 
-    function App() {
-        _classCallCheck(this, App);
+    function Tabs() {
+        _classCallCheck(this, Tabs);
 
-        return _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).apply(this, arguments));
+        var _this = _possibleConstructorReturn(this, (Tabs.__proto__ || Object.getPrototypeOf(Tabs)).call(this));
+
+        _this.onClick = _this.handleClick.bind(_this);
+        return _this;
     }
 
-    _createClass(App, [{
+    _createClass(Tabs, [{
+        key: 'handleClick',
+        value: function handleClick(e) {
+            (0, _zed.addTwo)();
+        }
+    }, {
         key: 'render',
         value: function render() {
             return _react2.default.createElement(
                 'div',
                 { style: { textAlign: 'center' } },
                 _react2.default.createElement(
-                    'h1',
-                    null,
-                    'Hello World'
+                    'button',
+                    { onClick: this.onClick },
+                    'Hello'
                 )
             );
         }
     }]);
 
-    return App;
+    return Tabs;
 }(_react2.default.Component);
 
-exports.default = App;
+exports.default = Tabs;
+
+/***/ }),
+/* 185 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+module.exports = {
+    addTwo: function addTwo() {
+        console.log("Hello World!");
+    }
+};
 
 /***/ })
 /******/ ]);
