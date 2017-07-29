@@ -1,6 +1,6 @@
 {
   "name": "myzenwallet",
-  "version": "1.0.0",
+  "version": "v1.0.0a",
   "description": "Secure ZENCash wallet online",
   "main": "index.js",
   "repository": "https://github.com/kendricktan/myzenwallet.git",
@@ -11,6 +11,7 @@
     "watch": "webpack --watch"
   },
   "dependencies": {
+    "axios": "^0.16.2",
     "babel-preset-env": "^1.6.0",
     "bitcoinjs-lib": "^3.1.1",
     "bootstrap": "^4.0.0-alpha.6",
@@ -18,6 +19,7 @@
     "bs58check": "^2.0.2",
     "classnames": "^2.2.5",
     "css-loader": "^0.28.4",
+    "file-loader": "^0.11.2",
     "hash.js": "^1.1.3",
     "html-webpack-plugin": "^2.29.0",
     "path": "^0.12.7",

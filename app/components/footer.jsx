@@ -9,9 +9,9 @@ export default class ZFooter extends React.Component {
   render () {
     return (
       <Container>
-      <Row>
+      <Row>        
         <Col sm="8">
-          <p>Keys are validated client-side and does not leave your browser.</p>
+          <p>Keys are validated client-side and does not leave your browser or network. You're responsible for keeping your own keys safe!!!</p>
 
           <p>Suggestions? Email me: kendricktan0814 at gmail.com or find me on slack @ kendricktan.</p>          
 
