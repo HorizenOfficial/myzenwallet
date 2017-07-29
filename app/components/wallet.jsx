@@ -186,8 +186,8 @@ class ZSendZEN extends React.Component {
 
     // Convert how much we wanna send
     // to satoshis
-    const satoshisToSend = value * 100000000
-    const satoshisfeesToSend = fee * 100000000
+    const satoshisToSend = Math.round(value * 100000000)
+    const satoshisfeesToSend = Math.round(fee * 100000000)
 
     // Building our transaction TXOBJ
     // How many satoshis do we have so far
@@ -271,15 +271,15 @@ class ZSendZEN extends React.Component {
 
           // Convert it to hex string
           const txHexString = zencashjs.transaction.serializeTx(txObj)
-
-          axios.post(sendRawTxURL, {rawtx: txHexString})
-          .then(function(sendtx_resp){
-            console.log(sendtx_resp.data)
-            this.setState({
-              sendZenProgress: 100,
-              sentZenTxid: sendtx_resp.data.txid
-            })
-          }.bind(this))
+          console.log(txHexString)
+          // axios.post(sendRawTxURL, {rawtx: txHexString})
+          // .then(function(sendtx_resp){
+          //   console.log(sendtx_resp.data)
+          //   this.setState({
+          //     sendZenProgress: 100,
+          //     sentZenTxid: sendtx_resp.data.txid
+          //   })
+          // }.bind(this))
         }.bind(this))
       }.bind(this))
     }.bind(this))
