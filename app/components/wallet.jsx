@@ -271,15 +271,21 @@ class ZSendZEN extends React.Component {
 
           // Convert it to hex string
           const txHexString = zencashjs.transaction.serializeTx(txObj)
-          console.log(txHexString)
-          // axios.post(sendRawTxURL, {rawtx: txHexString})
-          // .then(function(sendtx_resp){
-          //   console.log(sendtx_resp.data)
-          //   this.setState({
-          //     sendZenProgress: 100,
-          //     sentZenTxid: sendtx_resp.data.txid
-          //   })
-          // }.bind(this))
+
+          axios.post(sendRawTxURL, {rawtx: txHexString})
+          .then(function(sendtx_resp){         
+            this.setState({
+              sendZenProgress: 100,
+              sentZenTxid: sendtx_resp.data.txid
+            })
+          }.bind(this))
+          .catch(function(error) {
+            this.setState({
+              sendZenProgress: 0              
+            })            
+            alert('Error: ' + error)            
+            return
+          }.bind(this))
         }.bind(this))
       }.bind(this))
     }.bind(this))
