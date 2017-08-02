@@ -3,7 +3,7 @@ import React from 'react'
 import classnames from 'classnames'
 import zencashjs from 'zencashjs'
 import CopyToClipboard from 'react-copy-to-clipboard';
-import { Progress, FormGroup, Label, Container, Jumbotron, TabContent, InputGroup, Input, InputGroupAddon, Table, TabPane, Nav, NavItem, NavLink, Card, CardSubtitle, Button, CardTitle, CardText, Row, Col } from 'reactstrap';
+import { Badge, Progress, FormGroup, Label, Container, Jumbotron, TabContent, InputGroup, Input, InputGroupAddon, Table, TabPane, Nav, NavItem, NavLink, Card, CardSubtitle, Button, CardTitle, CardText, Row, Col } from 'reactstrap';
 
 
 class ZAddressInfo extends React.Component {
@@ -62,12 +62,20 @@ class ZUnlockWallet extends React.Component {
     this.unlockClick = this.unlockClick.bind(this)
     
     this.state = {
-      privKey: ''
+      privKey: '',
+      isCompressed: true
     }
+
+    // Set compressed true
+    this.props.handleCompressPublicKey(true)
   }
 
   handleCompressedKeyChanged(e){
     this.props.handleCompressPublicKey(e.target.checked);
+
+    this.setState({
+      isCompressed: e.target.checked
+    })
   }
 
   handlePrivKeyChange(e){    
@@ -91,8 +99,8 @@ class ZUnlockWallet extends React.Component {
           <InputGroup>
             <InputGroupAddon>
               <Label check>
-                <Input onChange={this.handleCompressedKeyChanged} type="checkbox" />{' '}
-                Compress Public Key
+                <Input onChange={this.handleCompressedKeyChanged} defaultChecked={this.state.isCompressed} type="checkbox" />{' '}
+                Compress
               </Label>
             </InputGroupAddon>                  
             <Input onChange={this.handlePrivKeyChange} placeholder="Private key" />              
@@ -118,7 +126,7 @@ class ZSendZEN extends React.Component {
 
     this.state = {
       recipientAddress: '',
-      fee: 0.0001,
+      fee: '',
       amount: '',
       privateKey: this.props.privateKey,
       zenAddress: this.props.zenAddr,
@@ -169,12 +177,12 @@ class ZSendZEN extends React.Component {
       return
     }
 
-    if (typeof value == 'number'){
+    if (typeof parseInt(value) !== 'number' || value === ''){
       alert('Amount needs to be a number')
       return
     }
 
-    if (typeof fee == 'number'){
+    if (typeof parseInt(fee) !== 'number' || fee === ''){
       alert('Fee needs to be a number')
       return
     }
@@ -306,31 +314,32 @@ class ZSendZEN extends React.Component {
       <Row>
         <Col>
           <Card block>            
-            <InputGroup>
-              <InputGroupAddon>Address</InputGroupAddon>
-              <Input onChange={this.handleUpdateAddress} placeholder="znSDvF9nA5VCdse5HbEKmsoNbjCbsEA3VAH" />
-            </InputGroup>
-            <InputGroup>
-              <InputGroupAddon>Amount</InputGroupAddon>
-              <Input onChange={this.handleUpdateAmount} placeholder="42.24" />
-            </InputGroup>
-            <InputGroup>
-              <InputGroupAddon>Fee</InputGroupAddon>
-              <Input onChange={this.handleUpdateFee} placeholder="0.001" />
-            </InputGroup>
-            <br/>
-            <FormGroup check>
-              <Label check>
-                <Input onChange={this.handleCheckChanged} type="checkbox" />{' '}
-                I really wanna send some ZEN
-              </Label>
-            </FormGroup>
-            <div>
+            <Badge color="danger">!!! ALWAYS VALIDATE YOUR DESINATION ADDRESS BY SENDING SMALL AMOUNTS OF ZEN FIRST !!!</Badge><br/>
+            <CardText>
+              <InputGroup>
+                <InputGroupAddon>Address</InputGroupAddon>
+                <Input onChange={this.handleUpdateAddress} placeholder="e.g znSDvF9nA5VCdse5HbEKmsoNbjCbsEA3VAH" />
+              </InputGroup>
+              <InputGroup>
+                <InputGroupAddon>Amount</InputGroupAddon>
+                <Input onChange={this.handleUpdateAmount} placeholder="e.g 42" />
+              </InputGroup>
+              <InputGroup>
+                <InputGroupAddon>Fee</InputGroupAddon>
+                <Input onChange={this.handleUpdateFee} placeholder="e.g 0.001" />
+              </InputGroup>
+            </CardText>
+            <CardText>
+              <FormGroup check>
+                <Label check>
+                  <Input onChange={this.handleCheckChanged} type="checkbox" />{' '}
+                  I really wanna send some ZEN
+                </Label>
+              </FormGroup>
               <Progress value={this.state.sendZenProgress} />            
-              {zenTxLink}         
-            </div>
-            <br/>
-            <Button disabled={!this.state.confirmSend} onClick={this.handleSendZEN}>Send</Button>
+              {zenTxLink}                        
+            </CardText>
+            <Button disabled={!this.state.confirmSend} onClick={this.handleSendZEN}>Send</Button>            
           </Card>
         </Col>
       </Row>
@@ -410,7 +419,7 @@ class ZWalletGenerator extends React.Component {
           <h3 className='display-6'>Create New Wallet</h3>
           <br/>
           <InputGroup>          
-            <Input onChange={this.handleChange} placeholder="Password phrase. Do NOT forget to save this!" />            
+            <Input onChange={this.handleChange} placeholder="Password phrase. Do NOT forget to save this! Use >15 words to be safe." />            
           </InputGroup>
           <br/>
           <InputGroup>                      
@@ -547,7 +556,7 @@ export default class ZWallet extends React.Component {
       <Container>
         <Row>
           <Col>
-            <h1 className='display-4'>Lite ZenCash Wallet</h1>
+            <h3 className='display-6'>Unlock ZenCash Wallet</h3>
             <br/>
           </Col>
         </Row> 
