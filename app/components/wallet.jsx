@@ -3,8 +3,12 @@ import React from 'react'
 import classnames from 'classnames'
 import zencashjs from 'zencashjs'
 import CopyToClipboard from 'react-copy-to-clipboard';
-import { Badge, Progress, FormGroup, Label, Container, Jumbotron, TabContent, InputGroup, Input, InputGroupAddon, Table, TabPane, Nav, NavItem, NavLink, Card, CardSubtitle, Button, CardTitle, CardText, Row, Col } from 'reactstrap';
+import { Alert, Modal, ModalHeader, ModalBody, ModalFooter, ListGroup, ListGroupItem, Badge, Progress, FormGroup, Label, Container, Jumbotron, TabContent, InputGroup, Input, InputGroupAddon, InputGroupButton, Table, TabPane, Nav, NavItem, NavLink, Card, CardSubtitle, Button, CardTitle, CardText, Row, Col } from 'reactstrap';
 
+import MDSettings from 'react-icons/lib/md/settings'
+import FAUnlock from 'react-icons/lib/fa/unlock-alt'
+import FAEyeSlash from 'react-icons/lib/fa/eye-slash'
+import FAEye from 'react-icons/lib/fa/eye'
 
 class ZAddressInfo extends React.Component {
   constructor(props) {
@@ -96,17 +100,14 @@ class ZUnlockWallet extends React.Component {
     return (
       <Row>          
         <Col>
-          <InputGroup>
-            <InputGroupAddon>
-              <Label check>
-                <Input onChange={this.handleCompressedKeyChanged} defaultChecked={this.state.isCompressed} type="checkbox" />{' '}
-                Compress
-              </Label>
-            </InputGroupAddon>                  
-            <Input onChange={this.handlePrivKeyChange} placeholder="Private key" />              
-            <InputGroupAddon>              
-              <Button onClick={this.unlockClick}>Unlock</Button>              
-            </InputGroupAddon>
+          <InputGroup>                              
+            <InputGroupButton>              
+              <Button onClick={this.unlockClick}><FAEye/></Button>              
+            </InputGroupButton>
+            <Input onChange={this.handlePrivKeyChange} placeholder="Private key" />                  
+            <InputGroupButton>              
+              <Button onClick={this.unlockClick}><FAUnlock/></Button>              
+            </InputGroupButton>
           </InputGroup>
         </Col>
       </Row>
@@ -314,7 +315,7 @@ class ZSendZEN extends React.Component {
       <Row>
         <Col>
           <Card block>            
-            <Badge color="danger">!!! ALWAYS VALIDATE YOUR DESINATION ADDRESS BY SENDING SMALL AMOUNTS OF ZEN FIRST !!!</Badge><br/>
+            <Alert color="danger">!!! ALWAYS VALIDATE YOUR DESINATION ADDRESS BY SENDING SMALL AMOUNTS OF ZEN FIRST !!!</Alert>
             <CardText>
               <InputGroup>
                 <InputGroupAddon>Address</InputGroupAddon>
@@ -434,19 +435,26 @@ class ZWalletGenerator extends React.Component {
       </Row>
     )
   }
+}
 
+class ZWalletSettingsModal extends React.Component {
+  constructor(props){
+    super(props);
+  }
 }
 
 export default class ZWallet extends React.Component {
   constructor(props) {
     super(props);
 
-    this.toggle = this.toggle.bind(this);
+    this.toggleTabs = this.toggleTabs.bind(this);
+    this.toggleModalSettings = this.toggleModalSettings.bind(this);
     this.handleUnlock = this.handleUnlock.bind(this);
     this.handleSettings = this.handleSettings.bind(this);    
     this.handleCompressPublicKey = this.handleCompressPublicKey.bind(this);
 
     this.state = {
+      modalSettings: false,
       activeTab: '1',             
       insightURL: 'explorer.zenmine.pro/insight-api-zen/',                  
       isPubKeyCompressed: false,      
@@ -456,12 +464,18 @@ export default class ZWallet extends React.Component {
     };    
   }
 
-  toggle(tab) {
+  toggleTabs(tab) {
     if (this.state.activeTab !== tab) {
       this.setState({
         activeTab: tab
       });
     }
+  }
+
+  toggleModalSettings() {
+    this.setState({
+      modalSettings: !this.state.modalSettings
+    });
   }
 
   // We using compreesed public key?
@@ -513,7 +527,7 @@ export default class ZWallet extends React.Component {
             <NavItem>
               <NavLink
                 className={classnames({ active: this.state.activeTab === '1' })}
-                onClick={() => { this.toggle('1'); }}
+                onClick={() => { this.toggleTabs('1'); }}
               >
                 Info
               </NavLink>
@@ -521,7 +535,7 @@ export default class ZWallet extends React.Component {
             <NavItem>
               <NavLink
                 className={classnames({ active: this.state.activeTab === '2' })}
-                onClick={() => { this.toggle('2'); }}
+                onClick={() => { this.toggleTabs('2'); }}
               >
                 Send ZEN
               </NavLink>
@@ -529,7 +543,7 @@ export default class ZWallet extends React.Component {
             <NavItem>
               <NavLink
                 className={classnames({ active: this.state.activeTab === '3' })}
-                onClick={() => { this.toggle('3'); }}
+                onClick={() => { this.toggleTabs('3'); }}
               >
                 Settings
               </NavLink>
@@ -550,24 +564,27 @@ export default class ZWallet extends React.Component {
         </Row> 
       )
     }
-
-    // If we have then show the tabs
+    
     return (
       <Container>
         <Row>
-          <Col>
-            <h3 className='display-6'>Unlock ZenCash Wallet</h3>
+          <Col>            
+            <h1 className='display-6'>ZenCash Browser Wallet <Button onClick={this.toggleModalSettings}><MDSettings/></Button></h1>
+            <Modal isOpen={this.state.modalSettings} toggle={this.toggleModalSettings}>
+              <ModalHeader toggle={this.toggleModalSettings}>Modal title</ModalHeader>
+              <ModalBody>
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+              </ModalBody>
+              <ModalFooter>
+                <Button color="primary" onClick={this.toggleModalSettings}>Do Something</Button>{' '}
+                <Button color="secondary" onClick={this.toggleModalSettings}>Cancel</Button>
+              </ModalFooter>
+            </Modal>
             <br/>
           </Col>
         </Row> 
 
-        { contentState }
-          
-        <br/>
-        <hr/>
-        <br/>
-
-        <ZWalletGenerator/>
+        { contentState }          
       </Container>
     );
   }

@@ -29,6 +29,7 @@
     "react-bootstrap": "^0.31.1",
     "react-copy-to-clipboard": "^5.0.0",
     "react-dom": "^15.6.1",
+    "react-icons": "^2.2.5",
     "reactstrap": "^4.8.0",
     "style-loader": "^0.18.2",
     "webpack": "^3.3.0",

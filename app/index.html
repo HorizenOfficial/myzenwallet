@@ -5,22 +5,31 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" href="favicon.ico">
-    <title>MyZenWallet.com</title>    
+    <title>MyZenWallet.io</title>    
+    <style>
+        body {
+            display: flex;
+            min-height: 100vh;
+            flex-direction: column;
+        }
+
+        .aligner {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }   
+    </style>
 </head>
 
 <body>
-    <div id="navbar"></div>
+    <div id="navbar"></div><br/>
 
-    <br/>
+    <div class="aligner">        
+        <div id="wallet"></div>
+    </div><br/>
 
-    <div id="wallet"></div>    
-
-    <br/>
-    <hr/>
-
-    <div id="footer"></div>    
-    
-    <hr/>
+    <div id="footer"></div>        
 </body>
 
 </html>
