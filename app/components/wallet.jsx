@@ -21,7 +21,6 @@ function urlAppend(url, param){
 }
 
 // Components
-
 class ZWalletGenerator extends React.Component {
   constructor(props) {
     super(props)    
@@ -135,8 +134,8 @@ class ZWalletSettings extends React.Component {
             </Col>
             <Col sm="6">
               <Label check>
-                <Input
-                  type="checkbox"
+                <Input                  
+                  disabled={!(this.props.publicAddress === null)}
                   defaultChecked={this.props.settings.showWalletGen} type="checkbox" 
                   onChange={this.props.toggleShowWalletGen}
                 />{' '}
@@ -145,6 +144,16 @@ class ZWalletSettings extends React.Component {
             </Col>
           </Row>
         </ModalBody>
+        <ModalFooter>
+          <Label>
+            <Input
+              type="checkbox"
+              defaultChecked={this.props.settings.useTestNet} type="checkbox" 
+              onChange={this.props.toggleUseTestNet}
+            />{' '}
+            testnet
+          </Label>
+        </ModalFooter>
       </Modal>
     )
   }
@@ -433,7 +442,7 @@ class ZSendZEN extends React.Component {
                 </FormGroup>                
               </CardText>   
               <Button color="warning" className="btn-block" disabled={!this.state.confirmSend} onClick={this.handleSendZEN}>Send</Button>
-            </CardBlock> 
+            </CardBlock> disabled
             <CardFooter> 
               {zenTxLink}
               <Progress value={this.state.sendProgress} />                                  
@@ -509,9 +518,9 @@ export default class ZWallet extends React.Component {
     super(props);
 
     this.handleUnlockPrivateKey = this.handleUnlockPrivateKey.bind(this)
-    this.setPrivateKey = this.setPrivateKey.bind(this)    
-    this.setSettings = this.setSettings.bind(this)
-    this.setInsightAPI = this.setInsightAPI.bind(this)
+    this.setPrivateKey = this.setPrivateKey.bind(this)        
+    this.setInsightAPI = this.setInsightAPI.bind(this)    
+    this.toggleUseTestNet = this.toggleUseTestNet.bind(this)
     this.toggleCompressPubKey = this.toggleCompressPubKey.bind(this)
     this.toggleShowSettings = this.toggleShowSettings.bind(this)
     this.toggleShowWalletGen = this.toggleShowWalletGen.bind(this)     
@@ -524,6 +533,7 @@ export default class ZWallet extends React.Component {
         showWalletGen: false,
         compressPubKey: true,
         insightAPI: 'http://explorer.zenmine.pro/insight-api-zen/',
+        useTestNet: false
       }
     };    
   }
@@ -564,20 +574,6 @@ export default class ZWallet extends React.Component {
     })
   }
 
-  setSettings(showWalletGen, compressPubKey, insightAPI){
-    // Set settings and close modal
-    var _settings = {
-      showSettings: !this.state.showSettings,
-      showWalletGen: showWalletGen,
-      compressPubKey: compressPubKey,
-      insightAPI: insightAPI
-    }
-
-    this.setState({
-      settings: _settings
-    })
-  }  
-
   setInsightAPI(uri){    
     var _settings = this.state.settings
     _settings.insightAPI = uri
@@ -585,7 +581,7 @@ export default class ZWallet extends React.Component {
     this.setState({
       _settings: _settings
     })
-  }
+  }  
 
   toggleCompressPubKey(b){
     var _settings = this.state.settings
@@ -593,6 +589,15 @@ export default class ZWallet extends React.Component {
 
     this.setState({
       _settings: _settings
+    })
+  }
+
+  toggleUseTestNet(){
+    var _settings = this.state.settings
+    _settings.useTestNet = !_settings.useTestNet
+
+    this.setState({
+      settings: _settings
     })
   }
 
@@ -624,6 +629,7 @@ export default class ZWallet extends React.Component {
               toggleShowSettings={this.toggleShowSettings}
               toggleCompressPubKey={this.toggleCompressPubKey}           
               toggleShowWalletGen={this.toggleShowWalletGen}
+              toggleUseTestNet={this.toggleUseTestNet}
               setInsightAPI={this.setInsightAPI}
               settings={this.state.settings}
               publicAddress={this.state.publicAddress}
