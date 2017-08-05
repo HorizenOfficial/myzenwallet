@@ -8,6 +8,7 @@ import zencashjs from 'zencashjs'
 
 import MDCopy from 'react-icons/lib/md/content-copy'
 import MDSettings from 'react-icons/lib/md/settings'
+import FARepeat from 'react-icons/lib/fa/repeat'
 import FAUnlock from 'react-icons/lib/fa/unlock-alt'
 import FAEyeSlash from 'react-icons/lib/fa/eye-slash'
 import FAEye from 'react-icons/lib/fa/eye'
@@ -33,7 +34,6 @@ class ZWalletGenerator extends React.Component {
   }
 
   handlePasswordPhrase(e){
-    console.log(this.props.settings)
     // What wif format do we use?
     var wifHash = this.props.settings.useTestNet ? zencashjs.config.testnet.wif : zencashjs.config.mainnet.wif
 
@@ -166,14 +166,16 @@ class ZAddressInfo extends React.Component {
   constructor(props) {
     super(props)
 
+    this.updateAddressInfo = this.updateAddressInfo.bind(this)
+
     this.state = {      
       transactionURL: '',
       confirmedBalance: 'loading...',
       unconfirmedBalance: 'loading...',      
     }
   }
-  
-  componentDidMount() {
+
+  updateAddressInfo() {
     // Sets transcation URL
     this.setState({
       transactionURL: urlAppend(this.props.settings.explorerURL, 'address/') + this.props.publicAddress,
@@ -196,32 +198,45 @@ class ZAddressInfo extends React.Component {
       alert(error);
     })
   }
+  
+  componentDidMount() {
+    // Run immediately
+    this.updateAddressInfo()
+
+    // Update every 5 seconds    
+    this.interval = setInterval(this.updateAddressInfo, 5000)
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.interval)
+  }
 
   render() {    
     return (
       <Row>
-        <Col>                
-          <Card block>
-            <Table>
-            <tbody>
-              <tr>
-                <td>Address</td>
-                <td>{this.props.publicAddress}</td>
-              </tr>
-              <tr>
-                <td>Confirmed Balance</td>
-                <td>{this.state.confirmedBalance}</td>
-              </tr>
-              <tr>
-                <td>Unconfirmed Balance</td>
-                <td>{this.state.unconfirmedBalance}</td>
-              </tr>
-              <tr>                
-                <td><a href={this.state.transactionURL}>Transcation History</a></td>
-                <td></td>
-              </tr>
-            </tbody>            
-          </Table>  
+        <Col>     
+          <Card>
+            <CardBlock>                    
+              <CardText><Alert color="warning">The balance displayed here is dependent on the insight node</Alert></CardText>         
+            </CardBlock>
+          </Card>           
+          <Card>
+            <CardBlock>    
+              <CardTitle>Address</CardTitle>
+              <CardText>{this.props.publicAddress}</CardText>         
+            </CardBlock>
+          </Card>
+          <Card>
+            <CardBlock>    
+              <CardTitle>Confirmed Balance</CardTitle>
+              <CardText>{this.state.confirmedBalance}</CardText>                
+            </CardBlock>
+          </Card>
+          <Card>
+            <CardBlock>    
+              <CardTitle>Unconfirmed Balance</CardTitle>
+              <CardText>{this.state.unconfirmedBalance}</CardText>
+            </CardBlock>            
           </Card>
         </Col>
       </Row>
@@ -525,6 +540,7 @@ export default class ZWallet extends React.Component {
   constructor(props) {
     super(props);
 
+    this.resetKeys = this.resetKeys.bind(this)
     this.handleUnlockPrivateKey = this.handleUnlockPrivateKey.bind(this)
     this.setPrivateKey = this.setPrivateKey.bind(this)        
     this.setInsightAPI = this.setInsightAPI.bind(this)    
@@ -573,6 +589,13 @@ export default class ZWallet extends React.Component {
     } catch(err) {      
       alert('Invalid private key')
     }
+  }
+
+  resetKeys(){
+    this.setState({
+      privateKey : '',
+      publicAddress: null,
+    })
   }
 
   setPrivateKey(pk){
@@ -646,7 +669,7 @@ export default class ZWallet extends React.Component {
       <Container>
         <Row>
           <Col>            
-            <h1 className='display-6'>ZenCash&nbsp;Wallet&nbsp;<Button onClick={this.toggleShowSettings}><MDSettings/></Button></h1>
+            <h1 className='display-6'>ZenCash Wallet&nbsp;<Button color="secondary" onClick={this.toggleShowSettings}><MDSettings/></Button>&nbsp;<Button color="secondary" disabled={this.state.publicAddress === null} onClick={this.resetKeys}><FARepeat/></Button></h1>
             <ZWalletSettings 
               toggleShowSettings={this.toggleShowSettings}
               toggleCompressPubKey={this.toggleCompressPubKey}           
