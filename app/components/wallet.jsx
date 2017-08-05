@@ -33,8 +33,12 @@ class ZWalletGenerator extends React.Component {
   }
 
   handlePasswordPhrase(e){
+    console.log(this.props.settings)
+    // What wif format do we use?
+    var wifHash = this.props.settings.useTestNet ? zencashjs.config.testnet.wif : zencashjs.config.mainnet.wif
+
     var pk = zencashjs.address.mkPrivKey(e.target.value)
-    var pkwif = zencashjs.address.privKeyToWIF(pk + '01') // Compress it
+    var pkwif = zencashjs.address.privKeyToWIF(pk, true, wifHash)
 
     if (e.target.value === ''){
       pkwif = ''
@@ -134,8 +138,7 @@ class ZWalletSettings extends React.Component {
             </Col>
             <Col sm="6">
               <Label check>
-                <Input                  
-                  disabled={!(this.props.publicAddress === null)}
+                <Input                                    
                   defaultChecked={this.props.settings.showWalletGen} type="checkbox" 
                   onChange={this.props.toggleShowWalletGen}
                 />{' '}
@@ -147,7 +150,7 @@ class ZWalletSettings extends React.Component {
         <ModalFooter>
           <Label>
             <Input
-              type="checkbox"
+              disabled={!(this.props.publicAddress === null)}
               defaultChecked={this.props.settings.useTestNet} type="checkbox" 
               onChange={this.props.toggleUseTestNet}
             />{' '}
@@ -163,14 +166,19 @@ class ZAddressInfo extends React.Component {
   constructor(props) {
     super(props)
 
-    this.state = {
-      transactionURL: 'http://explorer.zenmine.pro/insight/address/' + this.props.publicAddress,
+    this.state = {      
+      transactionURL: '',
       confirmedBalance: 'loading...',
       unconfirmedBalance: 'loading...',      
     }
   }
   
   componentDidMount() {
+    // Sets transcation URL
+    this.setState({
+      transactionURL: urlAppend(this.props.settings.explorerURL, 'address/') + this.props.publicAddress,
+    })
+
     // GET request to URL
     var info_url = urlAppend(this.props.settings.insightAPI, 'addr/')
     info_url = urlAppend(info_url, this.props.publicAddress + '?noTxList=1')
@@ -409,7 +417,7 @@ class ZSendZEN extends React.Component {
     
     var zenTxLink
     if (this.state.sendProgress === 100){
-      var zentx = 'http://explorer.zenmine.pro/insight/tx/' + this.state.sentTxid
+      var zentx = urlAppend(this.props.settings.explorerURL, 'tx/') + this.state.sentTxid
       zenTxLink = <div className="text-center"><a href={zentx}>click here to view your transaction</a></div>
     }
 
@@ -442,7 +450,7 @@ class ZSendZEN extends React.Component {
                 </FormGroup>                
               </CardText>   
               <Button color="warning" className="btn-block" disabled={!this.state.confirmSend} onClick={this.handleSendZEN}>Send</Button>
-            </CardBlock> disabled
+            </CardBlock>
             <CardFooter> 
               {zenTxLink}
               <Progress value={this.state.sendProgress} />                                  
@@ -533,6 +541,7 @@ export default class ZWallet extends React.Component {
         showWalletGen: false,
         compressPubKey: true,
         insightAPI: 'http://explorer.zenmine.pro/insight-api-zen/',
+        explorerURL: 'http://explorer.zenmine.pro/insight/',
         useTestNet: false
       }
     };    
@@ -550,14 +559,18 @@ export default class ZWallet extends React.Component {
 
       // Convert public key to public address
       const pubKey = zencashjs.address.privKeyToPubKey(pk, this.state.settings.compressPubKey)
-      const publicAddr = zencashjs.address.pubKeyToAddr(pubKey)
+
+      // Testnet or nah
+      const pubKeyHash = this.state.settings.useTestNet ? zencashjs.config.testnet.pubKeyHash : zencashjs.config.mainnet.pubKeyHash
+      const publicAddr = zencashjs.address.pubKeyToAddr(pubKey, pubKeyHash)
 
       // Set public address
       this.setPublicAddress(publicAddr)
 
       // Set private key
-      this.setPrivateKey(pk)      
-    } catch(err) {
+      this.setPrivateKey(pk)
+
+    } catch(err) {      
       alert('Invalid private key')
     }
   }
@@ -595,6 +608,15 @@ export default class ZWallet extends React.Component {
   toggleUseTestNet(){
     var _settings = this.state.settings
     _settings.useTestNet = !_settings.useTestNet
+
+    if (_settings.useTestNet){
+      _settings.insightAPI = 'http://aayanl.tech:8081/insight-api-zen/'
+      _settings.explorerURL = 'http://aayanl.tech:8081/'
+    }
+    else{
+      _settings.insightAPI = 'http://explorer.zenmine.pro/insight-api-zen/'
+      _settings.explorerURL = 'http://explorer.zenmine.pro/insight/'
+    }
 
     this.setState({
       settings: _settings
@@ -654,7 +676,7 @@ export default class ZWallet extends React.Component {
           </Col>
         </Row>
         { this.state.settings.showWalletGen ?
-          (<div><br/><hr/><ZWalletGenerator/></div>) : null
+          (<div><br/><hr/><ZWalletGenerator settings={this.state.settings}/></div>) : null
         }
       </Container>
     );

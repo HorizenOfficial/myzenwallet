@@ -20,6 +20,7 @@
     "classnames": "^2.2.5",
     "css-loader": "^0.28.4",
     "file-loader": "^0.11.2",
+    "fs": "^0.0.1-security",
     "hash.js": "^1.1.3",
     "html-webpack-plugin": "^2.29.0",
     "path": "^0.12.7",
@@ -34,7 +35,7 @@
     "style-loader": "^0.18.2",
     "webpack": "^3.3.0",
     "webpack-dev-server": "^2.5.1",
-    "zencashjs": "^1.1.0-a"
+    "zencashjs": "^1.1.4-a"
   },
   "devDependencies": {
     "babel-core": "^6.25.0",

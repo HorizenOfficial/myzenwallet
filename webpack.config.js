@@ -3,6 +3,7 @@
  */
 
 const path = require('path');
+const fs = require('fs')
 
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const HtmlWebpackPluginConfig = new HtmlWebpackPlugin({
@@ -29,5 +30,8 @@ module.exports = {
             }
         ]
     },
-    plugins: [HtmlWebpackPluginConfig]
+    plugins: [HtmlWebpackPluginConfig],
+    node: {
+        fs: 'empty'
+    }
 }

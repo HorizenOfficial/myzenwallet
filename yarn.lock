@@ -2017,6 +2017,10 @@ fs.realpath@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/fs.realpath/-/fs.realpath-1.0.0.tgz#1504ad2523158caa40db4a2787cb01411994ea4f"
 
+fs@^0.0.1-security:
+  version "0.0.1-security"
+  resolved "https://registry.yarnpkg.com/fs/-/fs-0.0.1-security.tgz#8a7bd37186b6dddf3813f23858b57ecaaf5e41d4"
+
 fsevents@^1.0.0:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/fsevents/-/fsevents-1.1.2.tgz#3282b713fb3ad80ede0e9fcf4611b5aa6fc033f4"
@@ -2636,6 +2640,16 @@ lcid@^1.0.0:
   resolved "https://registry.yarnpkg.com/lcid/-/lcid-1.0.0.tgz#308accafa0bc483a3867b4b6f2b9506251d1b835"
   dependencies:
     invert-kv "^1.0.0"
+
+libsodium-sumo@0.5.2, libsodium-sumo@^0.5.2:
+  version "0.5.2"
+  resolved "https://registry.yarnpkg.com/libsodium-sumo/-/libsodium-sumo-0.5.2.tgz#0772cec6445c655de46f5001d33ed09951d82868"
+
+libsodium-wrappers-sumo@^0.5.2:
+  version "0.5.2"
+  resolved "https://registry.yarnpkg.com/libsodium-wrappers-sumo/-/libsodium-wrappers-sumo-0.5.2.tgz#84645d9073e5d92e9df615497e10a26907115ade"
+  dependencies:
+    libsodium-sumo "0.5.2"
 
 load-json-file@^1.0.0:
   version "1.1.0"
@@ -3526,6 +3540,12 @@ prop-types-extra@^1.0.1:
   dependencies:
     warning "^3.0.0"
 
+prop-types@15.5.8:
+  version "15.5.8"
+  resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.5.8.tgz#6b7b2e141083be38c8595aa51fc55775c7199394"
+  dependencies:
+    fbjs "^0.8.9"
+
 prop-types@^15.5.10, prop-types@^15.5.6, prop-types@^15.5.8:
   version "15.5.10"
   resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.5.10.tgz#2797dfc3126182e3a95e3dfbb2e893ddd7456154"
@@ -3675,6 +3695,18 @@ react-dom@^15.6.1:
     loose-envify "^1.1.0"
     object-assign "^4.1.0"
     prop-types "^15.5.10"
+
+react-icon-base@2.0.7:
+  version "2.0.7"
+  resolved "https://registry.yarnpkg.com/react-icon-base/-/react-icon-base-2.0.7.tgz#0bd18736bd6ce79ca6d69ce8387a07fb8d4ceffe"
+  dependencies:
+    prop-types "15.5.8"
+
+react-icons@^2.2.5:
+  version "2.2.5"
+  resolved "https://registry.yarnpkg.com/react-icons/-/react-icons-2.2.5.tgz#f942501c21a4cc0456ce2bbee5032c93f6051dcf"
+  dependencies:
+    react-icon-base "2.0.7"
 
 react-overlays@^0.7.0:
   version "0.7.0"
@@ -4709,9 +4741,9 @@ yargs@~3.10.0:
     decamelize "^1.0.0"
     window-size "0.1.0"
 
-zencashjs@^1.1.0-a:
-  version "1.1.0-a"
-  resolved "https://registry.yarnpkg.com/zencashjs/-/zencashjs-1.1.0-a.tgz#b977ddc354ed5807696d3e5fedc803f4a943a912"
+zencashjs@^1.1.4-a:
+  version "1.1.4-a"
+  resolved "https://registry.yarnpkg.com/zencashjs/-/zencashjs-1.1.4-a.tgz#d5a077f39bea687ea047f8cb7ad08ad468854ae7"
   dependencies:
     bigi "^1.4.2"
     bs58 "^4.0.1"
@@ -4719,5 +4751,8 @@ zencashjs@^1.1.0-a:
     create-hash "^1.1.3"
     create-hmac "^1.1.6"
     int64-buffer "^0.1.9"
+    libsodium-sumo "^0.5.2"
+    libsodium-wrappers-sumo "^0.5.2"
     safe-buffer "^5.1.1"
     secp256k1 "^3.3.0"
+    varuint-bitcoin "^1.0.4"
