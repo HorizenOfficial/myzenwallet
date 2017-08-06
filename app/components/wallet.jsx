@@ -1,4 +1,4 @@
-import { Alert, CardBlock, CardFooter, Modal, ModalHeader, ModalBody, ModalFooter, ListGroup, ListGroupItem, Badge, Progress, FormGroup, Label, Container, Jumbotron, TabContent, InputGroup, Input, InputGroupAddon, InputGroupButton, Table, TabPane, Nav, NavItem, NavLink, Card, CardSubtitle, Button, CardTitle, CardText, Row, Col } from 'reactstrap';
+import { Alert, UncontrolledAlert, Tooltip, CardBlock, CardFooter, Modal, ModalHeader, ModalBody, ModalFooter, ListGroup, ListGroupItem, Badge, Progress, FormGroup, Label, Container, Jumbotron, TabContent, InputGroup, Input, InputGroupAddon, InputGroupButton, Table, TabPane, Nav, NavItem, NavLink, Card, CardSubtitle, Button, CardTitle, CardText, Row, Col } from 'reactstrap';
 
 import axios from 'axios'
 import React from 'react'
@@ -13,6 +13,15 @@ import FAUnlock from 'react-icons/lib/fa/unlock-alt'
 import FAEyeSlash from 'react-icons/lib/fa/eye-slash'
 import FAEye from 'react-icons/lib/fa/eye'
 
+function AlertExample() {
+  return (
+    <UncontrolledAlert color="info">
+      I am an alert and I can be dismissed!
+    </UncontrolledAlert>
+  );
+}
+
+
 // Append url
 function urlAppend(url, param){
   if (url.substr(-1) !== '/'){
@@ -22,6 +31,36 @@ function urlAppend(url, param){
 }
 
 // Components
+class ToolTipButton extends React.Component {
+  constructor(props){
+    super(props);
+
+    this.toggle = this.toggle.bind(this)
+    this.state = {
+      tooltipOpen: false
+    }
+  }
+
+  toggle() {
+    this.setState({
+      tooltipOpen: !this.state.tooltipOpen
+    })
+  }
+
+  render() {
+    return (
+      <span>
+        <Button disabled={this.props.disabled} onClick={this.props.onClick} className="mr-1" color="secondary" id={'Tooltip-' + this.props.id}>
+          {this.props.buttonText}
+        </Button>
+        <Tooltip placement="top" isOpen={this.state.tooltipOpen} target={'Tooltip-' + this.props.id} toggle={this.toggle}>
+          {this.props.tooltipText}
+        </Tooltip>
+      </span>
+    )
+  }
+}
+
 class ZWalletGenerator extends React.Component {
   constructor(props) {
     super(props)    
@@ -94,18 +133,20 @@ class ZWalletUnlockKey extends React.Component {
   render () {
     return (
       <InputGroup>                              
-        <InputGroupButton>              
-          <Button onClick={this.toggleShowPassword}>
-            {this.state.showPassword? <FAEye/> : <FAEyeSlash/>}
-          </Button>              
+        <InputGroupButton>
+          <ToolTipButton id={4}
+            onClick={this.toggleShowPassword}
+            buttonText={this.state.showPassword? <FAEye/> : <FAEyeSlash/>}
+            tooltipText={this.state.showPassword? 'show password' : 'hide password'}
+          />
         </InputGroupButton>
         <Input
           type={this.state.showPassword ? "text" : "password"}
           onChange={(e) => this.props.setPrivateKey(e.target.value)}
           placeholder="Private key"
-        />                  
-        <InputGroupButton>              
-          <Button onClick={(e) => this.props.handleUnlockPrivateKey()}><FAUnlock/></Button>              
+        />
+        <InputGroupButton> 
+          <ToolTipButton onClick={(e) => this.props.handleUnlockPrivateKey()} id={3} buttonText={<FAUnlock/>} tooltipText={'unlock'}/>
         </InputGroupButton>
       </InputGroup>
     )
@@ -238,6 +279,12 @@ class ZAddressInfo extends React.Component {
               <CardText>{this.state.unconfirmedBalance}</CardText>
             </CardBlock>            
           </Card>
+          <Card>
+            <CardBlock>    
+              <CardTitle>Transcation History</CardTitle>
+              <CardText><a href={this.state.transactionURL}>ZEN Blockchain Explorer</a></CardText>
+            </CardBlock>            
+          </Card>
         </Col>
       </Row>
     )
@@ -249,6 +296,7 @@ class ZSendZEN extends React.Component {
     super(props)    
 
     this.setProgressValue = this.setProgressValue.bind(this);
+    this.setSendErrorMessage = this.setSendErrorMessage.bind(this);    
     this.handleUpdateAddress = this.handleUpdateAddress.bind(this);
     this.handleUpdateAmount = this.handleUpdateAmount.bind(this);
     this.handleCheckChanged = this.handleCheckChanged.bind(this);
@@ -260,7 +308,8 @@ class ZSendZEN extends React.Component {
       fee: '',
       amount: '',                        
       sentTxid: '', // Whats the send txid
-      sendProgress: 0, // Progress bar, 100 to indicate complete      
+      sendProgress: 0, // Progress bar, 100 to indicate complete
+      sendErrorMessage: '',
       confirmSend: false,
     }
   }
@@ -293,31 +342,41 @@ class ZSendZEN extends React.Component {
     this.setState({
       sendProgress: v
     })
-  }  
+  }
+
+  setSendErrorMessage(msg){
+    this.setState({
+      sendErrorMessage: msg
+    })
+  }
 
   handleSendZEN(){      
     const value = this.state.amount;
     const fee = this.state.fee;
     const recipientAddress = this.state.recipientAddress;
     
-    // Reset zen send progress
-    this.setState({
-      sendProgress: 0
-    })
+    // Reset zen send progress and error message
+    this.setProgressValue(0)
+    this.setSendErrorMessage('')
+
+    // Error strings
+    var errString = ''
 
     // Validation
-    if (recipientAddress.length !== 35){
-      alert('Address length not valid')
-      return
+    if (recipientAddress.length !== 35) {
+      errString = 'Invalid address. Only transparent addresses are supported at this point in time.;'
     }
 
     if (typeof parseInt(value) !== 'number' || value === ''){
-      alert('Amount needs to be a number')
-      return
+      errString += 'Invalid amount.;'
     }
 
     if (typeof parseInt(fee) !== 'number' || fee === ''){
-      alert('Fee needs to be a number')
+      errString += 'Invalid fee.;'
+    }
+
+    if (errString !== ''){
+      this.setSendErrorMessage(errString)
       return
     }
 
@@ -330,6 +389,13 @@ class ZSendZEN extends React.Component {
     // to satoshis
     const satoshisToSend = Math.round(value * 100000000)
     const satoshisfeesToSend = Math.round(fee * 100000000)
+
+    // Can't send 0 satoshis
+    if (satoshisToSend === 0){
+      this.setSendErrorMessage('Amount can\'t be 0')
+      this.setProgressValue(0)
+      return
+    }
 
     // Building our transaction TXOBJ
     // How many satoshis do we have so far
@@ -381,10 +447,9 @@ class ZSendZEN extends React.Component {
 
           // If we don't have enough address
           // fail and tell user
-          if (satoshisSoFar < satoshisToSend + satoshisfeesToSend){
-            this.setProgressValue(0)
-            alert('Not enough confirmed ZEN in account to perform transaction')
-            return
+          if (satoshisSoFar < satoshisToSend + satoshisfeesToSend){            
+            this.setSendErrorMessage('Not enough confirmed ZEN in account to perform transaction')
+            this.setProgressValue(0)            
           }
 
           // If we don't have exact amount
@@ -412,28 +477,46 @@ class ZSendZEN extends React.Component {
               sentTxid: sendtx_resp.data.txid
             })
           }.bind(this))
-          .catch(function(error) {
-            this.setProgressValue(0)           
-            alert('Error: ' + error)            
+          .catch(function(error) {            
+            this.setSendErrorMessage(error + '')
+            this.setProgressValue(0)
             return
           }.bind(this))
         }.bind(this))
       }.bind(this))
     }.bind(this))
-    .catch(function(error){
+    .catch(function(error){      
+      this.setSendErrorMessage(error)
       this.setProgressValue(0)
-      alert(error);
+      return
     }.bind(this));
   } 
 
   render() {
-    // Where to view our new transaction o
-    // the blockchain
-    
+    // If send was successful
     var zenTxLink
     if (this.state.sendProgress === 100){
       var zentx = urlAppend(this.props.settings.explorerURL, 'tx/') + this.state.sentTxid
-      zenTxLink = <div className="text-center"><a href={zentx}>click here to view your transaction</a></div>
+      zenTxLink = (
+        <Alert color="success">
+        <strong>ZEN successfully sent!</strong> <a href={zentx}>Click here to view your transaction</a>
+        </Alert>
+      )      
+    }
+
+    // Else
+    else if (this.state.sendErrorMessage !== ''){
+      zenTxLink = (
+        this.state.sendErrorMessage.split(';').map(function (s) {
+          if (s !== ''){
+            return (
+              <Alert color="danger">
+              <strong>Error.</strong> {s}
+              </Alert>
+            )
+          }
+        })
+      )      
     }
 
     return (
@@ -441,7 +524,7 @@ class ZSendZEN extends React.Component {
         <Col>
           <Card>
             <CardBlock>       
-              <Alert color="danger">!!! ALWAYS VALIDATE YOUR DESINATION ADDRESS BY SENDING SMALL AMOUNTS OF ZEN FIRST !!!</Alert>
+              <Alert color="danger">ALWAYS VALIDATE YOUR DESINATION ADDRESS BY SENDING SMALL AMOUNTS OF ZEN FIRST</Alert>
               <CardText>
                 <InputGroup>
                   <InputGroupAddon>Address</InputGroupAddon>
@@ -643,7 +726,7 @@ export default class ZWallet extends React.Component {
 
     this.setState({
       settings: _settings
-    })
+    })    
   }
 
   toggleShowSettings(){
@@ -669,7 +752,10 @@ export default class ZWallet extends React.Component {
       <Container>
         <Row>
           <Col>            
-            <h1 className='display-6'>ZenCash Wallet&nbsp;<Button color="secondary" onClick={this.toggleShowSettings}><MDSettings/></Button>&nbsp;<Button color="secondary" disabled={this.state.publicAddress === null} onClick={this.resetKeys}><FARepeat/></Button></h1>
+            <h1 className='display-6'>ZenCash Wallet&nbsp;
+              <ToolTipButton onClick={this.toggleShowSettings} id={1} buttonText={<MDSettings/>} tooltipText={'settings'}/>&nbsp;
+              <ToolTipButton disabled={this.state.publicAddress === null} onClick={this.resetKeys} id={2} buttonText={<FARepeat/>} tooltipText={'reset wallet'}/>
+            </h1>
             <ZWalletSettings 
               toggleShowSettings={this.toggleShowSettings}
               toggleCompressPubKey={this.toggleCompressPubKey}           

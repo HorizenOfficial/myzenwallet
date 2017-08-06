@@ -46278,6 +46278,14 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+function AlertExample() {
+  return _react2.default.createElement(
+    _reactstrap.UncontrolledAlert,
+    { color: 'info' },
+    'I am an alert and I can be dismissed!'
+  );
+}
+
 // Append url
 function urlAppend(url, param) {
   if (url.substr(-1) !== '/') {
@@ -46288,20 +46296,65 @@ function urlAppend(url, param) {
 
 // Components
 
-var ZWalletGenerator = function (_React$Component) {
-  _inherits(ZWalletGenerator, _React$Component);
+var ToolTipButton = function (_React$Component) {
+  _inherits(ToolTipButton, _React$Component);
+
+  function ToolTipButton(props) {
+    _classCallCheck(this, ToolTipButton);
+
+    var _this = _possibleConstructorReturn(this, (ToolTipButton.__proto__ || Object.getPrototypeOf(ToolTipButton)).call(this, props));
+
+    _this.toggle = _this.toggle.bind(_this);
+    _this.state = {
+      tooltipOpen: false
+    };
+    return _this;
+  }
+
+  _createClass(ToolTipButton, [{
+    key: 'toggle',
+    value: function toggle() {
+      this.setState({
+        tooltipOpen: !this.state.tooltipOpen
+      });
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      return _react2.default.createElement(
+        'span',
+        null,
+        _react2.default.createElement(
+          _reactstrap.Button,
+          { disabled: this.props.disabled, onClick: this.props.onClick, className: 'mr-1', color: 'secondary', id: 'Tooltip-' + this.props.id },
+          this.props.buttonText
+        ),
+        _react2.default.createElement(
+          _reactstrap.Tooltip,
+          { placement: 'top', isOpen: this.state.tooltipOpen, target: 'Tooltip-' + this.props.id, toggle: this.toggle },
+          this.props.tooltipText
+        )
+      );
+    }
+  }]);
+
+  return ToolTipButton;
+}(_react2.default.Component);
+
+var ZWalletGenerator = function (_React$Component2) {
+  _inherits(ZWalletGenerator, _React$Component2);
 
   function ZWalletGenerator(props) {
     _classCallCheck(this, ZWalletGenerator);
 
-    var _this = _possibleConstructorReturn(this, (ZWalletGenerator.__proto__ || Object.getPrototypeOf(ZWalletGenerator)).call(this, props));
+    var _this2 = _possibleConstructorReturn(this, (ZWalletGenerator.__proto__ || Object.getPrototypeOf(ZWalletGenerator)).call(this, props));
 
-    _this.handlePasswordPhrase = _this.handlePasswordPhrase.bind(_this);
-    _this.state = {
+    _this2.handlePasswordPhrase = _this2.handlePasswordPhrase.bind(_this2);
+    _this2.state = {
       passwordPhrase: '',
       privateKey: ''
     };
-    return _this;
+    return _this2;
   }
 
   _createClass(ZWalletGenerator, [{
@@ -46368,20 +46421,20 @@ var ZWalletGenerator = function (_React$Component) {
   return ZWalletGenerator;
 }(_react2.default.Component);
 
-var ZWalletUnlockKey = function (_React$Component2) {
-  _inherits(ZWalletUnlockKey, _React$Component2);
+var ZWalletUnlockKey = function (_React$Component3) {
+  _inherits(ZWalletUnlockKey, _React$Component3);
 
   function ZWalletUnlockKey(props) {
     _classCallCheck(this, ZWalletUnlockKey);
 
-    var _this2 = _possibleConstructorReturn(this, (ZWalletUnlockKey.__proto__ || Object.getPrototypeOf(ZWalletUnlockKey)).call(this, props));
+    var _this3 = _possibleConstructorReturn(this, (ZWalletUnlockKey.__proto__ || Object.getPrototypeOf(ZWalletUnlockKey)).call(this, props));
 
-    _this2.toggleShowPassword = _this2.toggleShowPassword.bind(_this2);
+    _this3.toggleShowPassword = _this3.toggleShowPassword.bind(_this3);
 
-    _this2.state = {
+    _this3.state = {
       showPassword: false
     };
-    return _this2;
+    return _this3;
   }
 
   _createClass(ZWalletUnlockKey, [{
@@ -46394,7 +46447,7 @@ var ZWalletUnlockKey = function (_React$Component2) {
   }, {
     key: 'render',
     value: function render() {
-      var _this3 = this;
+      var _this4 = this;
 
       return _react2.default.createElement(
         _reactstrap.InputGroup,
@@ -46402,29 +46455,25 @@ var ZWalletUnlockKey = function (_React$Component2) {
         _react2.default.createElement(
           _reactstrap.InputGroupButton,
           null,
-          _react2.default.createElement(
-            _reactstrap.Button,
-            { onClick: this.toggleShowPassword },
-            this.state.showPassword ? _react2.default.createElement(_eye2.default, null) : _react2.default.createElement(_eyeSlash2.default, null)
-          )
+          _react2.default.createElement(ToolTipButton, { id: 4,
+            onClick: this.toggleShowPassword,
+            buttonText: this.state.showPassword ? _react2.default.createElement(_eye2.default, null) : _react2.default.createElement(_eyeSlash2.default, null),
+            tooltipText: this.state.showPassword ? 'show password' : 'hide password'
+          })
         ),
         _react2.default.createElement(_reactstrap.Input, {
           type: this.state.showPassword ? "text" : "password",
           onChange: function onChange(e) {
-            return _this3.props.setPrivateKey(e.target.value);
+            return _this4.props.setPrivateKey(e.target.value);
           },
           placeholder: 'Private key'
         }),
         _react2.default.createElement(
           _reactstrap.InputGroupButton,
           null,
-          _react2.default.createElement(
-            _reactstrap.Button,
-            { onClick: function onClick(e) {
-                return _this3.props.handleUnlockPrivateKey();
-              } },
-            _react2.default.createElement(_unlockAlt2.default, null)
-          )
+          _react2.default.createElement(ToolTipButton, { onClick: function onClick(e) {
+              return _this4.props.handleUnlockPrivateKey();
+            }, id: 3, buttonText: _react2.default.createElement(_unlockAlt2.default, null), tooltipText: 'unlock' })
         )
       );
     }
@@ -46433,8 +46482,8 @@ var ZWalletUnlockKey = function (_React$Component2) {
   return ZWalletUnlockKey;
 }(_react2.default.Component);
 
-var ZWalletSettings = function (_React$Component3) {
-  _inherits(ZWalletSettings, _React$Component3);
+var ZWalletSettings = function (_React$Component4) {
+  _inherits(ZWalletSettings, _React$Component4);
 
   function ZWalletSettings() {
     _classCallCheck(this, ZWalletSettings);
@@ -46445,7 +46494,7 @@ var ZWalletSettings = function (_React$Component3) {
   _createClass(ZWalletSettings, [{
     key: 'render',
     value: function render() {
-      var _this5 = this;
+      var _this6 = this;
 
       return _react2.default.createElement(
         _reactstrap.Modal,
@@ -46469,7 +46518,7 @@ var ZWalletSettings = function (_React$Component3) {
             _react2.default.createElement(_reactstrap.Input, {
               value: this.props.settings.insightAPI,
               onChange: function onChange(e) {
-                return _this5.props.setInsightAPI(e.target.value);
+                return _this6.props.setInsightAPI(e.target.value);
               }
             })
           ),
@@ -46530,22 +46579,22 @@ var ZWalletSettings = function (_React$Component3) {
   return ZWalletSettings;
 }(_react2.default.Component);
 
-var ZAddressInfo = function (_React$Component4) {
-  _inherits(ZAddressInfo, _React$Component4);
+var ZAddressInfo = function (_React$Component5) {
+  _inherits(ZAddressInfo, _React$Component5);
 
   function ZAddressInfo(props) {
     _classCallCheck(this, ZAddressInfo);
 
-    var _this6 = _possibleConstructorReturn(this, (ZAddressInfo.__proto__ || Object.getPrototypeOf(ZAddressInfo)).call(this, props));
+    var _this7 = _possibleConstructorReturn(this, (ZAddressInfo.__proto__ || Object.getPrototypeOf(ZAddressInfo)).call(this, props));
 
-    _this6.updateAddressInfo = _this6.updateAddressInfo.bind(_this6);
+    _this7.updateAddressInfo = _this7.updateAddressInfo.bind(_this7);
 
-    _this6.state = {
+    _this7.state = {
       transactionURL: '',
       confirmedBalance: 'loading...',
       unconfirmedBalance: 'loading...'
     };
-    return _this6;
+    return _this7;
   }
 
   _createClass(ZAddressInfo, [{
@@ -46664,6 +46713,28 @@ var ZAddressInfo = function (_React$Component4) {
                 this.state.unconfirmedBalance
               )
             )
+          ),
+          _react2.default.createElement(
+            _reactstrap.Card,
+            null,
+            _react2.default.createElement(
+              _reactstrap.CardBlock,
+              null,
+              _react2.default.createElement(
+                _reactstrap.CardTitle,
+                null,
+                'Transcation History'
+              ),
+              _react2.default.createElement(
+                _reactstrap.CardText,
+                null,
+                _react2.default.createElement(
+                  'a',
+                  { href: this.state.transactionURL },
+                  'ZEN Blockchain Explorer'
+                )
+              )
+            )
           )
         )
       );
@@ -46673,30 +46744,32 @@ var ZAddressInfo = function (_React$Component4) {
   return ZAddressInfo;
 }(_react2.default.Component);
 
-var ZSendZEN = function (_React$Component5) {
-  _inherits(ZSendZEN, _React$Component5);
+var ZSendZEN = function (_React$Component6) {
+  _inherits(ZSendZEN, _React$Component6);
 
   function ZSendZEN(props) {
     _classCallCheck(this, ZSendZEN);
 
-    var _this7 = _possibleConstructorReturn(this, (ZSendZEN.__proto__ || Object.getPrototypeOf(ZSendZEN)).call(this, props));
+    var _this8 = _possibleConstructorReturn(this, (ZSendZEN.__proto__ || Object.getPrototypeOf(ZSendZEN)).call(this, props));
 
-    _this7.setProgressValue = _this7.setProgressValue.bind(_this7);
-    _this7.handleUpdateAddress = _this7.handleUpdateAddress.bind(_this7);
-    _this7.handleUpdateAmount = _this7.handleUpdateAmount.bind(_this7);
-    _this7.handleCheckChanged = _this7.handleCheckChanged.bind(_this7);
-    _this7.handleUpdateFee = _this7.handleUpdateFee.bind(_this7);
-    _this7.handleSendZEN = _this7.handleSendZEN.bind(_this7);
+    _this8.setProgressValue = _this8.setProgressValue.bind(_this8);
+    _this8.setSendErrorMessage = _this8.setSendErrorMessage.bind(_this8);
+    _this8.handleUpdateAddress = _this8.handleUpdateAddress.bind(_this8);
+    _this8.handleUpdateAmount = _this8.handleUpdateAmount.bind(_this8);
+    _this8.handleCheckChanged = _this8.handleCheckChanged.bind(_this8);
+    _this8.handleUpdateFee = _this8.handleUpdateFee.bind(_this8);
+    _this8.handleSendZEN = _this8.handleSendZEN.bind(_this8);
 
-    _this7.state = {
+    _this8.state = {
       recipientAddress: '',
       fee: '',
       amount: '',
       sentTxid: '', // Whats the send txid
-      sendProgress: 0, // Progress bar, 100 to indicate complete      
+      sendProgress: 0, // Progress bar, 100 to indicate complete
+      sendErrorMessage: '',
       confirmSend: false
     };
-    return _this7;
+    return _this8;
   }
 
   _createClass(ZSendZEN, [{
@@ -46735,30 +46808,41 @@ var ZSendZEN = function (_React$Component5) {
       });
     }
   }, {
+    key: 'setSendErrorMessage',
+    value: function setSendErrorMessage(msg) {
+      this.setState({
+        sendErrorMessage: msg
+      });
+    }
+  }, {
     key: 'handleSendZEN',
     value: function handleSendZEN() {
       var value = this.state.amount;
       var fee = this.state.fee;
       var recipientAddress = this.state.recipientAddress;
 
-      // Reset zen send progress
-      this.setState({
-        sendProgress: 0
-      });
+      // Reset zen send progress and error message
+      this.setProgressValue(0);
+      this.setSendErrorMessage('');
+
+      // Error strings
+      var errString = '';
 
       // Validation
       if (recipientAddress.length !== 35) {
-        alert('Address length not valid');
-        return;
+        errString = 'Invalid address. Only transparent addresses are supported at this point in time.;';
       }
 
       if (typeof parseInt(value) !== 'number' || value === '') {
-        alert('Amount needs to be a number');
-        return;
+        errString += 'Invalid amount.;';
       }
 
       if (typeof parseInt(fee) !== 'number' || fee === '') {
-        alert('Fee needs to be a number');
+        errString += 'Invalid fee.;';
+      }
+
+      if (errString !== '') {
+        this.setSendErrorMessage(errString);
         return;
       }
 
@@ -46771,6 +46855,13 @@ var ZSendZEN = function (_React$Component5) {
       // to satoshis
       var satoshisToSend = Math.round(value * 100000000);
       var satoshisfeesToSend = Math.round(fee * 100000000);
+
+      // Can't send 0 satoshis
+      if (satoshisToSend === 0) {
+        this.setSendErrorMessage('Amount can\'t be 0');
+        this.setProgressValue(0);
+        return;
+      }
 
       // Building our transaction TXOBJ
       // How many satoshis do we have so far
@@ -46820,9 +46911,8 @@ var ZSendZEN = function (_React$Component5) {
             // If we don't have enough address
             // fail and tell user
             if (satoshisSoFar < satoshisToSend + satoshisfeesToSend) {
+              this.setSendErrorMessage('Not enough confirmed ZEN in account to perform transaction');
               this.setProgressValue(0);
-              alert('Not enough confirmed ZEN in account to perform transaction');
-              return;
             }
 
             // If we don't have exact amount
@@ -46849,36 +46939,60 @@ var ZSendZEN = function (_React$Component5) {
                 sentTxid: sendtx_resp.data.txid
               });
             }.bind(this)).catch(function (error) {
+              this.setSendErrorMessage(error + '');
               this.setProgressValue(0);
-              alert('Error: ' + error);
               return;
             }.bind(this));
           }.bind(this));
         }.bind(this));
       }.bind(this)).catch(function (error) {
+        this.setSendErrorMessage(error);
         this.setProgressValue(0);
-        alert(error);
+        return;
       }.bind(this));
     }
   }, {
     key: 'render',
     value: function render() {
-      // Where to view our new transaction o
-      // the blockchain
-
+      // If send was successful
       var zenTxLink;
       if (this.state.sendProgress === 100) {
         var zentx = urlAppend(this.props.settings.explorerURL, 'tx/') + this.state.sentTxid;
         zenTxLink = _react2.default.createElement(
-          'div',
-          { className: 'text-center' },
+          _reactstrap.Alert,
+          { color: 'success' },
+          _react2.default.createElement(
+            'strong',
+            null,
+            'ZEN successfully sent!'
+          ),
+          ' ',
           _react2.default.createElement(
             'a',
             { href: zentx },
-            'click here to view your transaction'
+            'Click here to view your transaction'
           )
         );
       }
+
+      // Else
+      else if (this.state.sendErrorMessage !== '') {
+          zenTxLink = this.state.sendErrorMessage.split(';').map(function (s) {
+            if (s !== '') {
+              return _react2.default.createElement(
+                _reactstrap.Alert,
+                { color: 'danger' },
+                _react2.default.createElement(
+                  'strong',
+                  null,
+                  'Error.'
+                ),
+                ' ',
+                s
+              );
+            }
+          });
+        }
 
       return _react2.default.createElement(
         _reactstrap.Row,
@@ -46895,7 +47009,7 @@ var ZSendZEN = function (_React$Component5) {
               _react2.default.createElement(
                 _reactstrap.Alert,
                 { color: 'danger' },
-                '!!! ALWAYS VALIDATE YOUR DESINATION ADDRESS BY SENDING SMALL AMOUNTS OF ZEN FIRST !!!'
+                'ALWAYS VALIDATE YOUR DESINATION ADDRESS BY SENDING SMALL AMOUNTS OF ZEN FIRST'
               ),
               _react2.default.createElement(
                 _reactstrap.CardText,
@@ -46967,19 +47081,19 @@ var ZSendZEN = function (_React$Component5) {
   return ZSendZEN;
 }(_react2.default.Component);
 
-var ZWalletTabs = function (_React$Component6) {
-  _inherits(ZWalletTabs, _React$Component6);
+var ZWalletTabs = function (_React$Component7) {
+  _inherits(ZWalletTabs, _React$Component7);
 
   function ZWalletTabs(props) {
     _classCallCheck(this, ZWalletTabs);
 
-    var _this8 = _possibleConstructorReturn(this, (ZWalletTabs.__proto__ || Object.getPrototypeOf(ZWalletTabs)).call(this, props));
+    var _this9 = _possibleConstructorReturn(this, (ZWalletTabs.__proto__ || Object.getPrototypeOf(ZWalletTabs)).call(this, props));
 
-    _this8.toggleTabs = _this8.toggleTabs.bind(_this8);
-    _this8.state = {
+    _this9.toggleTabs = _this9.toggleTabs.bind(_this9);
+    _this9.state = {
       activeTab: '1'
     };
-    return _this8;
+    return _this9;
   }
 
   _createClass(ZWalletTabs, [{
@@ -46994,7 +47108,7 @@ var ZWalletTabs = function (_React$Component6) {
   }, {
     key: 'render',
     value: function render() {
-      var _this9 = this;
+      var _this10 = this;
 
       return _react2.default.createElement(
         'div',
@@ -47010,7 +47124,7 @@ var ZWalletTabs = function (_React$Component6) {
               {
                 className: (0, _classnames2.default)({ active: this.state.activeTab === '1' }),
                 onClick: function onClick() {
-                  _this9.toggleTabs('1');
+                  _this10.toggleTabs('1');
                 }
               },
               'Info'
@@ -47024,7 +47138,7 @@ var ZWalletTabs = function (_React$Component6) {
               {
                 className: (0, _classnames2.default)({ active: this.state.activeTab === '2' }),
                 onClick: function onClick() {
-                  _this9.toggleTabs('2');
+                  _this10.toggleTabs('2');
                 }
               },
               'Send ZEN'
@@ -47059,24 +47173,24 @@ var ZWalletTabs = function (_React$Component6) {
   return ZWalletTabs;
 }(_react2.default.Component);
 
-var ZWallet = function (_React$Component7) {
-  _inherits(ZWallet, _React$Component7);
+var ZWallet = function (_React$Component8) {
+  _inherits(ZWallet, _React$Component8);
 
   function ZWallet(props) {
     _classCallCheck(this, ZWallet);
 
-    var _this10 = _possibleConstructorReturn(this, (ZWallet.__proto__ || Object.getPrototypeOf(ZWallet)).call(this, props));
+    var _this11 = _possibleConstructorReturn(this, (ZWallet.__proto__ || Object.getPrototypeOf(ZWallet)).call(this, props));
 
-    _this10.resetKeys = _this10.resetKeys.bind(_this10);
-    _this10.handleUnlockPrivateKey = _this10.handleUnlockPrivateKey.bind(_this10);
-    _this10.setPrivateKey = _this10.setPrivateKey.bind(_this10);
-    _this10.setInsightAPI = _this10.setInsightAPI.bind(_this10);
-    _this10.toggleUseTestNet = _this10.toggleUseTestNet.bind(_this10);
-    _this10.toggleCompressPubKey = _this10.toggleCompressPubKey.bind(_this10);
-    _this10.toggleShowSettings = _this10.toggleShowSettings.bind(_this10);
-    _this10.toggleShowWalletGen = _this10.toggleShowWalletGen.bind(_this10);
+    _this11.resetKeys = _this11.resetKeys.bind(_this11);
+    _this11.handleUnlockPrivateKey = _this11.handleUnlockPrivateKey.bind(_this11);
+    _this11.setPrivateKey = _this11.setPrivateKey.bind(_this11);
+    _this11.setInsightAPI = _this11.setInsightAPI.bind(_this11);
+    _this11.toggleUseTestNet = _this11.toggleUseTestNet.bind(_this11);
+    _this11.toggleCompressPubKey = _this11.toggleCompressPubKey.bind(_this11);
+    _this11.toggleShowSettings = _this11.toggleShowSettings.bind(_this11);
+    _this11.toggleShowWalletGen = _this11.toggleShowWalletGen.bind(_this11);
 
-    _this10.state = {
+    _this11.state = {
       privateKey: '',
       publicAddress: null,
       settings: {
@@ -47088,7 +47202,7 @@ var ZWallet = function (_React$Component7) {
         useTestNet: false
       }
     };
-    return _this10;
+    return _this11;
   }
 
   _createClass(ZWallet, [{
@@ -47215,17 +47329,9 @@ var ZWallet = function (_React$Component7) {
               'h1',
               { className: 'display-6' },
               'ZenCash Wallet\xA0',
-              _react2.default.createElement(
-                _reactstrap.Button,
-                { color: 'secondary', onClick: this.toggleShowSettings },
-                _react2.default.createElement(_settings3.default, null)
-              ),
+              _react2.default.createElement(ToolTipButton, { onClick: this.toggleShowSettings, id: 1, buttonText: _react2.default.createElement(_settings3.default, null), tooltipText: 'settings' }),
               '\xA0',
-              _react2.default.createElement(
-                _reactstrap.Button,
-                { color: 'secondary', disabled: this.state.publicAddress === null, onClick: this.resetKeys },
-                _react2.default.createElement(_repeat2.default, null)
-              )
+              _react2.default.createElement(ToolTipButton, { disabled: this.state.publicAddress === null, onClick: this.resetKeys, id: 2, buttonText: _react2.default.createElement(_repeat2.default, null), tooltipText: 'reset wallet' })
             ),
             _react2.default.createElement(ZWalletSettings, {
               toggleShowSettings: this.toggleShowSettings,
