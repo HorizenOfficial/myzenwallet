@@ -46430,9 +46430,11 @@ var ZWalletUnlockKey = function (_React$Component3) {
     var _this3 = _possibleConstructorReturn(this, (ZWalletUnlockKey.__proto__ || Object.getPrototypeOf(ZWalletUnlockKey)).call(this, props));
 
     _this3.toggleShowPassword = _this3.toggleShowPassword.bind(_this3);
+    _this3.unlockPrivateKey = _this3.unlockPrivateKey.bind(_this3);
 
     _this3.state = {
-      showPassword: false
+      showPassword: false,
+      invalidPrivateKey: false
     };
     return _this3;
   }
@@ -46445,35 +46447,59 @@ var ZWalletUnlockKey = function (_React$Component3) {
       });
     }
   }, {
+    key: 'unlockPrivateKey',
+    value: function unlockPrivateKey() {
+      // Success = return 0
+      var success = this.props.handleUnlockPrivateKey() === 0;
+
+      if (!success) {
+        this.setState({
+          invalidPrivateKey: true
+        });
+      }
+    }
+  }, {
     key: 'render',
     value: function render() {
       var _this4 = this;
 
       return _react2.default.createElement(
-        _reactstrap.InputGroup,
+        'div',
         null,
+        this.state.invalidPrivateKey ? _react2.default.createElement(
+          _reactstrap.Alert,
+          { color: 'danger' },
+          _react2.default.createElement(
+            'strong',
+            null,
+            'Error.'
+          ),
+          '\xA0Invalid private key'
+        ) : '',
         _react2.default.createElement(
-          _reactstrap.InputGroupButton,
+          _reactstrap.InputGroup,
           null,
-          _react2.default.createElement(ToolTipButton, { id: 4,
-            onClick: this.toggleShowPassword,
-            buttonText: this.state.showPassword ? _react2.default.createElement(_eye2.default, null) : _react2.default.createElement(_eyeSlash2.default, null),
-            tooltipText: this.state.showPassword ? 'show password' : 'hide password'
-          })
-        ),
-        _react2.default.createElement(_reactstrap.Input, {
-          type: this.state.showPassword ? "text" : "password",
-          onChange: function onChange(e) {
-            return _this4.props.setPrivateKey(e.target.value);
-          },
-          placeholder: 'Private key'
-        }),
-        _react2.default.createElement(
-          _reactstrap.InputGroupButton,
-          null,
-          _react2.default.createElement(ToolTipButton, { onClick: function onClick(e) {
-              return _this4.props.handleUnlockPrivateKey();
-            }, id: 3, buttonText: _react2.default.createElement(_unlockAlt2.default, null), tooltipText: 'unlock' })
+          _react2.default.createElement(
+            _reactstrap.InputGroupButton,
+            null,
+            _react2.default.createElement(ToolTipButton, { id: 4,
+              onClick: this.toggleShowPassword,
+              buttonText: this.state.showPassword ? _react2.default.createElement(_eye2.default, null) : _react2.default.createElement(_eyeSlash2.default, null),
+              tooltipText: this.state.showPassword ? 'show password' : 'hide password'
+            })
+          ),
+          _react2.default.createElement(_reactstrap.Input, {
+            type: this.state.showPassword ? "text" : "password",
+            onChange: function onChange(e) {
+              return _this4.props.setPrivateKey(e.target.value);
+            },
+            placeholder: 'Private key'
+          }),
+          _react2.default.createElement(
+            _reactstrap.InputGroupButton,
+            null,
+            _react2.default.createElement(ToolTipButton, { onClick: this.unlockPrivateKey, id: 3, buttonText: _react2.default.createElement(_unlockAlt2.default, null), tooltipText: 'unlock' })
+          )
         )
       );
     }
@@ -46591,6 +46617,7 @@ var ZAddressInfo = function (_React$Component5) {
 
     _this7.state = {
       transactionURL: '',
+      retrieveAddressError: false,
       confirmedBalance: 'loading...',
       unconfirmedBalance: 'loading...'
     };
@@ -46614,11 +46641,14 @@ var ZAddressInfo = function (_React$Component5) {
 
         this.setState({
           confirmedBalance: data.balance,
-          unconfirmedBalance: data.unconfirmedBalance
+          unconfirmedBalance: data.unconfirmedBalance,
+          retrieveAddressError: false
         });
       }.bind(this)).catch(function (error) {
-        alert(error);
-      });
+        this.setState({
+          retrieveAddressError: true
+        });
+      }.bind(this));
     }
   }, {
     key: 'componentDidMount',
@@ -46652,7 +46682,11 @@ var ZAddressInfo = function (_React$Component5) {
               _react2.default.createElement(
                 _reactstrap.CardText,
                 null,
-                _react2.default.createElement(
+                this.state.retrieveAddressError ? _react2.default.createElement(
+                  _reactstrap.Alert,
+                  { color: 'danger' },
+                  'Error connecting to the Insight API. Double check the Insight API supplied in settings.'
+                ) : _react2.default.createElement(
                   _reactstrap.Alert,
                   { color: 'warning' },
                   'The balance displayed here is dependent on the insight node'
@@ -47229,8 +47263,11 @@ var ZWallet = function (_React$Component8) {
 
         // Set private key
         this.setPrivateKey(pk);
+
+        // Return success
+        return 0;
       } catch (err) {
-        alert('Invalid private key');
+        return -1;
       }
     }
   }, {

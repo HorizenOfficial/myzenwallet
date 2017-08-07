@@ -118,9 +118,11 @@ class ZWalletUnlockKey extends React.Component {
     super(props)
 
     this.toggleShowPassword = this.toggleShowPassword.bind(this)
+    this.unlockPrivateKey = this.unlockPrivateKey.bind(this)
 
     this.state = {
-      showPassword: false
+      showPassword: false,
+      invalidPrivateKey: false
     }
   }
 
@@ -130,25 +132,39 @@ class ZWalletUnlockKey extends React.Component {
     })
   }
 
+  unlockPrivateKey(){
+    // Success = return 0
+    const success = this.props.handleUnlockPrivateKey() === 0    
+    
+    if (!success){
+      this.setState({
+        invalidPrivateKey: true
+      })
+    }
+  }
+
   render () {
     return (
-      <InputGroup>                              
-        <InputGroupButton>
-          <ToolTipButton id={4}
-            onClick={this.toggleShowPassword}
-            buttonText={this.state.showPassword? <FAEye/> : <FAEyeSlash/>}
-            tooltipText={this.state.showPassword? 'show password' : 'hide password'}
+      <div>
+        {this.state.invalidPrivateKey ? <Alert color="danger"><strong>Error.</strong>&nbsp;Invalid private key</Alert> : ''}
+        <InputGroup>                                       
+          <InputGroupButton>
+            <ToolTipButton id={4}
+              onClick={this.toggleShowPassword}
+              buttonText={this.state.showPassword? <FAEye/> : <FAEyeSlash/>}
+              tooltipText={this.state.showPassword? 'show password' : 'hide password'}
+            />
+          </InputGroupButton>
+          <Input
+            type={this.state.showPassword ? "text" : "password"}
+            onChange={(e) => this.props.setPrivateKey(e.target.value)}
+            placeholder="Private key"
           />
-        </InputGroupButton>
-        <Input
-          type={this.state.showPassword ? "text" : "password"}
-          onChange={(e) => this.props.setPrivateKey(e.target.value)}
-          placeholder="Private key"
-        />
-        <InputGroupButton> 
-          <ToolTipButton onClick={(e) => this.props.handleUnlockPrivateKey()} id={3} buttonText={<FAUnlock/>} tooltipText={'unlock'}/>
-        </InputGroupButton>
-      </InputGroup>
+          <InputGroupButton> 
+            <ToolTipButton onClick={this.unlockPrivateKey} id={3} buttonText={<FAUnlock/>} tooltipText={'unlock'}/>
+          </InputGroupButton>
+        </InputGroup>
+      </div>
     )
   }
 }
@@ -211,6 +227,7 @@ class ZAddressInfo extends React.Component {
 
     this.state = {      
       transactionURL: '',
+      retrieveAddressError: false,
       confirmedBalance: 'loading...',
       unconfirmedBalance: 'loading...',      
     }
@@ -232,12 +249,15 @@ class ZAddressInfo extends React.Component {
 
       this.setState({
         confirmedBalance: data.balance,
-        unconfirmedBalance: data.unconfirmedBalance
+        unconfirmedBalance: data.unconfirmedBalance,
+        retrieveAddressError: false
       });
     }.bind(this))
     .catch(function (error){
-      alert(error);
-    })
+      this.setState({
+        retrieveAddressError: true
+      })
+    }.bind(this))
   }
   
   componentDidMount() {
@@ -258,7 +278,12 @@ class ZAddressInfo extends React.Component {
         <Col>     
           <Card>
             <CardBlock>                    
-              <CardText><Alert color="warning">The balance displayed here is dependent on the insight node</Alert></CardText>         
+              <CardText>
+                {this.state.retrieveAddressError ?
+                <Alert color="danger">Error connecting to the Insight API. Double check the Insight API supplied in settings.</Alert>
+                :
+                <Alert color="warning">The balance displayed here is dependent on the insight node</Alert> }
+              </CardText>         
             </CardBlock>
           </Card>           
           <Card>
@@ -669,8 +694,10 @@ export default class ZWallet extends React.Component {
       // Set private key
       this.setPrivateKey(pk)
 
-    } catch(err) {      
-      alert('Invalid private key')
+      // Return success
+      return 0
+    } catch(err) {            
+      return -1
     }
   }
 
@@ -755,7 +782,7 @@ export default class ZWallet extends React.Component {
             <h1 className='display-6'>ZenCash Wallet&nbsp;
               <ToolTipButton onClick={this.toggleShowSettings} id={1} buttonText={<MDSettings/>} tooltipText={'settings'}/>&nbsp;
               <ToolTipButton disabled={this.state.publicAddress === null} onClick={this.resetKeys} id={2} buttonText={<FARepeat/>} tooltipText={'reset wallet'}/>
-            </h1>
+            </h1>            
             <ZWalletSettings 
               toggleShowSettings={this.toggleShowSettings}
               toggleCompressPubKey={this.toggleCompressPubKey}           
