@@ -47231,8 +47231,8 @@ var ZWallet = function (_React$Component8) {
         showSettings: false,
         showWalletGen: false,
         compressPubKey: true,
-        insightAPI: 'http://explorer.zenmine.pro/insight-api-zen/',
-        explorerURL: 'http://explorer.zenmine.pro/insight/',
+        insightAPI: 'https://explorer.zensystem.io/insight-api-zen/',
+        explorerURL: 'https://explorer.zensystem.io/insight/',
         useTestNet: false
       }
     };
@@ -47322,8 +47322,8 @@ var ZWallet = function (_React$Component8) {
         _settings.insightAPI = 'http://aayanl.tech:8081/insight-api-zen/';
         _settings.explorerURL = 'http://aayanl.tech:8081/';
       } else {
-        _settings.insightAPI = 'http://explorer.zenmine.pro/insight-api-zen/';
-        _settings.explorerURL = 'http://explorer.zenmine.pro/insight/';
+        _settings.insightAPI = 'https://explorer.zensystem.io/insight-api-zen/';
+        _settings.explorerURL = 'https://explorer.zensystem.io/insight/';
       }
 
       this.setState({

@@ -664,8 +664,8 @@ export default class ZWallet extends React.Component {
         showSettings: false,
         showWalletGen: false,
         compressPubKey: true,
-        insightAPI: 'http://explorer.zenmine.pro/insight-api-zen/',
-        explorerURL: 'http://explorer.zenmine.pro/insight/',
+        insightAPI: 'https://explorer.zensystem.io/insight-api-zen/',
+        explorerURL: 'https://explorer.zensystem.io/insight/',
         useTestNet: false
       }
     };    
@@ -747,8 +747,8 @@ export default class ZWallet extends React.Component {
       _settings.explorerURL = 'http://aayanl.tech:8081/'
     }
     else{
-      _settings.insightAPI = 'http://explorer.zenmine.pro/insight-api-zen/'
-      _settings.explorerURL = 'http://explorer.zenmine.pro/insight/'
+      _settings.insightAPI = 'https://explorer.zensystem.io/insight-api-zen/'
+      _settings.explorerURL = 'https://explorer.zensystem.io/insight/'
     }
 
     this.setState({
