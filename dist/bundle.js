@@ -268,9 +268,9 @@ process.umask = function() { return 0; };
 
 
 
-var base64 = __webpack_require__(326)
-var ieee754 = __webpack_require__(327)
-var isArray = __webpack_require__(139)
+var base64 = __webpack_require__(302)
+var ieee754 = __webpack_require__(303)
+var isArray = __webpack_require__(134)
 
 exports.Buffer = Buffer
 exports.SlowBuffer = SlowBuffer
@@ -6596,8 +6596,8 @@ module.exports = { debugTool: debugTool };
 "use strict";
 
 
-var bind = __webpack_require__(134);
-var isBuffer = __webpack_require__(304);
+var bind = __webpack_require__(135);
+var isBuffer = __webpack_require__(306);
 
 /*global toString:true*/
 
@@ -18273,7 +18273,7 @@ var UncontrolledTooltip = components.UncontrolledTooltip;
 /* WEBPACK VAR INJECTION */(function(process) {
 
 var utils = __webpack_require__(16);
-var normalizeHeaderName = __webpack_require__(306);
+var normalizeHeaderName = __webpack_require__(308);
 
 var DEFAULT_CONTENT_TYPE = {
   'Content-Type': 'application/x-www-form-urlencoded'
@@ -18289,10 +18289,10 @@ function getDefaultAdapter() {
   var adapter;
   if (typeof XMLHttpRequest !== 'undefined') {
     // For browsers use XHR adapter
-    adapter = __webpack_require__(135);
+    adapter = __webpack_require__(136);
   } else if (typeof process !== 'undefined') {
     // For node use HTTP adapter
-    adapter = __webpack_require__(135);
+    adapter = __webpack_require__(136);
   }
   return adapter;
 }
@@ -24416,6 +24416,17 @@ var nameShape = exports.nameShape = _propTypes2.default.oneOfType([_propTypes2.d
 
 /***/ }),
 /* 134 */
+/***/ (function(module, exports) {
+
+var toString = {}.toString;
+
+module.exports = Array.isArray || function (arr) {
+  return toString.call(arr) == '[object Array]';
+};
+
+
+/***/ }),
+/* 135 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -24433,19 +24444,19 @@ module.exports = function bind(fn, thisArg) {
 
 
 /***/ }),
-/* 135 */
+/* 136 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 /* WEBPACK VAR INJECTION */(function(process) {
 
 var utils = __webpack_require__(16);
-var settle = __webpack_require__(307);
-var buildURL = __webpack_require__(309);
-var parseHeaders = __webpack_require__(310);
-var isURLSameOrigin = __webpack_require__(311);
-var createError = __webpack_require__(136);
-var btoa = (typeof window !== 'undefined' && window.btoa && window.btoa.bind(window)) || __webpack_require__(312);
+var settle = __webpack_require__(309);
+var buildURL = __webpack_require__(311);
+var parseHeaders = __webpack_require__(312);
+var isURLSameOrigin = __webpack_require__(313);
+var createError = __webpack_require__(137);
+var btoa = (typeof window !== 'undefined' && window.btoa && window.btoa.bind(window)) || __webpack_require__(314);
 
 module.exports = function xhrAdapter(config) {
   return new Promise(function dispatchXhrRequest(resolve, reject) {
@@ -24542,7 +24553,7 @@ module.exports = function xhrAdapter(config) {
     // This is only done if running in a standard browser environment.
     // Specifically not if we're in a web worker, or react-native.
     if (utils.isStandardBrowserEnv()) {
-      var cookies = __webpack_require__(313);
+      var cookies = __webpack_require__(315);
 
       // Add xsrf header
       var xsrfValue = (config.withCredentials || isURLSameOrigin(config.url)) && config.xsrfCookieName ?
@@ -24621,13 +24632,13 @@ module.exports = function xhrAdapter(config) {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ }),
-/* 136 */
+/* 137 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var enhanceError = __webpack_require__(308);
+var enhanceError = __webpack_require__(310);
 
 /**
  * Create an Error with the specified message, config, error code, request and response.
@@ -24646,7 +24657,7 @@ module.exports = function createError(message, config, code, request, response) 
 
 
 /***/ }),
-/* 137 */
+/* 138 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -24658,7 +24669,7 @@ module.exports = function isCancel(value) {
 
 
 /***/ }),
-/* 138 */
+/* 139 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -24681,17 +24692,6 @@ Cancel.prototype.toString = function toString() {
 Cancel.prototype.__CANCEL__ = true;
 
 module.exports = Cancel;
-
-
-/***/ }),
-/* 139 */
-/***/ (function(module, exports) {
-
-var toString = {}.toString;
-
-module.exports = Array.isArray || function (arr) {
-  return toString.call(arr) == '[object Array]';
-};
 
 
 /***/ }),
@@ -24730,7 +24730,7 @@ var processNextTick = __webpack_require__(55);
 module.exports = Readable;
 
 /*<replacement>*/
-var isArray = __webpack_require__(139);
+var isArray = __webpack_require__(134);
 /*</replacement>*/
 
 /*<replacement>*/
@@ -46216,7 +46216,7 @@ function getTransitionProperties() {
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-
+/* WEBPACK VAR INJECTION */(function(Buffer) {
 
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -46226,7 +46226,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _reactstrap = __webpack_require__(82);
 
-var _axios = __webpack_require__(302);
+var _axios = __webpack_require__(304);
 
 var _axios2 = _interopRequireDefault(_axios);
 
@@ -46238,11 +46238,11 @@ var _classnames = __webpack_require__(130);
 
 var _classnames2 = _interopRequireDefault(_classnames);
 
-var _reactCopyToClipboard = __webpack_require__(321);
+var _reactCopyToClipboard = __webpack_require__(323);
 
 var _reactCopyToClipboard2 = _interopRequireDefault(_reactCopyToClipboard);
 
-var _zencashjs = __webpack_require__(325);
+var _zencashjs = __webpack_require__(327);
 
 var _zencashjs2 = _interopRequireDefault(_zencashjs);
 
@@ -46271,6 +46271,8 @@ var _eye = __webpack_require__(437);
 var _eye2 = _interopRequireDefault(_eye);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -46430,7 +46432,7 @@ var ZWalletUnlockKey = function (_React$Component3) {
 
     _this3.loadWalletDat = _this3.loadWalletDat.bind(_this3);
     _this3.toggleShowPassword = _this3.toggleShowPassword.bind(_this3);
-    _this3.unlockPrivateKey = _this3.unlockPrivateKey.bind(_this3);
+    _this3.unlockPrivateKeys = _this3.unlockPrivateKeys.bind(_this3);
 
     _this3.state = {
       showPassword: false,
@@ -46453,12 +46455,10 @@ var ZWalletUnlockKey = function (_React$Component3) {
       });
     }
   }, {
-    key: 'unlockPrivateKey',
-    value: function unlockPrivateKey() {
+    key: 'unlockPrivateKeys',
+    value: function unlockPrivateKeys() {
       // Success = return 0
-      var success = this.props.handleUnlockPrivateKey() === 0;
-
-      this.loadWalletDat = this.loadWalletDat.bind(this);
+      var success = this.props.handleUnlockPrivateKeys() === 0;
 
       if (!success) {
         this.setState({
@@ -46469,25 +46469,46 @@ var ZWalletUnlockKey = function (_React$Component3) {
   }, {
     key: 'loadWalletDat',
     value: function loadWalletDat(e) {
+      var _this4 = this;
+
       var reader = new FileReader();
       var file = e.target.files[0];
 
+      // Read file callback function
       reader.onloadend = function () {
+        // Get reader results in bytes
         var dataHexStr = reader.result;
+
+        // Retrieve private keys from wallet.dat
+        // Source: https://gist.github.com/moocowmoo/a715c80399bb202a65955771c465530c
         var re = /\x30\x81\xD3\x02\x01\x01\x04\x20(.{32})/gm;
         var privateKeys = dataHexStr.match(re);
         privateKeys = privateKeys.map(function (x) {
-          return x.replace('\x30\x81\xD3\x02\x01\x01\x04\x20', '');
+          x = x.replace('\x30\x81\xD3\x02\x01\x01\x04\x20', '');
+          x = Buffer.from(x, 'latin1').toString('hex');
+          return x;
         });
-        console.log('Found ' + privateKeys.length + ' keys');
+
+        // Set private key
+        _this4.props.setPrivateKeys(privateKeys);
+
+        // Unlock private key
+        var success = _this4.props.handleUnlockPrivateKeys() === 0;
+
+        if (!success) {
+          _this4.setState({
+            invalidPrivateKey: true
+          });
+        }
       };
 
+      // Read file
       reader.readAsBinaryString(file);
     }
   }, {
     key: 'render',
     value: function render() {
-      var _this4 = this;
+      var _this5 = this;
 
       if (this.props.unlockType == UNLOCK_WALLET_TYPE.IMPORT_WALLET) {
         return _react2.default.createElement(
@@ -46499,6 +46520,16 @@ var ZWalletUnlockKey = function (_React$Component3) {
             _react2.default.createElement(
               _reactstrap.Col,
               null,
+              this.state.invalidPrivateKey ? _react2.default.createElement(
+                _reactstrap.Alert,
+                { color: 'danger' },
+                _react2.default.createElement(
+                  'strong',
+                  null,
+                  'Error.'
+                ),
+                '\xA0Keys in files are corrupted'
+              ) : '',
               _react2.default.createElement(
                 _reactstrap.Label,
                 { 'for': 'walletDatFile', className: 'btn btn-block btn-secondary', style: this.state.inputFileStyle },
@@ -46550,14 +46581,14 @@ var ZWalletUnlockKey = function (_React$Component3) {
             _react2.default.createElement(_reactstrap.Input, {
               type: this.state.showPassword ? "text" : "password",
               onChange: function onChange(e) {
-                return _this4.props.setPrivateKey(e.target.value);
-              },
-              placeholder: 'Private key'
+                return _this5.props.setPrivateKeys([e.target.value]);
+              } // Set it in a list so we can map over it later
+              , placeholder: 'Private key'
             }),
             _react2.default.createElement(
               _reactstrap.InputGroupButton,
               null,
-              _react2.default.createElement(ToolTipButton, { onClick: this.unlockPrivateKey, id: 3, buttonText: _react2.default.createElement(_unlockAlt2.default, null), tooltipText: 'unlock' })
+              _react2.default.createElement(ToolTipButton, { onClick: this.unlockPrivateKeys, id: 3, buttonText: _react2.default.createElement(_unlockAlt2.default, null), tooltipText: 'unlock' })
             )
           )
         );
@@ -46580,7 +46611,7 @@ var ZWalletSettings = function (_React$Component4) {
   _createClass(ZWalletSettings, [{
     key: 'render',
     value: function render() {
-      var _this6 = this;
+      var _this7 = this;
 
       return _react2.default.createElement(
         _reactstrap.Modal,
@@ -46612,7 +46643,7 @@ var ZWalletSettings = function (_React$Component4) {
             _react2.default.createElement(_reactstrap.Input, {
               value: this.props.settings.insightAPI,
               onChange: function onChange(e) {
-                return _this6.props.setInsightAPI(e.target.value);
+                return _this7.props.setInsightAPI(e.target.value);
               }
             })
           ),
@@ -46627,7 +46658,7 @@ var ZWalletSettings = function (_React$Component4) {
                 _reactstrap.Label,
                 { check: true },
                 _react2.default.createElement(_reactstrap.Input, {
-                  disabled: !(this.props.publicAddress === null),
+                  disabled: !(this.props.publicAddresses === null),
                   defaultChecked: this.props.settings.compressPubKey, type: 'checkbox',
                   onChange: this.props.toggleCompressPubKey
                 }),
@@ -46658,7 +46689,7 @@ var ZWalletSettings = function (_React$Component4) {
             _reactstrap.Label,
             null,
             _react2.default.createElement(_reactstrap.Input, {
-              disabled: !(this.props.publicAddress === null),
+              disabled: !(this.props.publicAddresses === null),
               defaultChecked: this.props.settings.useTestNet, type: 'checkbox',
               onChange: this.props.toggleUseTestNet
             }),
@@ -46679,39 +46710,47 @@ var ZAddressInfo = function (_React$Component5) {
   function ZAddressInfo(props) {
     _classCallCheck(this, ZAddressInfo);
 
-    var _this7 = _possibleConstructorReturn(this, (ZAddressInfo.__proto__ || Object.getPrototypeOf(ZAddressInfo)).call(this, props));
+    var _this8 = _possibleConstructorReturn(this, (ZAddressInfo.__proto__ || Object.getPrototypeOf(ZAddressInfo)).call(this, props));
 
-    _this7.updateAddressInfo = _this7.updateAddressInfo.bind(_this7);
+    _this8.updateAddressInfo = _this8.updateAddressInfo.bind(_this8);
+    _this8.updateAddressesInfo = _this8.updateAddressesInfo.bind(_this8);
 
-    _this7.state = {
-      transactionURL: '',
-      retrieveAddressError: false,
-      confirmedBalance: 'loading...',
-      unconfirmedBalance: 'loading...'
+    _this8.state = {
+      retrieveAddressError: false
     };
-    return _this7;
+    return _this8;
   }
 
-  _createClass(ZAddressInfo, [{
-    key: 'updateAddressInfo',
-    value: function updateAddressInfo() {
-      // Sets transcation URL
-      this.setState({
-        transactionURL: urlAppend(this.props.settings.explorerURL, 'address/') + this.props.publicAddress
-      });
+  // Updates all address info
 
+
+  _createClass(ZAddressInfo, [{
+    key: 'updateAddressesInfo',
+    value: function updateAddressesInfo() {
+      // The key is the address
+      // Value is the private key
+      Object.keys(this.props.publicAddresses).forEach(function (key) {
+        this.updateAddressInfo(key);
+      }.bind(this));
+    }
+
+    // Updates a address info
+
+  }, {
+    key: 'updateAddressInfo',
+    value: function updateAddressInfo(address) {
       // GET request to URL
       var info_url = urlAppend(this.props.settings.insightAPI, 'addr/');
-      info_url = urlAppend(info_url, this.props.publicAddress + '?noTxList=1');
+      info_url = urlAppend(info_url, address + '?noTxList=1');
 
       _axios2.default.get(info_url).then(function (response) {
         var data = response.data;
 
-        this.setState({
+        this.setState(_defineProperty({}, address, {
           confirmedBalance: data.balance,
           unconfirmedBalance: data.unconfirmedBalance,
           retrieveAddressError: false
-        });
+        }));
       }.bind(this)).catch(function (error) {
         this.setState({
           retrieveAddressError: true
@@ -46719,13 +46758,27 @@ var ZAddressInfo = function (_React$Component5) {
       }.bind(this));
     }
   }, {
+    key: 'componentWillMount',
+    value: function componentWillMount() {
+      // Setup state
+      Object.keys(this.props.publicAddresses).forEach(function (address) {
+        if (address !== undefined) {
+          this.setState(_defineProperty({}, address, {
+            transactionURL: urlAppend(this.props.settings.explorerURL, 'address/') + address,
+            confirmedBalance: 'loading...',
+            unconfirmedBalance: 'loading...'
+          }));
+        }
+      }.bind(this));
+    }
+  }, {
     key: 'componentDidMount',
     value: function componentDidMount() {
       // Run immediately
-      this.updateAddressInfo();
+      this.updateAddressesInfo();
 
-      // Update every 5 seconds    
-      this.interval = setInterval(this.updateAddressInfo, 5000);
+      // Update every 30 seconds    
+      this.interval = setInterval(this.updateAddressesInfo, 30000);
     }
   }, {
     key: 'componentWillUnmount',
@@ -46735,6 +46788,36 @@ var ZAddressInfo = function (_React$Component5) {
   }, {
     key: 'render',
     value: function render() {
+      // Key is the address
+      var addresses = [];
+      Object.keys(this.props.publicAddresses).forEach(function (key) {
+        if (key !== undefined) {
+          addresses.push(_react2.default.createElement(
+            'tr',
+            null,
+            _react2.default.createElement(
+              'th',
+              { scope: 'row' },
+              _react2.default.createElement(
+                'a',
+                { href: this.state[key].transactionURL },
+                key
+              )
+            ),
+            _react2.default.createElement(
+              'td',
+              null,
+              this.state[key].confirmedBalance
+            ),
+            _react2.default.createElement(
+              'td',
+              null,
+              this.state[key].unconfirmedBalance
+            )
+          ));
+        }
+      }.bind(this));
+
       return _react2.default.createElement(
         _reactstrap.Row,
         null,
@@ -46769,71 +46852,35 @@ var ZAddressInfo = function (_React$Component5) {
               _reactstrap.CardBlock,
               null,
               _react2.default.createElement(
-                _reactstrap.CardTitle,
-                null,
-                'Address'
-              ),
-              _react2.default.createElement(
-                _reactstrap.CardText,
-                null,
-                this.props.publicAddress
-              )
-            )
-          ),
-          _react2.default.createElement(
-            _reactstrap.Card,
-            null,
-            _react2.default.createElement(
-              _reactstrap.CardBlock,
-              null,
-              _react2.default.createElement(
-                _reactstrap.CardTitle,
-                null,
-                'Confirmed Balance'
-              ),
-              _react2.default.createElement(
-                _reactstrap.CardText,
-                null,
-                this.state.confirmedBalance
-              )
-            )
-          ),
-          _react2.default.createElement(
-            _reactstrap.Card,
-            null,
-            _react2.default.createElement(
-              _reactstrap.CardBlock,
-              null,
-              _react2.default.createElement(
-                _reactstrap.CardTitle,
-                null,
-                'Unconfirmed Balance'
-              ),
-              _react2.default.createElement(
-                _reactstrap.CardText,
-                null,
-                this.state.unconfirmedBalance
-              )
-            )
-          ),
-          _react2.default.createElement(
-            _reactstrap.Card,
-            null,
-            _react2.default.createElement(
-              _reactstrap.CardBlock,
-              null,
-              _react2.default.createElement(
-                _reactstrap.CardTitle,
-                null,
-                'Transcation History'
-              ),
-              _react2.default.createElement(
-                _reactstrap.CardText,
-                null,
+                _reactstrap.Table,
+                { bordered: true },
                 _react2.default.createElement(
-                  'a',
-                  { href: this.state.transactionURL },
-                  'ZEN Blockchain Explorer'
+                  'thead',
+                  null,
+                  _react2.default.createElement(
+                    'tr',
+                    null,
+                    _react2.default.createElement(
+                      'th',
+                      null,
+                      'Address'
+                    ),
+                    _react2.default.createElement(
+                      'th',
+                      null,
+                      'Confirmed'
+                    ),
+                    _react2.default.createElement(
+                      'th',
+                      null,
+                      'Unconfirmed'
+                    )
+                  )
+                ),
+                _react2.default.createElement(
+                  'tbody',
+                  null,
+                  addresses
                 )
               )
             )
@@ -46852,17 +46899,19 @@ var ZSendZEN = function (_React$Component6) {
   function ZSendZEN(props) {
     _classCallCheck(this, ZSendZEN);
 
-    var _this8 = _possibleConstructorReturn(this, (ZSendZEN.__proto__ || Object.getPrototypeOf(ZSendZEN)).call(this, props));
+    var _this9 = _possibleConstructorReturn(this, (ZSendZEN.__proto__ || Object.getPrototypeOf(ZSendZEN)).call(this, props));
 
-    _this8.setProgressValue = _this8.setProgressValue.bind(_this8);
-    _this8.setSendErrorMessage = _this8.setSendErrorMessage.bind(_this8);
-    _this8.handleUpdateAddress = _this8.handleUpdateAddress.bind(_this8);
-    _this8.handleUpdateAmount = _this8.handleUpdateAmount.bind(_this8);
-    _this8.handleCheckChanged = _this8.handleCheckChanged.bind(_this8);
-    _this8.handleUpdateFee = _this8.handleUpdateFee.bind(_this8);
-    _this8.handleSendZEN = _this8.handleSendZEN.bind(_this8);
+    _this9.setProgressValue = _this9.setProgressValue.bind(_this9);
+    _this9.setSendErrorMessage = _this9.setSendErrorMessage.bind(_this9);
+    _this9.handleUpdateSelectedAddress = _this9.handleUpdateSelectedAddress.bind(_this9);
+    _this9.handleUpdateRecipientAddress = _this9.handleUpdateRecipientAddress.bind(_this9);
+    _this9.handleUpdateAmount = _this9.handleUpdateAmount.bind(_this9);
+    _this9.handleCheckChanged = _this9.handleCheckChanged.bind(_this9);
+    _this9.handleUpdateFee = _this9.handleUpdateFee.bind(_this9);
+    _this9.handleSendZEN = _this9.handleSendZEN.bind(_this9);
 
-    _this8.state = {
+    _this9.state = {
+      selectedAddress: '', // which address did we select
       recipientAddress: '',
       fee: '',
       amount: '',
@@ -46871,12 +46920,19 @@ var ZSendZEN = function (_React$Component6) {
       sendErrorMessage: '',
       confirmSend: false
     };
-    return _this8;
+    return _this9;
   }
 
   _createClass(ZSendZEN, [{
-    key: 'handleUpdateAddress',
-    value: function handleUpdateAddress(e) {
+    key: 'handleUpdateSelectedAddress',
+    value: function handleUpdateSelectedAddress(e) {
+      this.setState({
+        selectedAddress: e.target.value
+      });
+    }
+  }, {
+    key: 'handleUpdateRecipientAddress',
+    value: function handleUpdateRecipientAddress(e) {
       this.setState({
         recipientAddress: e.target.value
       });
@@ -46949,7 +47005,7 @@ var ZSendZEN = function (_React$Component6) {
       }
 
       // Get previous transactions
-      var prevTxURL = urlAppend(this.props.settings.insightAPI, 'addr/') + this.props.publicAddress + '/utxo';
+      var prevTxURL = urlAppend(this.props.settings.insightAPI, 'addr/') + this.props.publicAddresses + '/utxo';
       var infoURL = urlAppend(this.props.settings.insightAPI, 'status?q=getInfo');
       var sendRawTxURL = urlAppend(this.props.settings.insightAPI, 'tx/send');
 
@@ -47021,7 +47077,7 @@ var ZSendZEN = function (_React$Component6) {
             // Refund remaining to current address
             if (satoshisSoFar !== satoshisToSend + satoshisfeesToSend) {
               var refundSatoshis = satoshisSoFar - satoshisToSend - satoshisfeesToSend;
-              recipients = recipients.concat({ address: this.props.publicAddress, satoshis: refundSatoshis });
+              recipients = recipients.concat({ address: this.props.publicAddresses, satoshis: refundSatoshis });
             }
 
             // Create transaction
@@ -47122,9 +47178,37 @@ var ZSendZEN = function (_React$Component6) {
                   _react2.default.createElement(
                     _reactstrap.InputGroupAddon,
                     null,
+                    'From'
+                  ),
+                  _react2.default.createElement(
+                    _reactstrap.Input,
+                    { type: 'select', onChange: this.handleUpdateSelectedAddress },
+                    _react2.default.createElement(
+                      'option',
+                      { value: 'znSDvF9nA5VCdse5HbEKmsoNbjCbsEA3VAH' },
+                      'znSDvF9nA5VCdse5HbEKmsoNbjCbsEA3VAH - 50.92'
+                    ),
+                    _react2.default.createElement(
+                      'option',
+                      { value: '1' },
+                      'znSDvF9nA5VCdse5HbEKmsoNbjCbsEA3VAH - 32.92'
+                    ),
+                    _react2.default.createElement(
+                      'option',
+                      { value: '2' },
+                      'znSDvF9nA5VCdse5HbEKmsoNbjCbsEA3VAH - 1-.92'
+                    )
+                  )
+                ),
+                _react2.default.createElement(
+                  _reactstrap.InputGroup,
+                  null,
+                  _react2.default.createElement(
+                    _reactstrap.InputGroupAddon,
+                    null,
                     'Address'
                   ),
-                  _react2.default.createElement(_reactstrap.Input, { onChange: this.handleUpdateAddress, placeholder: 'e.g znSDvF9nA5VCdse5HbEKmsoNbjCbsEA3VAH' })
+                  _react2.default.createElement(_reactstrap.Input, { onChange: this.handleUpdateRecipientAddress, placeholder: 'e.g znSDvF9nA5VCdse5HbEKmsoNbjCbsEA3VAH' })
                 ),
                 _react2.default.createElement(
                   _reactstrap.InputGroup,
@@ -47189,10 +47273,10 @@ var ZWalletSelectUnlockType = function (_React$Component7) {
   function ZWalletSelectUnlockType(props) {
     _classCallCheck(this, ZWalletSelectUnlockType);
 
-    var _this9 = _possibleConstructorReturn(this, (ZWalletSelectUnlockType.__proto__ || Object.getPrototypeOf(ZWalletSelectUnlockType)).call(this, props));
+    var _this10 = _possibleConstructorReturn(this, (ZWalletSelectUnlockType.__proto__ || Object.getPrototypeOf(ZWalletSelectUnlockType)).call(this, props));
 
-    _this9.state = { cSelected: _this9.props.unlockType };
-    return _this9;
+    _this10.state = { cSelected: _this10.props.unlockType };
+    return _this10;
   }
 
   _createClass(ZWalletSelectUnlockType, [{
@@ -47207,29 +47291,22 @@ var ZWalletSelectUnlockType = function (_React$Component7) {
   }, {
     key: 'render',
     value: function render() {
-      var _this10 = this;
+      var _this11 = this;
 
       return _react2.default.createElement(
-        _reactstrap.ButtonGroup,
+        'div',
         null,
         _react2.default.createElement(
           _reactstrap.Button,
           { color: 'secondary', onClick: function onClick() {
-              return _this10.onRadioBtnClick(UNLOCK_WALLET_TYPE.IMPORT_WALLET);
+              return _this11.onRadioBtnClick(UNLOCK_WALLET_TYPE.IMPORT_WALLET);
             }, active: this.state.cSelected === UNLOCK_WALLET_TYPE.IMPORT_WALLET },
           'Load wallet.dat'
         ),
         _react2.default.createElement(
           _reactstrap.Button,
           { color: 'secondary', onClick: function onClick() {
-              return _this10.onRadioBtnClick(UNLOCK_WALLET_TYPE.IMPORT_PRIV_KEY);
-            }, active: this.state.cSelected === UNLOCK_WALLET_TYPE.IMPORT_PRIV_KEY },
-          'Load private keys'
-        ),
-        _react2.default.createElement(
-          _reactstrap.Button,
-          { color: 'secondary', onClick: function onClick() {
-              return _this10.onRadioBtnClick(UNLOCK_WALLET_TYPE.PASTE_PRIV_KEY);
+              return _this11.onRadioBtnClick(UNLOCK_WALLET_TYPE.PASTE_PRIV_KEY);
             }, active: this.state.cSelected === UNLOCK_WALLET_TYPE.PASTE_PRIV_KEY },
           'Paste private key'
         )
@@ -47246,13 +47323,13 @@ var ZWalletTabs = function (_React$Component8) {
   function ZWalletTabs(props) {
     _classCallCheck(this, ZWalletTabs);
 
-    var _this11 = _possibleConstructorReturn(this, (ZWalletTabs.__proto__ || Object.getPrototypeOf(ZWalletTabs)).call(this, props));
+    var _this12 = _possibleConstructorReturn(this, (ZWalletTabs.__proto__ || Object.getPrototypeOf(ZWalletTabs)).call(this, props));
 
-    _this11.toggleTabs = _this11.toggleTabs.bind(_this11);
-    _this11.state = {
+    _this12.toggleTabs = _this12.toggleTabs.bind(_this12);
+    _this12.state = {
       activeTab: '1'
     };
-    return _this11;
+    return _this12;
   }
 
   _createClass(ZWalletTabs, [{
@@ -47267,7 +47344,7 @@ var ZWalletTabs = function (_React$Component8) {
   }, {
     key: 'render',
     value: function render() {
-      var _this12 = this;
+      var _this13 = this;
 
       return _react2.default.createElement(
         'div',
@@ -47283,7 +47360,7 @@ var ZWalletTabs = function (_React$Component8) {
               {
                 className: (0, _classnames2.default)({ active: this.state.activeTab === '1' }),
                 onClick: function onClick() {
-                  _this12.toggleTabs('1');
+                  _this13.toggleTabs('1');
                 }
               },
               'Info'
@@ -47297,7 +47374,7 @@ var ZWalletTabs = function (_React$Component8) {
               {
                 className: (0, _classnames2.default)({ active: this.state.activeTab === '2' }),
                 onClick: function onClick() {
-                  _this12.toggleTabs('2');
+                  _this13.toggleTabs('2');
                 }
               },
               'Send ZEN'
@@ -47311,7 +47388,7 @@ var ZWalletTabs = function (_React$Component8) {
             _reactstrap.TabPane,
             { tabId: '1' },
             _react2.default.createElement(ZAddressInfo, {
-              publicAddress: this.props.publicAddress,
+              publicAddresses: this.props.publicAddresses,
               settings: this.props.settings
             })
           ),
@@ -47320,8 +47397,7 @@ var ZWalletTabs = function (_React$Component8) {
             { tabId: '2' },
             _react2.default.createElement(ZSendZEN, {
               settings: this.props.settings,
-              publicAddress: this.props.publicAddress,
-              privateKey: this.props.privateKey
+              publicAddresses: this.props.publicAddresses
             })
           )
         )
@@ -47338,21 +47414,21 @@ var ZWallet = function (_React$Component9) {
   function ZWallet(props) {
     _classCallCheck(this, ZWallet);
 
-    var _this13 = _possibleConstructorReturn(this, (ZWallet.__proto__ || Object.getPrototypeOf(ZWallet)).call(this, props));
+    var _this14 = _possibleConstructorReturn(this, (ZWallet.__proto__ || Object.getPrototypeOf(ZWallet)).call(this, props));
 
-    _this13.resetKeys = _this13.resetKeys.bind(_this13);
-    _this13.handleUnlockPrivateKey = _this13.handleUnlockPrivateKey.bind(_this13);
-    _this13.setPrivateKey = _this13.setPrivateKey.bind(_this13);
-    _this13.setInsightAPI = _this13.setInsightAPI.bind(_this13);
-    _this13.setUnlockType = _this13.setUnlockType.bind(_this13);
-    _this13.toggleUseTestNet = _this13.toggleUseTestNet.bind(_this13);
-    _this13.toggleCompressPubKey = _this13.toggleCompressPubKey.bind(_this13);
-    _this13.toggleShowSettings = _this13.toggleShowSettings.bind(_this13);
-    _this13.toggleShowWalletGen = _this13.toggleShowWalletGen.bind(_this13);
+    _this14.resetKeys = _this14.resetKeys.bind(_this14);
+    _this14.handleUnlockPrivateKeys = _this14.handleUnlockPrivateKeys.bind(_this14);
+    _this14.setPrivateKeys = _this14.setPrivateKeys.bind(_this14);
+    _this14.setInsightAPI = _this14.setInsightAPI.bind(_this14);
+    _this14.setUnlockType = _this14.setUnlockType.bind(_this14);
+    _this14.toggleUseTestNet = _this14.toggleUseTestNet.bind(_this14);
+    _this14.toggleCompressPubKey = _this14.toggleCompressPubKey.bind(_this14);
+    _this14.toggleShowSettings = _this14.toggleShowSettings.bind(_this14);
+    _this14.toggleShowWalletGen = _this14.toggleShowWalletGen.bind(_this14);
 
-    _this13.state = {
-      privateKey: '',
-      publicAddress: null,
+    _this14.state = {
+      privateKeys: '',
+      publicAddresses: null, // Public address will be {address: privateKey}
       settings: {
         showSettings: false,
         showWalletGen: false,
@@ -47363,37 +47439,46 @@ var ZWallet = function (_React$Component9) {
         unlockType: UNLOCK_WALLET_TYPE.IMPORT_WALLET
       }
     };
-    return _this13;
+    return _this14;
   }
 
   _createClass(ZWallet, [{
-    key: 'handleUnlockPrivateKey',
-    value: function handleUnlockPrivateKey() {
+    key: 'handleUnlockPrivateKeys',
+    value: function handleUnlockPrivateKeys() {
       try {
-        // Get private key from state
-        var pk = this.state.privateKey;
+        var _privKeyToAddr = function _privKeyToAddr(pk, compressPubKey, useTestNet) {
+          // If not 64 length, probs WIF format
+          if (pk.length !== 64) {
+            pk = _zencashjs2.default.address.WIFToPrivKey(pk);
+          }
 
-        // If not 64 length, probs WIF format
-        if (pk.length !== 64) {
-          pk = _zencashjs2.default.address.WIFToPrivKey(pk);
+          // Convert public key to public address
+          var pubKey = _zencashjs2.default.address.privKeyToPubKey(pk, compressPubKey);
+
+          // Testnet or nah
+          var pubKeyHash = useTestNet ? _zencashjs2.default.config.testnet.pubKeyHash : _zencashjs2.default.config.mainnet.pubKeyHash;
+          var publicAddr = _zencashjs2.default.address.pubKeyToAddr(pubKey, pubKeyHash);
+
+          return publicAddr;
+        };
+
+        var publicAddresses = {};
+
+        for (var i = 0; i < this.state.privateKeys.length; i++) {
+          var c_pk = this.state.privateKeys[i];
+          var c_addr = _privKeyToAddr(c_pk, this.state.settings.compressPubKey, this.state.settings.useTestNet);
+
+          publicAddresses[c_addr] = c_pk;
         }
 
-        // Convert public key to public address
-        var pubKey = _zencashjs2.default.address.privKeyToPubKey(pk, this.state.settings.compressPubKey);
-
-        // Testnet or nah
-        var pubKeyHash = this.state.settings.useTestNet ? _zencashjs2.default.config.testnet.pubKeyHash : _zencashjs2.default.config.mainnet.pubKeyHash;
-        var publicAddr = _zencashjs2.default.address.pubKeyToAddr(pubKey, pubKeyHash);
-
         // Set public address
-        this.setPublicAddress(publicAddr);
-
-        // Set private key
-        this.setPrivateKey(pk);
+        this.setPublicAddresses(publicAddresses);
 
         // Return success
         return 0;
       } catch (err) {
+        console.log(err);
+        this.setPublicAddresses(null);
         return -1;
       }
     }
@@ -47401,22 +47486,22 @@ var ZWallet = function (_React$Component9) {
     key: 'resetKeys',
     value: function resetKeys() {
       this.setState({
-        privateKey: '',
-        publicAddress: null
+        privateKeys: '',
+        publicAddresses: null
       });
     }
   }, {
-    key: 'setPrivateKey',
-    value: function setPrivateKey(pk) {
+    key: 'setPrivateKeys',
+    value: function setPrivateKeys(pk) {
       this.setState({
-        privateKey: pk
+        privateKeys: pk
       });
     }
   }, {
-    key: 'setPublicAddress',
-    value: function setPublicAddress(pa) {
+    key: 'setPublicAddresses',
+    value: function setPublicAddresses(pa) {
       this.setState({
-        publicAddress: pa
+        publicAddresses: pa
       });
     }
   }, {
@@ -47505,7 +47590,7 @@ var ZWallet = function (_React$Component9) {
               'ZenCash Wallet\xA0',
               _react2.default.createElement(ToolTipButton, { onClick: this.toggleShowSettings, id: 1, buttonText: _react2.default.createElement(_settings3.default, null), tooltipText: 'settings' }),
               '\xA0',
-              _react2.default.createElement(ToolTipButton, { disabled: this.state.publicAddress === null, onClick: this.resetKeys, id: 2, buttonText: _react2.default.createElement(_repeat2.default, null), tooltipText: 'reset wallet' })
+              _react2.default.createElement(ToolTipButton, { disabled: this.state.publicAddresses === null, onClick: this.resetKeys, id: 2, buttonText: _react2.default.createElement(_repeat2.default, null), tooltipText: 'reset wallet' })
             ),
             _react2.default.createElement(ZWalletSettings, {
               setUnlockType: this.setUnlockType,
@@ -47515,7 +47600,7 @@ var ZWallet = function (_React$Component9) {
               toggleUseTestNet: this.toggleUseTestNet,
               setInsightAPI: this.setInsightAPI,
               settings: this.state.settings,
-              publicAddress: this.state.publicAddress
+              publicAddresses: this.state.publicAddresses
             }),
             _react2.default.createElement('br', null)
           )
@@ -47526,18 +47611,14 @@ var ZWallet = function (_React$Component9) {
           _react2.default.createElement(
             _reactstrap.Col,
             { md: { size: 8, offset: 2 } },
-            this.state.publicAddress === null ? _react2.default.createElement(
-              'div',
-              null,
-              _react2.default.createElement(ZWalletUnlockKey, {
-                handleUnlockPrivateKey: this.handleUnlockPrivateKey,
-                setPrivateKey: this.setPrivateKey,
-                unlockType: this.state.settings.unlockType
-              })
-            ) : _react2.default.createElement(ZWalletTabs, {
-              publicAddress: this.state.publicAddress,
+            this.state.publicAddresses === null ? _react2.default.createElement(ZWalletUnlockKey, {
+              handleUnlockPrivateKeys: this.handleUnlockPrivateKeys,
+              setPrivateKeys: this.setPrivateKeys,
+              unlockType: this.state.settings.unlockType
+            }) : _react2.default.createElement(ZWalletTabs, {
+              publicAddresses: this.state.publicAddresses,
               settings: this.state.settings,
-              privateKey: this.state.privateKey
+              privateKeys: this.state.privateKeys
             })
           )
         ),
@@ -47556,1127 +47637,10 @@ var ZWallet = function (_React$Component9) {
 }(_react2.default.Component);
 
 exports.default = ZWallet;
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1).Buffer))
 
 /***/ }),
 /* 302 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__(303);
-
-/***/ }),
-/* 303 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var utils = __webpack_require__(16);
-var bind = __webpack_require__(134);
-var Axios = __webpack_require__(305);
-var defaults = __webpack_require__(83);
-
-/**
- * Create an instance of Axios
- *
- * @param {Object} defaultConfig The default config for the instance
- * @return {Axios} A new instance of Axios
- */
-function createInstance(defaultConfig) {
-  var context = new Axios(defaultConfig);
-  var instance = bind(Axios.prototype.request, context);
-
-  // Copy axios.prototype to instance
-  utils.extend(instance, Axios.prototype, context);
-
-  // Copy context to instance
-  utils.extend(instance, context);
-
-  return instance;
-}
-
-// Create the default instance to be exported
-var axios = createInstance(defaults);
-
-// Expose Axios class to allow class inheritance
-axios.Axios = Axios;
-
-// Factory for creating new instances
-axios.create = function create(instanceConfig) {
-  return createInstance(utils.merge(defaults, instanceConfig));
-};
-
-// Expose Cancel & CancelToken
-axios.Cancel = __webpack_require__(138);
-axios.CancelToken = __webpack_require__(319);
-axios.isCancel = __webpack_require__(137);
-
-// Expose all/spread
-axios.all = function all(promises) {
-  return Promise.all(promises);
-};
-axios.spread = __webpack_require__(320);
-
-module.exports = axios;
-
-// Allow use of default import syntax in TypeScript
-module.exports.default = axios;
-
-
-/***/ }),
-/* 304 */
-/***/ (function(module, exports) {
-
-/*!
- * Determine if an object is a Buffer
- *
- * @author   Feross Aboukhadijeh <feross@feross.org> <http://feross.org>
- * @license  MIT
- */
-
-// The _isBuffer check is for Safari 5-7 support, because it's missing
-// Object.prototype.constructor. Remove this eventually
-module.exports = function (obj) {
-  return obj != null && (isBuffer(obj) || isSlowBuffer(obj) || !!obj._isBuffer)
-}
-
-function isBuffer (obj) {
-  return !!obj.constructor && typeof obj.constructor.isBuffer === 'function' && obj.constructor.isBuffer(obj)
-}
-
-// For Node v0.10 support. Remove this eventually.
-function isSlowBuffer (obj) {
-  return typeof obj.readFloatLE === 'function' && typeof obj.slice === 'function' && isBuffer(obj.slice(0, 0))
-}
-
-
-/***/ }),
-/* 305 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var defaults = __webpack_require__(83);
-var utils = __webpack_require__(16);
-var InterceptorManager = __webpack_require__(314);
-var dispatchRequest = __webpack_require__(315);
-var isAbsoluteURL = __webpack_require__(317);
-var combineURLs = __webpack_require__(318);
-
-/**
- * Create a new instance of Axios
- *
- * @param {Object} instanceConfig The default config for the instance
- */
-function Axios(instanceConfig) {
-  this.defaults = instanceConfig;
-  this.interceptors = {
-    request: new InterceptorManager(),
-    response: new InterceptorManager()
-  };
-}
-
-/**
- * Dispatch a request
- *
- * @param {Object} config The config specific for this request (merged with this.defaults)
- */
-Axios.prototype.request = function request(config) {
-  /*eslint no-param-reassign:0*/
-  // Allow for axios('example/url'[, config]) a la fetch API
-  if (typeof config === 'string') {
-    config = utils.merge({
-      url: arguments[0]
-    }, arguments[1]);
-  }
-
-  config = utils.merge(defaults, this.defaults, { method: 'get' }, config);
-  config.method = config.method.toLowerCase();
-
-  // Support baseURL config
-  if (config.baseURL && !isAbsoluteURL(config.url)) {
-    config.url = combineURLs(config.baseURL, config.url);
-  }
-
-  // Hook up interceptors middleware
-  var chain = [dispatchRequest, undefined];
-  var promise = Promise.resolve(config);
-
-  this.interceptors.request.forEach(function unshiftRequestInterceptors(interceptor) {
-    chain.unshift(interceptor.fulfilled, interceptor.rejected);
-  });
-
-  this.interceptors.response.forEach(function pushResponseInterceptors(interceptor) {
-    chain.push(interceptor.fulfilled, interceptor.rejected);
-  });
-
-  while (chain.length) {
-    promise = promise.then(chain.shift(), chain.shift());
-  }
-
-  return promise;
-};
-
-// Provide aliases for supported request methods
-utils.forEach(['delete', 'get', 'head', 'options'], function forEachMethodNoData(method) {
-  /*eslint func-names:0*/
-  Axios.prototype[method] = function(url, config) {
-    return this.request(utils.merge(config || {}, {
-      method: method,
-      url: url
-    }));
-  };
-});
-
-utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
-  /*eslint func-names:0*/
-  Axios.prototype[method] = function(url, data, config) {
-    return this.request(utils.merge(config || {}, {
-      method: method,
-      url: url,
-      data: data
-    }));
-  };
-});
-
-module.exports = Axios;
-
-
-/***/ }),
-/* 306 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var utils = __webpack_require__(16);
-
-module.exports = function normalizeHeaderName(headers, normalizedName) {
-  utils.forEach(headers, function processHeader(value, name) {
-    if (name !== normalizedName && name.toUpperCase() === normalizedName.toUpperCase()) {
-      headers[normalizedName] = value;
-      delete headers[name];
-    }
-  });
-};
-
-
-/***/ }),
-/* 307 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var createError = __webpack_require__(136);
-
-/**
- * Resolve or reject a Promise based on response status.
- *
- * @param {Function} resolve A function that resolves the promise.
- * @param {Function} reject A function that rejects the promise.
- * @param {object} response The response.
- */
-module.exports = function settle(resolve, reject, response) {
-  var validateStatus = response.config.validateStatus;
-  // Note: status is not exposed by XDomainRequest
-  if (!response.status || !validateStatus || validateStatus(response.status)) {
-    resolve(response);
-  } else {
-    reject(createError(
-      'Request failed with status code ' + response.status,
-      response.config,
-      null,
-      response.request,
-      response
-    ));
-  }
-};
-
-
-/***/ }),
-/* 308 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-/**
- * Update an Error with the specified config, error code, and response.
- *
- * @param {Error} error The error to update.
- * @param {Object} config The config.
- * @param {string} [code] The error code (for example, 'ECONNABORTED').
- * @param {Object} [request] The request.
- * @param {Object} [response] The response.
- * @returns {Error} The error.
- */
-module.exports = function enhanceError(error, config, code, request, response) {
-  error.config = config;
-  if (code) {
-    error.code = code;
-  }
-  error.request = request;
-  error.response = response;
-  return error;
-};
-
-
-/***/ }),
-/* 309 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var utils = __webpack_require__(16);
-
-function encode(val) {
-  return encodeURIComponent(val).
-    replace(/%40/gi, '@').
-    replace(/%3A/gi, ':').
-    replace(/%24/g, '$').
-    replace(/%2C/gi, ',').
-    replace(/%20/g, '+').
-    replace(/%5B/gi, '[').
-    replace(/%5D/gi, ']');
-}
-
-/**
- * Build a URL by appending params to the end
- *
- * @param {string} url The base of the url (e.g., http://www.google.com)
- * @param {object} [params] The params to be appended
- * @returns {string} The formatted url
- */
-module.exports = function buildURL(url, params, paramsSerializer) {
-  /*eslint no-param-reassign:0*/
-  if (!params) {
-    return url;
-  }
-
-  var serializedParams;
-  if (paramsSerializer) {
-    serializedParams = paramsSerializer(params);
-  } else if (utils.isURLSearchParams(params)) {
-    serializedParams = params.toString();
-  } else {
-    var parts = [];
-
-    utils.forEach(params, function serialize(val, key) {
-      if (val === null || typeof val === 'undefined') {
-        return;
-      }
-
-      if (utils.isArray(val)) {
-        key = key + '[]';
-      }
-
-      if (!utils.isArray(val)) {
-        val = [val];
-      }
-
-      utils.forEach(val, function parseValue(v) {
-        if (utils.isDate(v)) {
-          v = v.toISOString();
-        } else if (utils.isObject(v)) {
-          v = JSON.stringify(v);
-        }
-        parts.push(encode(key) + '=' + encode(v));
-      });
-    });
-
-    serializedParams = parts.join('&');
-  }
-
-  if (serializedParams) {
-    url += (url.indexOf('?') === -1 ? '?' : '&') + serializedParams;
-  }
-
-  return url;
-};
-
-
-/***/ }),
-/* 310 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var utils = __webpack_require__(16);
-
-/**
- * Parse headers into an object
- *
- * ```
- * Date: Wed, 27 Aug 2014 08:58:49 GMT
- * Content-Type: application/json
- * Connection: keep-alive
- * Transfer-Encoding: chunked
- * ```
- *
- * @param {String} headers Headers needing to be parsed
- * @returns {Object} Headers parsed into an object
- */
-module.exports = function parseHeaders(headers) {
-  var parsed = {};
-  var key;
-  var val;
-  var i;
-
-  if (!headers) { return parsed; }
-
-  utils.forEach(headers.split('\n'), function parser(line) {
-    i = line.indexOf(':');
-    key = utils.trim(line.substr(0, i)).toLowerCase();
-    val = utils.trim(line.substr(i + 1));
-
-    if (key) {
-      parsed[key] = parsed[key] ? parsed[key] + ', ' + val : val;
-    }
-  });
-
-  return parsed;
-};
-
-
-/***/ }),
-/* 311 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var utils = __webpack_require__(16);
-
-module.exports = (
-  utils.isStandardBrowserEnv() ?
-
-  // Standard browser envs have full support of the APIs needed to test
-  // whether the request URL is of the same origin as current location.
-  (function standardBrowserEnv() {
-    var msie = /(msie|trident)/i.test(navigator.userAgent);
-    var urlParsingNode = document.createElement('a');
-    var originURL;
-
-    /**
-    * Parse a URL to discover it's components
-    *
-    * @param {String} url The URL to be parsed
-    * @returns {Object}
-    */
-    function resolveURL(url) {
-      var href = url;
-
-      if (msie) {
-        // IE needs attribute set twice to normalize properties
-        urlParsingNode.setAttribute('href', href);
-        href = urlParsingNode.href;
-      }
-
-      urlParsingNode.setAttribute('href', href);
-
-      // urlParsingNode provides the UrlUtils interface - http://url.spec.whatwg.org/#urlutils
-      return {
-        href: urlParsingNode.href,
-        protocol: urlParsingNode.protocol ? urlParsingNode.protocol.replace(/:$/, '') : '',
-        host: urlParsingNode.host,
-        search: urlParsingNode.search ? urlParsingNode.search.replace(/^\?/, '') : '',
-        hash: urlParsingNode.hash ? urlParsingNode.hash.replace(/^#/, '') : '',
-        hostname: urlParsingNode.hostname,
-        port: urlParsingNode.port,
-        pathname: (urlParsingNode.pathname.charAt(0) === '/') ?
-                  urlParsingNode.pathname :
-                  '/' + urlParsingNode.pathname
-      };
-    }
-
-    originURL = resolveURL(window.location.href);
-
-    /**
-    * Determine if a URL shares the same origin as the current location
-    *
-    * @param {String} requestURL The URL to test
-    * @returns {boolean} True if URL shares the same origin, otherwise false
-    */
-    return function isURLSameOrigin(requestURL) {
-      var parsed = (utils.isString(requestURL)) ? resolveURL(requestURL) : requestURL;
-      return (parsed.protocol === originURL.protocol &&
-            parsed.host === originURL.host);
-    };
-  })() :
-
-  // Non standard browser envs (web workers, react-native) lack needed support.
-  (function nonStandardBrowserEnv() {
-    return function isURLSameOrigin() {
-      return true;
-    };
-  })()
-);
-
-
-/***/ }),
-/* 312 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-// btoa polyfill for IE<10 courtesy https://github.com/davidchambers/Base64.js
-
-var chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';
-
-function E() {
-  this.message = 'String contains an invalid character';
-}
-E.prototype = new Error;
-E.prototype.code = 5;
-E.prototype.name = 'InvalidCharacterError';
-
-function btoa(input) {
-  var str = String(input);
-  var output = '';
-  for (
-    // initialize result and counter
-    var block, charCode, idx = 0, map = chars;
-    // if the next str index does not exist:
-    //   change the mapping table to "="
-    //   check if d has no fractional digits
-    str.charAt(idx | 0) || (map = '=', idx % 1);
-    // "8 - idx % 1 * 8" generates the sequence 2, 4, 6, 8
-    output += map.charAt(63 & block >> 8 - idx % 1 * 8)
-  ) {
-    charCode = str.charCodeAt(idx += 3 / 4);
-    if (charCode > 0xFF) {
-      throw new E();
-    }
-    block = block << 8 | charCode;
-  }
-  return output;
-}
-
-module.exports = btoa;
-
-
-/***/ }),
-/* 313 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var utils = __webpack_require__(16);
-
-module.exports = (
-  utils.isStandardBrowserEnv() ?
-
-  // Standard browser envs support document.cookie
-  (function standardBrowserEnv() {
-    return {
-      write: function write(name, value, expires, path, domain, secure) {
-        var cookie = [];
-        cookie.push(name + '=' + encodeURIComponent(value));
-
-        if (utils.isNumber(expires)) {
-          cookie.push('expires=' + new Date(expires).toGMTString());
-        }
-
-        if (utils.isString(path)) {
-          cookie.push('path=' + path);
-        }
-
-        if (utils.isString(domain)) {
-          cookie.push('domain=' + domain);
-        }
-
-        if (secure === true) {
-          cookie.push('secure');
-        }
-
-        document.cookie = cookie.join('; ');
-      },
-
-      read: function read(name) {
-        var match = document.cookie.match(new RegExp('(^|;\\s*)(' + name + ')=([^;]*)'));
-        return (match ? decodeURIComponent(match[3]) : null);
-      },
-
-      remove: function remove(name) {
-        this.write(name, '', Date.now() - 86400000);
-      }
-    };
-  })() :
-
-  // Non standard browser env (web workers, react-native) lack needed support.
-  (function nonStandardBrowserEnv() {
-    return {
-      write: function write() {},
-      read: function read() { return null; },
-      remove: function remove() {}
-    };
-  })()
-);
-
-
-/***/ }),
-/* 314 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var utils = __webpack_require__(16);
-
-function InterceptorManager() {
-  this.handlers = [];
-}
-
-/**
- * Add a new interceptor to the stack
- *
- * @param {Function} fulfilled The function to handle `then` for a `Promise`
- * @param {Function} rejected The function to handle `reject` for a `Promise`
- *
- * @return {Number} An ID used to remove interceptor later
- */
-InterceptorManager.prototype.use = function use(fulfilled, rejected) {
-  this.handlers.push({
-    fulfilled: fulfilled,
-    rejected: rejected
-  });
-  return this.handlers.length - 1;
-};
-
-/**
- * Remove an interceptor from the stack
- *
- * @param {Number} id The ID that was returned by `use`
- */
-InterceptorManager.prototype.eject = function eject(id) {
-  if (this.handlers[id]) {
-    this.handlers[id] = null;
-  }
-};
-
-/**
- * Iterate over all the registered interceptors
- *
- * This method is particularly useful for skipping over any
- * interceptors that may have become `null` calling `eject`.
- *
- * @param {Function} fn The function to call for each interceptor
- */
-InterceptorManager.prototype.forEach = function forEach(fn) {
-  utils.forEach(this.handlers, function forEachHandler(h) {
-    if (h !== null) {
-      fn(h);
-    }
-  });
-};
-
-module.exports = InterceptorManager;
-
-
-/***/ }),
-/* 315 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var utils = __webpack_require__(16);
-var transformData = __webpack_require__(316);
-var isCancel = __webpack_require__(137);
-var defaults = __webpack_require__(83);
-
-/**
- * Throws a `Cancel` if cancellation has been requested.
- */
-function throwIfCancellationRequested(config) {
-  if (config.cancelToken) {
-    config.cancelToken.throwIfRequested();
-  }
-}
-
-/**
- * Dispatch a request to the server using the configured adapter.
- *
- * @param {object} config The config that is to be used for the request
- * @returns {Promise} The Promise to be fulfilled
- */
-module.exports = function dispatchRequest(config) {
-  throwIfCancellationRequested(config);
-
-  // Ensure headers exist
-  config.headers = config.headers || {};
-
-  // Transform request data
-  config.data = transformData(
-    config.data,
-    config.headers,
-    config.transformRequest
-  );
-
-  // Flatten headers
-  config.headers = utils.merge(
-    config.headers.common || {},
-    config.headers[config.method] || {},
-    config.headers || {}
-  );
-
-  utils.forEach(
-    ['delete', 'get', 'head', 'post', 'put', 'patch', 'common'],
-    function cleanHeaderConfig(method) {
-      delete config.headers[method];
-    }
-  );
-
-  var adapter = config.adapter || defaults.adapter;
-
-  return adapter(config).then(function onAdapterResolution(response) {
-    throwIfCancellationRequested(config);
-
-    // Transform response data
-    response.data = transformData(
-      response.data,
-      response.headers,
-      config.transformResponse
-    );
-
-    return response;
-  }, function onAdapterRejection(reason) {
-    if (!isCancel(reason)) {
-      throwIfCancellationRequested(config);
-
-      // Transform response data
-      if (reason && reason.response) {
-        reason.response.data = transformData(
-          reason.response.data,
-          reason.response.headers,
-          config.transformResponse
-        );
-      }
-    }
-
-    return Promise.reject(reason);
-  });
-};
-
-
-/***/ }),
-/* 316 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var utils = __webpack_require__(16);
-
-/**
- * Transform the data for a request or a response
- *
- * @param {Object|String} data The data to be transformed
- * @param {Array} headers The headers for the request or response
- * @param {Array|Function} fns A single function or Array of functions
- * @returns {*} The resulting transformed data
- */
-module.exports = function transformData(data, headers, fns) {
-  /*eslint no-param-reassign:0*/
-  utils.forEach(fns, function transform(fn) {
-    data = fn(data, headers);
-  });
-
-  return data;
-};
-
-
-/***/ }),
-/* 317 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-/**
- * Determines whether the specified URL is absolute
- *
- * @param {string} url The URL to test
- * @returns {boolean} True if the specified URL is absolute, otherwise false
- */
-module.exports = function isAbsoluteURL(url) {
-  // A URL is considered absolute if it begins with "<scheme>://" or "//" (protocol-relative URL).
-  // RFC 3986 defines scheme name as a sequence of characters beginning with a letter and followed
-  // by any combination of letters, digits, plus, period, or hyphen.
-  return /^([a-z][a-z\d\+\-\.]*:)?\/\//i.test(url);
-};
-
-
-/***/ }),
-/* 318 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-/**
- * Creates a new URL by combining the specified URLs
- *
- * @param {string} baseURL The base URL
- * @param {string} relativeURL The relative URL
- * @returns {string} The combined URL
- */
-module.exports = function combineURLs(baseURL, relativeURL) {
-  return relativeURL
-    ? baseURL.replace(/\/+$/, '') + '/' + relativeURL.replace(/^\/+/, '')
-    : baseURL;
-};
-
-
-/***/ }),
-/* 319 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var Cancel = __webpack_require__(138);
-
-/**
- * A `CancelToken` is an object that can be used to request cancellation of an operation.
- *
- * @class
- * @param {Function} executor The executor function.
- */
-function CancelToken(executor) {
-  if (typeof executor !== 'function') {
-    throw new TypeError('executor must be a function.');
-  }
-
-  var resolvePromise;
-  this.promise = new Promise(function promiseExecutor(resolve) {
-    resolvePromise = resolve;
-  });
-
-  var token = this;
-  executor(function cancel(message) {
-    if (token.reason) {
-      // Cancellation has already been requested
-      return;
-    }
-
-    token.reason = new Cancel(message);
-    resolvePromise(token.reason);
-  });
-}
-
-/**
- * Throws a `Cancel` if cancellation has been requested.
- */
-CancelToken.prototype.throwIfRequested = function throwIfRequested() {
-  if (this.reason) {
-    throw this.reason;
-  }
-};
-
-/**
- * Returns an object that contains a new `CancelToken` and a function that, when called,
- * cancels the `CancelToken`.
- */
-CancelToken.source = function source() {
-  var cancel;
-  var token = new CancelToken(function executor(c) {
-    cancel = c;
-  });
-  return {
-    token: token,
-    cancel: cancel
-  };
-};
-
-module.exports = CancelToken;
-
-
-/***/ }),
-/* 320 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-/**
- * Syntactic sugar for invoking a function and expanding an array for arguments.
- *
- * Common use case would be to use `Function.prototype.apply`.
- *
- *  ```js
- *  function f(x, y, z) {}
- *  var args = [1, 2, 3];
- *  f.apply(null, args);
- *  ```
- *
- * With `spread` this example can be re-written.
- *
- *  ```js
- *  spread(function(x, y, z) {})([1, 2, 3]);
- *  ```
- *
- * @param {Function} callback
- * @returns {Function}
- */
-module.exports = function spread(callback) {
-  return function wrap(arr) {
-    return callback.apply(null, arr);
-  };
-};
-
-
-/***/ }),
-/* 321 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _require = __webpack_require__(322),
-    CopyToClipboard = _require.CopyToClipboard;
-
-module.exports = CopyToClipboard;
-
-/***/ }),
-/* 322 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.CopyToClipboard = undefined;
-
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _react = __webpack_require__(9);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _copyToClipboard = __webpack_require__(323);
-
-var _copyToClipboard2 = _interopRequireDefault(_copyToClipboard);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var CopyToClipboard = exports.CopyToClipboard = function (_React$PureComponent) {
-  _inherits(CopyToClipboard, _React$PureComponent);
-
-  function CopyToClipboard() {
-    var _ref;
-
-    var _temp, _this, _ret;
-
-    _classCallCheck(this, CopyToClipboard);
-
-    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-      args[_key] = arguments[_key];
-    }
-
-    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = CopyToClipboard.__proto__ || Object.getPrototypeOf(CopyToClipboard)).call.apply(_ref, [this].concat(args))), _this), _this.onClick = function (event) {
-      var _this$props = _this.props,
-          text = _this$props.text,
-          onCopy = _this$props.onCopy,
-          children = _this$props.children,
-          options = _this$props.options;
-
-
-      var elem = _react2.default.Children.only(children);
-
-      var result = (0, _copyToClipboard2.default)(text, options);
-
-      if (onCopy) {
-        onCopy(text, result);
-      }
-
-      // Bypass onClick if it was present
-      if (elem && elem.props && typeof elem.props.onClick === 'function') {
-        elem.props.onClick(event);
-      }
-    }, _temp), _possibleConstructorReturn(_this, _ret);
-  }
-
-  _createClass(CopyToClipboard, [{
-    key: 'render',
-    value: function render() {
-      var _props = this.props,
-          _text = _props.text,
-          _onCopy = _props.onCopy,
-          _options = _props.options,
-          children = _props.children,
-          props = _objectWithoutProperties(_props, ['text', 'onCopy', 'options', 'children']);
-
-      var elem = _react2.default.Children.only(children);
-
-      return _react2.default.cloneElement(elem, _extends({}, props, { onClick: this.onClick }));
-    }
-  }]);
-
-  return CopyToClipboard;
-}(_react2.default.PureComponent);
-
-/***/ }),
-/* 323 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var deselectCurrent = __webpack_require__(324);
-
-var defaultMessage = 'Copy to clipboard: #{key}, Enter';
-
-function format(message) {
-  var copyKey = (/mac os x/i.test(navigator.userAgent) ? '⌘' : 'Ctrl') + '+C';
-  return message.replace(/#{\s*key\s*}/g, copyKey);
-}
-
-function copy(text, options) {
-  var debug, message, reselectPrevious, range, selection, mark, success = false;
-  if (!options) { options = {}; }
-  debug = options.debug || false;
-  try {
-    reselectPrevious = deselectCurrent();
-
-    range = document.createRange();
-    selection = document.getSelection();
-
-    mark = document.createElement('span');
-    mark.textContent = text;
-    // reset user styles for span element
-    mark.style.all = 'unset';
-    // prevents scrolling to the end of the page
-    mark.style.position = 'fixed';
-    mark.style.top = 0;
-    mark.style.clip = 'rect(0, 0, 0, 0)';
-    // used to preserve spaces and line breaks
-    mark.style.whiteSpace = 'pre';
-    // do not inherit user-select (it may be `none`)
-    mark.style.webkitUserSelect = 'text';
-    mark.style.MozUserSelect = 'text';
-    mark.style.msUserSelect = 'text';
-    mark.style.userSelect = 'text';
-
-    document.body.appendChild(mark);
-
-    range.selectNode(mark);
-    selection.addRange(range);
-
-    var successful = document.execCommand('copy');
-    if (!successful) {
-      throw new Error('copy command was unsuccessful');
-    }
-    success = true;
-  } catch (err) {
-    debug && console.error('unable to copy using execCommand: ', err);
-    debug && console.warn('trying IE specific stuff');
-    try {
-      window.clipboardData.setData('text', text);
-      success = true;
-    } catch (err) {
-      debug && console.error('unable to copy using clipboardData: ', err);
-      debug && console.error('falling back to prompt');
-      message = format('message' in options ? options.message : defaultMessage);
-      window.prompt(message, text);
-    }
-  } finally {
-    if (selection) {
-      if (typeof selection.removeRange == 'function') {
-        selection.removeRange(range);
-      } else {
-        selection.removeAllRanges();
-      }
-    }
-
-    if (mark) {
-      document.body.removeChild(mark);
-    }
-    reselectPrevious();
-  }
-
-  return success;
-}
-
-module.exports = copy;
-
-
-/***/ }),
-/* 324 */
-/***/ (function(module, exports) {
-
-
-module.exports = function () {
-  var selection = document.getSelection();
-  if (!selection.rangeCount) {
-    return function () {};
-  }
-  var active = document.activeElement;
-
-  var ranges = [];
-  for (var i = 0; i < selection.rangeCount; i++) {
-    ranges.push(selection.getRangeAt(i));
-  }
-
-  switch (active.tagName.toUpperCase()) { // .toUpperCase handles XHTML
-    case 'INPUT':
-    case 'TEXTAREA':
-      active.blur();
-      break;
-
-    default:
-      active = null;
-      break;
-  }
-
-  selection.removeAllRanges();
-  return function () {
-    selection.type === 'Caret' &&
-    selection.removeAllRanges();
-
-    if (!selection.rangeCount) {
-      ranges.forEach(function(range) {
-        selection.addRange(range);
-      });
-    }
-
-    active &&
-    active.focus();
-  };
-};
-
-
-/***/ }),
-/* 325 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = {
-  address: __webpack_require__(84),
-  config: __webpack_require__(57),
-  zaddress: __webpack_require__(381),
-  crypto: __webpack_require__(94),
-  transaction: __webpack_require__(427)
-};
-
-/***/ }),
-/* 326 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -48797,7 +47761,7 @@ function fromByteArray (uint8) {
 
 
 /***/ }),
-/* 327 */
+/* 303 */
 /***/ (function(module, exports) {
 
 exports.read = function (buffer, offset, isLE, mLen, nBytes) {
@@ -48885,6 +47849,1124 @@ exports.write = function (buffer, value, offset, isLE, mLen, nBytes) {
   buffer[offset + i - d] |= s * 128
 }
 
+
+/***/ }),
+/* 304 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__(305);
+
+/***/ }),
+/* 305 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var utils = __webpack_require__(16);
+var bind = __webpack_require__(135);
+var Axios = __webpack_require__(307);
+var defaults = __webpack_require__(83);
+
+/**
+ * Create an instance of Axios
+ *
+ * @param {Object} defaultConfig The default config for the instance
+ * @return {Axios} A new instance of Axios
+ */
+function createInstance(defaultConfig) {
+  var context = new Axios(defaultConfig);
+  var instance = bind(Axios.prototype.request, context);
+
+  // Copy axios.prototype to instance
+  utils.extend(instance, Axios.prototype, context);
+
+  // Copy context to instance
+  utils.extend(instance, context);
+
+  return instance;
+}
+
+// Create the default instance to be exported
+var axios = createInstance(defaults);
+
+// Expose Axios class to allow class inheritance
+axios.Axios = Axios;
+
+// Factory for creating new instances
+axios.create = function create(instanceConfig) {
+  return createInstance(utils.merge(defaults, instanceConfig));
+};
+
+// Expose Cancel & CancelToken
+axios.Cancel = __webpack_require__(139);
+axios.CancelToken = __webpack_require__(321);
+axios.isCancel = __webpack_require__(138);
+
+// Expose all/spread
+axios.all = function all(promises) {
+  return Promise.all(promises);
+};
+axios.spread = __webpack_require__(322);
+
+module.exports = axios;
+
+// Allow use of default import syntax in TypeScript
+module.exports.default = axios;
+
+
+/***/ }),
+/* 306 */
+/***/ (function(module, exports) {
+
+/*!
+ * Determine if an object is a Buffer
+ *
+ * @author   Feross Aboukhadijeh <feross@feross.org> <http://feross.org>
+ * @license  MIT
+ */
+
+// The _isBuffer check is for Safari 5-7 support, because it's missing
+// Object.prototype.constructor. Remove this eventually
+module.exports = function (obj) {
+  return obj != null && (isBuffer(obj) || isSlowBuffer(obj) || !!obj._isBuffer)
+}
+
+function isBuffer (obj) {
+  return !!obj.constructor && typeof obj.constructor.isBuffer === 'function' && obj.constructor.isBuffer(obj)
+}
+
+// For Node v0.10 support. Remove this eventually.
+function isSlowBuffer (obj) {
+  return typeof obj.readFloatLE === 'function' && typeof obj.slice === 'function' && isBuffer(obj.slice(0, 0))
+}
+
+
+/***/ }),
+/* 307 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var defaults = __webpack_require__(83);
+var utils = __webpack_require__(16);
+var InterceptorManager = __webpack_require__(316);
+var dispatchRequest = __webpack_require__(317);
+var isAbsoluteURL = __webpack_require__(319);
+var combineURLs = __webpack_require__(320);
+
+/**
+ * Create a new instance of Axios
+ *
+ * @param {Object} instanceConfig The default config for the instance
+ */
+function Axios(instanceConfig) {
+  this.defaults = instanceConfig;
+  this.interceptors = {
+    request: new InterceptorManager(),
+    response: new InterceptorManager()
+  };
+}
+
+/**
+ * Dispatch a request
+ *
+ * @param {Object} config The config specific for this request (merged with this.defaults)
+ */
+Axios.prototype.request = function request(config) {
+  /*eslint no-param-reassign:0*/
+  // Allow for axios('example/url'[, config]) a la fetch API
+  if (typeof config === 'string') {
+    config = utils.merge({
+      url: arguments[0]
+    }, arguments[1]);
+  }
+
+  config = utils.merge(defaults, this.defaults, { method: 'get' }, config);
+  config.method = config.method.toLowerCase();
+
+  // Support baseURL config
+  if (config.baseURL && !isAbsoluteURL(config.url)) {
+    config.url = combineURLs(config.baseURL, config.url);
+  }
+
+  // Hook up interceptors middleware
+  var chain = [dispatchRequest, undefined];
+  var promise = Promise.resolve(config);
+
+  this.interceptors.request.forEach(function unshiftRequestInterceptors(interceptor) {
+    chain.unshift(interceptor.fulfilled, interceptor.rejected);
+  });
+
+  this.interceptors.response.forEach(function pushResponseInterceptors(interceptor) {
+    chain.push(interceptor.fulfilled, interceptor.rejected);
+  });
+
+  while (chain.length) {
+    promise = promise.then(chain.shift(), chain.shift());
+  }
+
+  return promise;
+};
+
+// Provide aliases for supported request methods
+utils.forEach(['delete', 'get', 'head', 'options'], function forEachMethodNoData(method) {
+  /*eslint func-names:0*/
+  Axios.prototype[method] = function(url, config) {
+    return this.request(utils.merge(config || {}, {
+      method: method,
+      url: url
+    }));
+  };
+});
+
+utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
+  /*eslint func-names:0*/
+  Axios.prototype[method] = function(url, data, config) {
+    return this.request(utils.merge(config || {}, {
+      method: method,
+      url: url,
+      data: data
+    }));
+  };
+});
+
+module.exports = Axios;
+
+
+/***/ }),
+/* 308 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var utils = __webpack_require__(16);
+
+module.exports = function normalizeHeaderName(headers, normalizedName) {
+  utils.forEach(headers, function processHeader(value, name) {
+    if (name !== normalizedName && name.toUpperCase() === normalizedName.toUpperCase()) {
+      headers[normalizedName] = value;
+      delete headers[name];
+    }
+  });
+};
+
+
+/***/ }),
+/* 309 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var createError = __webpack_require__(137);
+
+/**
+ * Resolve or reject a Promise based on response status.
+ *
+ * @param {Function} resolve A function that resolves the promise.
+ * @param {Function} reject A function that rejects the promise.
+ * @param {object} response The response.
+ */
+module.exports = function settle(resolve, reject, response) {
+  var validateStatus = response.config.validateStatus;
+  // Note: status is not exposed by XDomainRequest
+  if (!response.status || !validateStatus || validateStatus(response.status)) {
+    resolve(response);
+  } else {
+    reject(createError(
+      'Request failed with status code ' + response.status,
+      response.config,
+      null,
+      response.request,
+      response
+    ));
+  }
+};
+
+
+/***/ }),
+/* 310 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+/**
+ * Update an Error with the specified config, error code, and response.
+ *
+ * @param {Error} error The error to update.
+ * @param {Object} config The config.
+ * @param {string} [code] The error code (for example, 'ECONNABORTED').
+ * @param {Object} [request] The request.
+ * @param {Object} [response] The response.
+ * @returns {Error} The error.
+ */
+module.exports = function enhanceError(error, config, code, request, response) {
+  error.config = config;
+  if (code) {
+    error.code = code;
+  }
+  error.request = request;
+  error.response = response;
+  return error;
+};
+
+
+/***/ }),
+/* 311 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var utils = __webpack_require__(16);
+
+function encode(val) {
+  return encodeURIComponent(val).
+    replace(/%40/gi, '@').
+    replace(/%3A/gi, ':').
+    replace(/%24/g, '$').
+    replace(/%2C/gi, ',').
+    replace(/%20/g, '+').
+    replace(/%5B/gi, '[').
+    replace(/%5D/gi, ']');
+}
+
+/**
+ * Build a URL by appending params to the end
+ *
+ * @param {string} url The base of the url (e.g., http://www.google.com)
+ * @param {object} [params] The params to be appended
+ * @returns {string} The formatted url
+ */
+module.exports = function buildURL(url, params, paramsSerializer) {
+  /*eslint no-param-reassign:0*/
+  if (!params) {
+    return url;
+  }
+
+  var serializedParams;
+  if (paramsSerializer) {
+    serializedParams = paramsSerializer(params);
+  } else if (utils.isURLSearchParams(params)) {
+    serializedParams = params.toString();
+  } else {
+    var parts = [];
+
+    utils.forEach(params, function serialize(val, key) {
+      if (val === null || typeof val === 'undefined') {
+        return;
+      }
+
+      if (utils.isArray(val)) {
+        key = key + '[]';
+      }
+
+      if (!utils.isArray(val)) {
+        val = [val];
+      }
+
+      utils.forEach(val, function parseValue(v) {
+        if (utils.isDate(v)) {
+          v = v.toISOString();
+        } else if (utils.isObject(v)) {
+          v = JSON.stringify(v);
+        }
+        parts.push(encode(key) + '=' + encode(v));
+      });
+    });
+
+    serializedParams = parts.join('&');
+  }
+
+  if (serializedParams) {
+    url += (url.indexOf('?') === -1 ? '?' : '&') + serializedParams;
+  }
+
+  return url;
+};
+
+
+/***/ }),
+/* 312 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var utils = __webpack_require__(16);
+
+/**
+ * Parse headers into an object
+ *
+ * ```
+ * Date: Wed, 27 Aug 2014 08:58:49 GMT
+ * Content-Type: application/json
+ * Connection: keep-alive
+ * Transfer-Encoding: chunked
+ * ```
+ *
+ * @param {String} headers Headers needing to be parsed
+ * @returns {Object} Headers parsed into an object
+ */
+module.exports = function parseHeaders(headers) {
+  var parsed = {};
+  var key;
+  var val;
+  var i;
+
+  if (!headers) { return parsed; }
+
+  utils.forEach(headers.split('\n'), function parser(line) {
+    i = line.indexOf(':');
+    key = utils.trim(line.substr(0, i)).toLowerCase();
+    val = utils.trim(line.substr(i + 1));
+
+    if (key) {
+      parsed[key] = parsed[key] ? parsed[key] + ', ' + val : val;
+    }
+  });
+
+  return parsed;
+};
+
+
+/***/ }),
+/* 313 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var utils = __webpack_require__(16);
+
+module.exports = (
+  utils.isStandardBrowserEnv() ?
+
+  // Standard browser envs have full support of the APIs needed to test
+  // whether the request URL is of the same origin as current location.
+  (function standardBrowserEnv() {
+    var msie = /(msie|trident)/i.test(navigator.userAgent);
+    var urlParsingNode = document.createElement('a');
+    var originURL;
+
+    /**
+    * Parse a URL to discover it's components
+    *
+    * @param {String} url The URL to be parsed
+    * @returns {Object}
+    */
+    function resolveURL(url) {
+      var href = url;
+
+      if (msie) {
+        // IE needs attribute set twice to normalize properties
+        urlParsingNode.setAttribute('href', href);
+        href = urlParsingNode.href;
+      }
+
+      urlParsingNode.setAttribute('href', href);
+
+      // urlParsingNode provides the UrlUtils interface - http://url.spec.whatwg.org/#urlutils
+      return {
+        href: urlParsingNode.href,
+        protocol: urlParsingNode.protocol ? urlParsingNode.protocol.replace(/:$/, '') : '',
+        host: urlParsingNode.host,
+        search: urlParsingNode.search ? urlParsingNode.search.replace(/^\?/, '') : '',
+        hash: urlParsingNode.hash ? urlParsingNode.hash.replace(/^#/, '') : '',
+        hostname: urlParsingNode.hostname,
+        port: urlParsingNode.port,
+        pathname: (urlParsingNode.pathname.charAt(0) === '/') ?
+                  urlParsingNode.pathname :
+                  '/' + urlParsingNode.pathname
+      };
+    }
+
+    originURL = resolveURL(window.location.href);
+
+    /**
+    * Determine if a URL shares the same origin as the current location
+    *
+    * @param {String} requestURL The URL to test
+    * @returns {boolean} True if URL shares the same origin, otherwise false
+    */
+    return function isURLSameOrigin(requestURL) {
+      var parsed = (utils.isString(requestURL)) ? resolveURL(requestURL) : requestURL;
+      return (parsed.protocol === originURL.protocol &&
+            parsed.host === originURL.host);
+    };
+  })() :
+
+  // Non standard browser envs (web workers, react-native) lack needed support.
+  (function nonStandardBrowserEnv() {
+    return function isURLSameOrigin() {
+      return true;
+    };
+  })()
+);
+
+
+/***/ }),
+/* 314 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+// btoa polyfill for IE<10 courtesy https://github.com/davidchambers/Base64.js
+
+var chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';
+
+function E() {
+  this.message = 'String contains an invalid character';
+}
+E.prototype = new Error;
+E.prototype.code = 5;
+E.prototype.name = 'InvalidCharacterError';
+
+function btoa(input) {
+  var str = String(input);
+  var output = '';
+  for (
+    // initialize result and counter
+    var block, charCode, idx = 0, map = chars;
+    // if the next str index does not exist:
+    //   change the mapping table to "="
+    //   check if d has no fractional digits
+    str.charAt(idx | 0) || (map = '=', idx % 1);
+    // "8 - idx % 1 * 8" generates the sequence 2, 4, 6, 8
+    output += map.charAt(63 & block >> 8 - idx % 1 * 8)
+  ) {
+    charCode = str.charCodeAt(idx += 3 / 4);
+    if (charCode > 0xFF) {
+      throw new E();
+    }
+    block = block << 8 | charCode;
+  }
+  return output;
+}
+
+module.exports = btoa;
+
+
+/***/ }),
+/* 315 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var utils = __webpack_require__(16);
+
+module.exports = (
+  utils.isStandardBrowserEnv() ?
+
+  // Standard browser envs support document.cookie
+  (function standardBrowserEnv() {
+    return {
+      write: function write(name, value, expires, path, domain, secure) {
+        var cookie = [];
+        cookie.push(name + '=' + encodeURIComponent(value));
+
+        if (utils.isNumber(expires)) {
+          cookie.push('expires=' + new Date(expires).toGMTString());
+        }
+
+        if (utils.isString(path)) {
+          cookie.push('path=' + path);
+        }
+
+        if (utils.isString(domain)) {
+          cookie.push('domain=' + domain);
+        }
+
+        if (secure === true) {
+          cookie.push('secure');
+        }
+
+        document.cookie = cookie.join('; ');
+      },
+
+      read: function read(name) {
+        var match = document.cookie.match(new RegExp('(^|;\\s*)(' + name + ')=([^;]*)'));
+        return (match ? decodeURIComponent(match[3]) : null);
+      },
+
+      remove: function remove(name) {
+        this.write(name, '', Date.now() - 86400000);
+      }
+    };
+  })() :
+
+  // Non standard browser env (web workers, react-native) lack needed support.
+  (function nonStandardBrowserEnv() {
+    return {
+      write: function write() {},
+      read: function read() { return null; },
+      remove: function remove() {}
+    };
+  })()
+);
+
+
+/***/ }),
+/* 316 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var utils = __webpack_require__(16);
+
+function InterceptorManager() {
+  this.handlers = [];
+}
+
+/**
+ * Add a new interceptor to the stack
+ *
+ * @param {Function} fulfilled The function to handle `then` for a `Promise`
+ * @param {Function} rejected The function to handle `reject` for a `Promise`
+ *
+ * @return {Number} An ID used to remove interceptor later
+ */
+InterceptorManager.prototype.use = function use(fulfilled, rejected) {
+  this.handlers.push({
+    fulfilled: fulfilled,
+    rejected: rejected
+  });
+  return this.handlers.length - 1;
+};
+
+/**
+ * Remove an interceptor from the stack
+ *
+ * @param {Number} id The ID that was returned by `use`
+ */
+InterceptorManager.prototype.eject = function eject(id) {
+  if (this.handlers[id]) {
+    this.handlers[id] = null;
+  }
+};
+
+/**
+ * Iterate over all the registered interceptors
+ *
+ * This method is particularly useful for skipping over any
+ * interceptors that may have become `null` calling `eject`.
+ *
+ * @param {Function} fn The function to call for each interceptor
+ */
+InterceptorManager.prototype.forEach = function forEach(fn) {
+  utils.forEach(this.handlers, function forEachHandler(h) {
+    if (h !== null) {
+      fn(h);
+    }
+  });
+};
+
+module.exports = InterceptorManager;
+
+
+/***/ }),
+/* 317 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var utils = __webpack_require__(16);
+var transformData = __webpack_require__(318);
+var isCancel = __webpack_require__(138);
+var defaults = __webpack_require__(83);
+
+/**
+ * Throws a `Cancel` if cancellation has been requested.
+ */
+function throwIfCancellationRequested(config) {
+  if (config.cancelToken) {
+    config.cancelToken.throwIfRequested();
+  }
+}
+
+/**
+ * Dispatch a request to the server using the configured adapter.
+ *
+ * @param {object} config The config that is to be used for the request
+ * @returns {Promise} The Promise to be fulfilled
+ */
+module.exports = function dispatchRequest(config) {
+  throwIfCancellationRequested(config);
+
+  // Ensure headers exist
+  config.headers = config.headers || {};
+
+  // Transform request data
+  config.data = transformData(
+    config.data,
+    config.headers,
+    config.transformRequest
+  );
+
+  // Flatten headers
+  config.headers = utils.merge(
+    config.headers.common || {},
+    config.headers[config.method] || {},
+    config.headers || {}
+  );
+
+  utils.forEach(
+    ['delete', 'get', 'head', 'post', 'put', 'patch', 'common'],
+    function cleanHeaderConfig(method) {
+      delete config.headers[method];
+    }
+  );
+
+  var adapter = config.adapter || defaults.adapter;
+
+  return adapter(config).then(function onAdapterResolution(response) {
+    throwIfCancellationRequested(config);
+
+    // Transform response data
+    response.data = transformData(
+      response.data,
+      response.headers,
+      config.transformResponse
+    );
+
+    return response;
+  }, function onAdapterRejection(reason) {
+    if (!isCancel(reason)) {
+      throwIfCancellationRequested(config);
+
+      // Transform response data
+      if (reason && reason.response) {
+        reason.response.data = transformData(
+          reason.response.data,
+          reason.response.headers,
+          config.transformResponse
+        );
+      }
+    }
+
+    return Promise.reject(reason);
+  });
+};
+
+
+/***/ }),
+/* 318 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var utils = __webpack_require__(16);
+
+/**
+ * Transform the data for a request or a response
+ *
+ * @param {Object|String} data The data to be transformed
+ * @param {Array} headers The headers for the request or response
+ * @param {Array|Function} fns A single function or Array of functions
+ * @returns {*} The resulting transformed data
+ */
+module.exports = function transformData(data, headers, fns) {
+  /*eslint no-param-reassign:0*/
+  utils.forEach(fns, function transform(fn) {
+    data = fn(data, headers);
+  });
+
+  return data;
+};
+
+
+/***/ }),
+/* 319 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+/**
+ * Determines whether the specified URL is absolute
+ *
+ * @param {string} url The URL to test
+ * @returns {boolean} True if the specified URL is absolute, otherwise false
+ */
+module.exports = function isAbsoluteURL(url) {
+  // A URL is considered absolute if it begins with "<scheme>://" or "//" (protocol-relative URL).
+  // RFC 3986 defines scheme name as a sequence of characters beginning with a letter and followed
+  // by any combination of letters, digits, plus, period, or hyphen.
+  return /^([a-z][a-z\d\+\-\.]*:)?\/\//i.test(url);
+};
+
+
+/***/ }),
+/* 320 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+/**
+ * Creates a new URL by combining the specified URLs
+ *
+ * @param {string} baseURL The base URL
+ * @param {string} relativeURL The relative URL
+ * @returns {string} The combined URL
+ */
+module.exports = function combineURLs(baseURL, relativeURL) {
+  return relativeURL
+    ? baseURL.replace(/\/+$/, '') + '/' + relativeURL.replace(/^\/+/, '')
+    : baseURL;
+};
+
+
+/***/ }),
+/* 321 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var Cancel = __webpack_require__(139);
+
+/**
+ * A `CancelToken` is an object that can be used to request cancellation of an operation.
+ *
+ * @class
+ * @param {Function} executor The executor function.
+ */
+function CancelToken(executor) {
+  if (typeof executor !== 'function') {
+    throw new TypeError('executor must be a function.');
+  }
+
+  var resolvePromise;
+  this.promise = new Promise(function promiseExecutor(resolve) {
+    resolvePromise = resolve;
+  });
+
+  var token = this;
+  executor(function cancel(message) {
+    if (token.reason) {
+      // Cancellation has already been requested
+      return;
+    }
+
+    token.reason = new Cancel(message);
+    resolvePromise(token.reason);
+  });
+}
+
+/**
+ * Throws a `Cancel` if cancellation has been requested.
+ */
+CancelToken.prototype.throwIfRequested = function throwIfRequested() {
+  if (this.reason) {
+    throw this.reason;
+  }
+};
+
+/**
+ * Returns an object that contains a new `CancelToken` and a function that, when called,
+ * cancels the `CancelToken`.
+ */
+CancelToken.source = function source() {
+  var cancel;
+  var token = new CancelToken(function executor(c) {
+    cancel = c;
+  });
+  return {
+    token: token,
+    cancel: cancel
+  };
+};
+
+module.exports = CancelToken;
+
+
+/***/ }),
+/* 322 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+/**
+ * Syntactic sugar for invoking a function and expanding an array for arguments.
+ *
+ * Common use case would be to use `Function.prototype.apply`.
+ *
+ *  ```js
+ *  function f(x, y, z) {}
+ *  var args = [1, 2, 3];
+ *  f.apply(null, args);
+ *  ```
+ *
+ * With `spread` this example can be re-written.
+ *
+ *  ```js
+ *  spread(function(x, y, z) {})([1, 2, 3]);
+ *  ```
+ *
+ * @param {Function} callback
+ * @returns {Function}
+ */
+module.exports = function spread(callback) {
+  return function wrap(arr) {
+    return callback.apply(null, arr);
+  };
+};
+
+
+/***/ }),
+/* 323 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _require = __webpack_require__(324),
+    CopyToClipboard = _require.CopyToClipboard;
+
+module.exports = CopyToClipboard;
+
+/***/ }),
+/* 324 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.CopyToClipboard = undefined;
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(9);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _copyToClipboard = __webpack_require__(325);
+
+var _copyToClipboard2 = _interopRequireDefault(_copyToClipboard);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var CopyToClipboard = exports.CopyToClipboard = function (_React$PureComponent) {
+  _inherits(CopyToClipboard, _React$PureComponent);
+
+  function CopyToClipboard() {
+    var _ref;
+
+    var _temp, _this, _ret;
+
+    _classCallCheck(this, CopyToClipboard);
+
+    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+
+    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = CopyToClipboard.__proto__ || Object.getPrototypeOf(CopyToClipboard)).call.apply(_ref, [this].concat(args))), _this), _this.onClick = function (event) {
+      var _this$props = _this.props,
+          text = _this$props.text,
+          onCopy = _this$props.onCopy,
+          children = _this$props.children,
+          options = _this$props.options;
+
+
+      var elem = _react2.default.Children.only(children);
+
+      var result = (0, _copyToClipboard2.default)(text, options);
+
+      if (onCopy) {
+        onCopy(text, result);
+      }
+
+      // Bypass onClick if it was present
+      if (elem && elem.props && typeof elem.props.onClick === 'function') {
+        elem.props.onClick(event);
+      }
+    }, _temp), _possibleConstructorReturn(_this, _ret);
+  }
+
+  _createClass(CopyToClipboard, [{
+    key: 'render',
+    value: function render() {
+      var _props = this.props,
+          _text = _props.text,
+          _onCopy = _props.onCopy,
+          _options = _props.options,
+          children = _props.children,
+          props = _objectWithoutProperties(_props, ['text', 'onCopy', 'options', 'children']);
+
+      var elem = _react2.default.Children.only(children);
+
+      return _react2.default.cloneElement(elem, _extends({}, props, { onClick: this.onClick }));
+    }
+  }]);
+
+  return CopyToClipboard;
+}(_react2.default.PureComponent);
+
+/***/ }),
+/* 325 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var deselectCurrent = __webpack_require__(326);
+
+var defaultMessage = 'Copy to clipboard: #{key}, Enter';
+
+function format(message) {
+  var copyKey = (/mac os x/i.test(navigator.userAgent) ? '⌘' : 'Ctrl') + '+C';
+  return message.replace(/#{\s*key\s*}/g, copyKey);
+}
+
+function copy(text, options) {
+  var debug, message, reselectPrevious, range, selection, mark, success = false;
+  if (!options) { options = {}; }
+  debug = options.debug || false;
+  try {
+    reselectPrevious = deselectCurrent();
+
+    range = document.createRange();
+    selection = document.getSelection();
+
+    mark = document.createElement('span');
+    mark.textContent = text;
+    // reset user styles for span element
+    mark.style.all = 'unset';
+    // prevents scrolling to the end of the page
+    mark.style.position = 'fixed';
+    mark.style.top = 0;
+    mark.style.clip = 'rect(0, 0, 0, 0)';
+    // used to preserve spaces and line breaks
+    mark.style.whiteSpace = 'pre';
+    // do not inherit user-select (it may be `none`)
+    mark.style.webkitUserSelect = 'text';
+    mark.style.MozUserSelect = 'text';
+    mark.style.msUserSelect = 'text';
+    mark.style.userSelect = 'text';
+
+    document.body.appendChild(mark);
+
+    range.selectNode(mark);
+    selection.addRange(range);
+
+    var successful = document.execCommand('copy');
+    if (!successful) {
+      throw new Error('copy command was unsuccessful');
+    }
+    success = true;
+  } catch (err) {
+    debug && console.error('unable to copy using execCommand: ', err);
+    debug && console.warn('trying IE specific stuff');
+    try {
+      window.clipboardData.setData('text', text);
+      success = true;
+    } catch (err) {
+      debug && console.error('unable to copy using clipboardData: ', err);
+      debug && console.error('falling back to prompt');
+      message = format('message' in options ? options.message : defaultMessage);
+      window.prompt(message, text);
+    }
+  } finally {
+    if (selection) {
+      if (typeof selection.removeRange == 'function') {
+        selection.removeRange(range);
+      } else {
+        selection.removeAllRanges();
+      }
+    }
+
+    if (mark) {
+      document.body.removeChild(mark);
+    }
+    reselectPrevious();
+  }
+
+  return success;
+}
+
+module.exports = copy;
+
+
+/***/ }),
+/* 326 */
+/***/ (function(module, exports) {
+
+
+module.exports = function () {
+  var selection = document.getSelection();
+  if (!selection.rangeCount) {
+    return function () {};
+  }
+  var active = document.activeElement;
+
+  var ranges = [];
+  for (var i = 0; i < selection.rangeCount; i++) {
+    ranges.push(selection.getRangeAt(i));
+  }
+
+  switch (active.tagName.toUpperCase()) { // .toUpperCase handles XHTML
+    case 'INPUT':
+    case 'TEXTAREA':
+      active.blur();
+      break;
+
+    default:
+      active = null;
+      break;
+  }
+
+  selection.removeAllRanges();
+  return function () {
+    selection.type === 'Caret' &&
+    selection.removeAllRanges();
+
+    if (!selection.rangeCount) {
+      ranges.forEach(function(range) {
+        selection.addRange(range);
+      });
+    }
+
+    active &&
+    active.focus();
+  };
+};
+
+
+/***/ }),
+/* 327 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = {
+  address: __webpack_require__(84),
+  config: __webpack_require__(57),
+  zaddress: __webpack_require__(381),
+  crypto: __webpack_require__(94),
+  transaction: __webpack_require__(427)
+};
 
 /***/ }),
 /* 328 */
