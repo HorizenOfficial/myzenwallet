@@ -46278,24 +46278,23 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-function AlertExample() {
-  return _react2.default.createElement(
-    _reactstrap.UncontrolledAlert,
-    { color: 'info' },
-    'I am an alert and I can be dismissed!'
-  );
-}
-
 // Append url
 function urlAppend(url, param) {
   if (url.substr(-1) !== '/') {
     url = url + '/';
   }
+
   return url + param;
 }
 
-// Components
+// Unlock wallet enum
+var UNLOCK_WALLET_TYPE = {
+  IMPORT_WALLET: 0,
+  IMPORT_PRIV_KEY: 1,
+  PASTE_PRIV_KEY: 2
 
+  // Components
+};
 var ToolTipButton = function (_React$Component) {
   _inherits(ToolTipButton, _React$Component);
 
@@ -46429,12 +46428,19 @@ var ZWalletUnlockKey = function (_React$Component3) {
 
     var _this3 = _possibleConstructorReturn(this, (ZWalletUnlockKey.__proto__ || Object.getPrototypeOf(ZWalletUnlockKey)).call(this, props));
 
+    _this3.loadWalletDat = _this3.loadWalletDat.bind(_this3);
     _this3.toggleShowPassword = _this3.toggleShowPassword.bind(_this3);
     _this3.unlockPrivateKey = _this3.unlockPrivateKey.bind(_this3);
 
     _this3.state = {
       showPassword: false,
-      invalidPrivateKey: false
+      invalidPrivateKey: false,
+
+      // Style for input button
+      inputFileStyle: {
+        WebkitAppearance: 'button',
+        cursor: 'pointer'
+      }
     };
     return _this3;
   }
@@ -46452,6 +46458,8 @@ var ZWalletUnlockKey = function (_React$Component3) {
       // Success = return 0
       var success = this.props.handleUnlockPrivateKey() === 0;
 
+      this.loadWalletDat = this.loadWalletDat.bind(this);
+
       if (!success) {
         this.setState({
           invalidPrivateKey: true
@@ -46459,49 +46467,101 @@ var ZWalletUnlockKey = function (_React$Component3) {
       }
     }
   }, {
+    key: 'loadWalletDat',
+    value: function loadWalletDat(e) {
+      var reader = new FileReader();
+      var file = e.target.files[0];
+
+      reader.onloadend = function () {
+        var dataHexStr = reader.result;
+        var re = /\x30\x81\xD3\x02\x01\x01\x04\x20(.{32})/gm;
+        var privateKeys = dataHexStr.match(re);
+        privateKeys = privateKeys.map(function (x) {
+          return x.replace('\x30\x81\xD3\x02\x01\x01\x04\x20', '');
+        });
+        console.log('Found ' + privateKeys.length + ' keys');
+      };
+
+      reader.readAsBinaryString(file);
+    }
+  }, {
     key: 'render',
     value: function render() {
       var _this4 = this;
 
-      return _react2.default.createElement(
-        'div',
-        null,
-        this.state.invalidPrivateKey ? _react2.default.createElement(
-          _reactstrap.Alert,
-          { color: 'danger' },
-          _react2.default.createElement(
-            'strong',
-            null,
-            'Error.'
-          ),
-          '\xA0Invalid private key'
-        ) : '',
-        _react2.default.createElement(
-          _reactstrap.InputGroup,
+      if (this.props.unlockType == UNLOCK_WALLET_TYPE.IMPORT_WALLET) {
+        return _react2.default.createElement(
+          _reactstrap.Form,
           null,
           _react2.default.createElement(
-            _reactstrap.InputGroupButton,
-            null,
-            _react2.default.createElement(ToolTipButton, { id: 4,
-              onClick: this.toggleShowPassword,
-              buttonText: this.state.showPassword ? _react2.default.createElement(_eye2.default, null) : _react2.default.createElement(_eyeSlash2.default, null),
-              tooltipText: this.state.showPassword ? 'show password' : 'hide password'
-            })
-          ),
-          _react2.default.createElement(_reactstrap.Input, {
-            type: this.state.showPassword ? "text" : "password",
-            onChange: function onChange(e) {
-              return _this4.props.setPrivateKey(e.target.value);
-            },
-            placeholder: 'Private key'
-          }),
-          _react2.default.createElement(
-            _reactstrap.InputGroupButton,
-            null,
-            _react2.default.createElement(ToolTipButton, { onClick: this.unlockPrivateKey, id: 3, buttonText: _react2.default.createElement(_unlockAlt2.default, null), tooltipText: 'unlock' })
+            _reactstrap.FormGroup,
+            { row: true },
+            _react2.default.createElement(
+              _reactstrap.Col,
+              null,
+              _react2.default.createElement(
+                _reactstrap.Label,
+                { 'for': 'walletDatFile', className: 'btn btn-block btn-secondary', style: this.state.inputFileStyle },
+                'Select wallet.dat file',
+                _react2.default.createElement(_reactstrap.Input, {
+                  style: { display: 'none' },
+                  type: 'file',
+                  name: 'file',
+                  id: 'walletDatFile',
+                  onChange: this.loadWalletDat
+                })
+              ),
+              _react2.default.createElement(
+                _reactstrap.FormText,
+                { color: 'muted' },
+                'For Windows, it should be in %APPDATA%/zen',
+                _react2.default.createElement('br', null),
+                'For Mac/Linux, it should be in ~/.zen'
+              )
+            )
           )
-        )
-      );
+        );
+      } else if (this.props.unlockType == UNLOCK_WALLET_TYPE.PASTE_PRIV_KEY) {
+        return _react2.default.createElement(
+          'div',
+          null,
+          this.state.invalidPrivateKey ? _react2.default.createElement(
+            _reactstrap.Alert,
+            { color: 'danger' },
+            _react2.default.createElement(
+              'strong',
+              null,
+              'Error.'
+            ),
+            '\xA0Invalid private key'
+          ) : '',
+          _react2.default.createElement(
+            _reactstrap.InputGroup,
+            null,
+            _react2.default.createElement(
+              _reactstrap.InputGroupButton,
+              null,
+              _react2.default.createElement(ToolTipButton, { id: 4,
+                onClick: this.toggleShowPassword,
+                buttonText: this.state.showPassword ? _react2.default.createElement(_eye2.default, null) : _react2.default.createElement(_eyeSlash2.default, null),
+                tooltipText: this.state.showPassword ? 'show password' : 'hide password'
+              })
+            ),
+            _react2.default.createElement(_reactstrap.Input, {
+              type: this.state.showPassword ? "text" : "password",
+              onChange: function onChange(e) {
+                return _this4.props.setPrivateKey(e.target.value);
+              },
+              placeholder: 'Private key'
+            }),
+            _react2.default.createElement(
+              _reactstrap.InputGroupButton,
+              null,
+              _react2.default.createElement(ToolTipButton, { onClick: this.unlockPrivateKey, id: 3, buttonText: _react2.default.createElement(_unlockAlt2.default, null), tooltipText: 'unlock' })
+            )
+          )
+        );
+      }
     }
   }]);
 
@@ -46533,6 +46593,14 @@ var ZWalletSettings = function (_React$Component4) {
         _react2.default.createElement(
           _reactstrap.ModalBody,
           null,
+          _react2.default.createElement(
+            'p',
+            null,
+            _react2.default.createElement(ZWalletSelectUnlockType, {
+              setUnlockType: this.props.setUnlockType,
+              unlockType: this.props.settings.unlockType
+            })
+          ),
           _react2.default.createElement(
             _reactstrap.InputGroup,
             null,
@@ -47115,19 +47183,76 @@ var ZSendZEN = function (_React$Component6) {
   return ZSendZEN;
 }(_react2.default.Component);
 
-var ZWalletTabs = function (_React$Component7) {
-  _inherits(ZWalletTabs, _React$Component7);
+var ZWalletSelectUnlockType = function (_React$Component7) {
+  _inherits(ZWalletSelectUnlockType, _React$Component7);
+
+  function ZWalletSelectUnlockType(props) {
+    _classCallCheck(this, ZWalletSelectUnlockType);
+
+    var _this9 = _possibleConstructorReturn(this, (ZWalletSelectUnlockType.__proto__ || Object.getPrototypeOf(ZWalletSelectUnlockType)).call(this, props));
+
+    _this9.state = { cSelected: _this9.props.unlockType };
+    return _this9;
+  }
+
+  _createClass(ZWalletSelectUnlockType, [{
+    key: 'onRadioBtnClick',
+    value: function onRadioBtnClick(s) {
+      this.setState({
+        cSelected: s
+      });
+
+      this.props.setUnlockType(s);
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      var _this10 = this;
+
+      return _react2.default.createElement(
+        _reactstrap.ButtonGroup,
+        null,
+        _react2.default.createElement(
+          _reactstrap.Button,
+          { color: 'secondary', onClick: function onClick() {
+              return _this10.onRadioBtnClick(UNLOCK_WALLET_TYPE.IMPORT_WALLET);
+            }, active: this.state.cSelected === UNLOCK_WALLET_TYPE.IMPORT_WALLET },
+          'Load wallet.dat'
+        ),
+        _react2.default.createElement(
+          _reactstrap.Button,
+          { color: 'secondary', onClick: function onClick() {
+              return _this10.onRadioBtnClick(UNLOCK_WALLET_TYPE.IMPORT_PRIV_KEY);
+            }, active: this.state.cSelected === UNLOCK_WALLET_TYPE.IMPORT_PRIV_KEY },
+          'Load private keys'
+        ),
+        _react2.default.createElement(
+          _reactstrap.Button,
+          { color: 'secondary', onClick: function onClick() {
+              return _this10.onRadioBtnClick(UNLOCK_WALLET_TYPE.PASTE_PRIV_KEY);
+            }, active: this.state.cSelected === UNLOCK_WALLET_TYPE.PASTE_PRIV_KEY },
+          'Paste private key'
+        )
+      );
+    }
+  }]);
+
+  return ZWalletSelectUnlockType;
+}(_react2.default.Component);
+
+var ZWalletTabs = function (_React$Component8) {
+  _inherits(ZWalletTabs, _React$Component8);
 
   function ZWalletTabs(props) {
     _classCallCheck(this, ZWalletTabs);
 
-    var _this9 = _possibleConstructorReturn(this, (ZWalletTabs.__proto__ || Object.getPrototypeOf(ZWalletTabs)).call(this, props));
+    var _this11 = _possibleConstructorReturn(this, (ZWalletTabs.__proto__ || Object.getPrototypeOf(ZWalletTabs)).call(this, props));
 
-    _this9.toggleTabs = _this9.toggleTabs.bind(_this9);
-    _this9.state = {
+    _this11.toggleTabs = _this11.toggleTabs.bind(_this11);
+    _this11.state = {
       activeTab: '1'
     };
-    return _this9;
+    return _this11;
   }
 
   _createClass(ZWalletTabs, [{
@@ -47142,7 +47267,7 @@ var ZWalletTabs = function (_React$Component7) {
   }, {
     key: 'render',
     value: function render() {
-      var _this10 = this;
+      var _this12 = this;
 
       return _react2.default.createElement(
         'div',
@@ -47158,7 +47283,7 @@ var ZWalletTabs = function (_React$Component7) {
               {
                 className: (0, _classnames2.default)({ active: this.state.activeTab === '1' }),
                 onClick: function onClick() {
-                  _this10.toggleTabs('1');
+                  _this12.toggleTabs('1');
                 }
               },
               'Info'
@@ -47172,7 +47297,7 @@ var ZWalletTabs = function (_React$Component7) {
               {
                 className: (0, _classnames2.default)({ active: this.state.activeTab === '2' }),
                 onClick: function onClick() {
-                  _this10.toggleTabs('2');
+                  _this12.toggleTabs('2');
                 }
               },
               'Send ZEN'
@@ -47207,24 +47332,25 @@ var ZWalletTabs = function (_React$Component7) {
   return ZWalletTabs;
 }(_react2.default.Component);
 
-var ZWallet = function (_React$Component8) {
-  _inherits(ZWallet, _React$Component8);
+var ZWallet = function (_React$Component9) {
+  _inherits(ZWallet, _React$Component9);
 
   function ZWallet(props) {
     _classCallCheck(this, ZWallet);
 
-    var _this11 = _possibleConstructorReturn(this, (ZWallet.__proto__ || Object.getPrototypeOf(ZWallet)).call(this, props));
+    var _this13 = _possibleConstructorReturn(this, (ZWallet.__proto__ || Object.getPrototypeOf(ZWallet)).call(this, props));
 
-    _this11.resetKeys = _this11.resetKeys.bind(_this11);
-    _this11.handleUnlockPrivateKey = _this11.handleUnlockPrivateKey.bind(_this11);
-    _this11.setPrivateKey = _this11.setPrivateKey.bind(_this11);
-    _this11.setInsightAPI = _this11.setInsightAPI.bind(_this11);
-    _this11.toggleUseTestNet = _this11.toggleUseTestNet.bind(_this11);
-    _this11.toggleCompressPubKey = _this11.toggleCompressPubKey.bind(_this11);
-    _this11.toggleShowSettings = _this11.toggleShowSettings.bind(_this11);
-    _this11.toggleShowWalletGen = _this11.toggleShowWalletGen.bind(_this11);
+    _this13.resetKeys = _this13.resetKeys.bind(_this13);
+    _this13.handleUnlockPrivateKey = _this13.handleUnlockPrivateKey.bind(_this13);
+    _this13.setPrivateKey = _this13.setPrivateKey.bind(_this13);
+    _this13.setInsightAPI = _this13.setInsightAPI.bind(_this13);
+    _this13.setUnlockType = _this13.setUnlockType.bind(_this13);
+    _this13.toggleUseTestNet = _this13.toggleUseTestNet.bind(_this13);
+    _this13.toggleCompressPubKey = _this13.toggleCompressPubKey.bind(_this13);
+    _this13.toggleShowSettings = _this13.toggleShowSettings.bind(_this13);
+    _this13.toggleShowWalletGen = _this13.toggleShowWalletGen.bind(_this13);
 
-    _this11.state = {
+    _this13.state = {
       privateKey: '',
       publicAddress: null,
       settings: {
@@ -47233,10 +47359,11 @@ var ZWallet = function (_React$Component8) {
         compressPubKey: true,
         insightAPI: 'https://explorer.zensystem.io/insight-api-zen/',
         explorerURL: 'https://explorer.zensystem.io/insight/',
-        useTestNet: false
+        useTestNet: false,
+        unlockType: UNLOCK_WALLET_TYPE.IMPORT_WALLET
       }
     };
-    return _this11;
+    return _this13;
   }
 
   _createClass(ZWallet, [{
@@ -47303,6 +47430,16 @@ var ZWallet = function (_React$Component8) {
       });
     }
   }, {
+    key: 'setUnlockType',
+    value: function setUnlockType(t) {
+      var _settings = this.state.settings;
+      _settings.unlockType = t;
+
+      this.setState({
+        _settings: _settings
+      });
+    }
+  }, {
     key: 'toggleCompressPubKey',
     value: function toggleCompressPubKey(b) {
       var _settings = this.state.settings;
@@ -47361,7 +47498,7 @@ var ZWallet = function (_React$Component8) {
           null,
           _react2.default.createElement(
             _reactstrap.Col,
-            null,
+            { md: { size: 8, offset: 2 } },
             _react2.default.createElement(
               'h1',
               { className: 'display-6' },
@@ -47371,6 +47508,7 @@ var ZWallet = function (_React$Component8) {
               _react2.default.createElement(ToolTipButton, { disabled: this.state.publicAddress === null, onClick: this.resetKeys, id: 2, buttonText: _react2.default.createElement(_repeat2.default, null), tooltipText: 'reset wallet' })
             ),
             _react2.default.createElement(ZWalletSettings, {
+              setUnlockType: this.setUnlockType,
               toggleShowSettings: this.toggleShowSettings,
               toggleCompressPubKey: this.toggleCompressPubKey,
               toggleShowWalletGen: this.toggleShowWalletGen,
@@ -47387,11 +47525,16 @@ var ZWallet = function (_React$Component8) {
           null,
           _react2.default.createElement(
             _reactstrap.Col,
-            null,
-            this.state.publicAddress === null ? _react2.default.createElement(ZWalletUnlockKey, {
-              handleUnlockPrivateKey: this.handleUnlockPrivateKey,
-              setPrivateKey: this.setPrivateKey
-            }) : _react2.default.createElement(ZWalletTabs, {
+            { md: { size: 8, offset: 2 } },
+            this.state.publicAddress === null ? _react2.default.createElement(
+              'div',
+              null,
+              _react2.default.createElement(ZWalletUnlockKey, {
+                handleUnlockPrivateKey: this.handleUnlockPrivateKey,
+                setPrivateKey: this.setPrivateKey,
+                unlockType: this.state.settings.unlockType
+              })
+            ) : _react2.default.createElement(ZWalletTabs, {
               publicAddress: this.state.publicAddress,
               settings: this.state.settings,
               privateKey: this.state.privateKey

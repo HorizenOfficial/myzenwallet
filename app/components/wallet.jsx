@@ -1,4 +1,4 @@
-import { Alert, UncontrolledAlert, Tooltip, CardBlock, CardFooter, Modal, ModalHeader, ModalBody, ModalFooter, ListGroup, ListGroupItem, Badge, Progress, FormGroup, Label, Container, Jumbotron, TabContent, InputGroup, Input, InputGroupAddon, InputGroupButton, Table, TabPane, Nav, NavItem, NavLink, Card, CardSubtitle, Button, CardTitle, CardText, Row, Col } from 'reactstrap';
+import { Alert, Form, FormText, ButtonGroup, UncontrolledAlert, Tooltip, CardBlock, CardFooter, Modal, ModalHeader, ModalBody, ModalFooter, ListGroup, ListGroupItem, Badge, Progress, FormGroup, Label, Container, Jumbotron, TabContent, InputGroup, Input, InputGroupAddon, InputGroupButton, Table, TabPane, Nav, NavItem, NavLink, Card, CardSubtitle, Button, CardTitle, CardText, Row, Col } from 'reactstrap';
 
 import axios from 'axios'
 import React from 'react'
@@ -13,21 +13,21 @@ import FAUnlock from 'react-icons/lib/fa/unlock-alt'
 import FAEyeSlash from 'react-icons/lib/fa/eye-slash'
 import FAEye from 'react-icons/lib/fa/eye'
 
-function AlertExample() {
-  return (
-    <UncontrolledAlert color="info">
-      I am an alert and I can be dismissed!
-    </UncontrolledAlert>
-  );
-}
-
 
 // Append url
 function urlAppend(url, param){
   if (url.substr(-1) !== '/'){
     url = url + '/'
   }
+
   return url + param
+}
+
+// Unlock wallet enum
+var UNLOCK_WALLET_TYPE = {
+  IMPORT_WALLET: 0,
+  IMPORT_PRIV_KEY: 1,
+  PASTE_PRIV_KEY: 2
 }
 
 // Components
@@ -117,12 +117,19 @@ class ZWalletUnlockKey extends React.Component {
   constructor(props){
     super(props)
 
+    this.loadWalletDat = this.loadWalletDat.bind(this)
     this.toggleShowPassword = this.toggleShowPassword.bind(this)
     this.unlockPrivateKey = this.unlockPrivateKey.bind(this)
 
     this.state = {
       showPassword: false,
-      invalidPrivateKey: false
+      invalidPrivateKey: false,
+
+      // Style for input button
+      inputFileStyle: {
+          WebkitAppearance: 'button',
+          cursor: 'pointer'
+      }   
     }
   }
 
@@ -136,36 +143,79 @@ class ZWalletUnlockKey extends React.Component {
     // Success = return 0
     const success = this.props.handleUnlockPrivateKey() === 0    
     
+    this.loadWalletDat = this.loadWalletDat.bind(this)
+
     if (!success){
       this.setState({
-        invalidPrivateKey: true
+        invalidPrivateKey: true, 
       })
     }
   }
 
+  loadWalletDat(e){    
+    var reader = new FileReader()
+    var file = e.target.files[0]
+
+    reader.onloadend = () => {
+      var dataHexStr = reader.result
+      var re = /\x30\x81\xD3\x02\x01\x01\x04\x20(.{32})/gm
+      var privateKeys = dataHexStr.match(re)
+      privateKeys = privateKeys.map(x => x.replace('\x30\x81\xD3\x02\x01\x01\x04\x20', ''))
+      console.log('Found ' + privateKeys.length + ' keys')
+    }    
+
+    reader.readAsBinaryString(file)
+  }
+
   render () {
-    return (
-      <div>
-        {this.state.invalidPrivateKey ? <Alert color="danger"><strong>Error.</strong>&nbsp;Invalid private key</Alert> : ''}
-        <InputGroup>                                       
-          <InputGroupButton>
-            <ToolTipButton id={4}
-              onClick={this.toggleShowPassword}
-              buttonText={this.state.showPassword? <FAEye/> : <FAEyeSlash/>}
-              tooltipText={this.state.showPassword? 'show password' : 'hide password'}
+    if (this.props.unlockType == UNLOCK_WALLET_TYPE.IMPORT_WALLET){
+      return (
+        <Form>
+          <FormGroup row>            
+            <Col>
+              <Label for="walletDatFile" className="btn btn-block btn-secondary" style={this.state.inputFileStyle}>Select wallet.dat file
+                <Input
+                  style={{display: 'none'}}
+                  type="file"                 
+                  name="file"
+                  id="walletDatFile"                
+                  onChange={this.loadWalletDat}
+                />
+              </Label>
+              <FormText color="muted">
+                For Windows, it should be in %APPDATA%/zen<br/>
+                For Mac/Linux, it should be in ~/.zen
+              </FormText>
+            </Col>
+          </FormGroup>
+        </Form>
+      )
+    }
+
+    else if (this.props.unlockType == UNLOCK_WALLET_TYPE.PASTE_PRIV_KEY){
+      return (
+        <div>
+          {this.state.invalidPrivateKey ? <Alert color="danger"><strong>Error.</strong>&nbsp;Invalid private key</Alert> : ''}
+          <InputGroup>                                       
+            <InputGroupButton>
+              <ToolTipButton id={4}
+                onClick={this.toggleShowPassword}
+                buttonText={this.state.showPassword? <FAEye/> : <FAEyeSlash/>}
+                tooltipText={this.state.showPassword? 'show password' : 'hide password'}
+              />
+            </InputGroupButton>
+            <Input
+              type={this.state.showPassword ? "text" : "password"}
+              onChange={(e) => this.props.setPrivateKey(e.target.value)}
+              placeholder="Private key"
             />
-          </InputGroupButton>
-          <Input
-            type={this.state.showPassword ? "text" : "password"}
-            onChange={(e) => this.props.setPrivateKey(e.target.value)}
-            placeholder="Private key"
-          />
-          <InputGroupButton> 
-            <ToolTipButton onClick={this.unlockPrivateKey} id={3} buttonText={<FAUnlock/>} tooltipText={'unlock'}/>
-          </InputGroupButton>
-        </InputGroup>
-      </div>
-    )
+            <InputGroupButton> 
+              <ToolTipButton onClick={this.unlockPrivateKey} id={3} buttonText={<FAUnlock/>} tooltipText={'unlock'}/>
+            </InputGroupButton>
+          </InputGroup>
+        </div>
+      )
+    }
   }
 }
 
@@ -173,8 +223,15 @@ class ZWalletSettings extends React.Component {
   render () {
     return (
       <Modal isOpen={this.props.settings.showSettings} toggle={this.props.toggleModalSettings}>
-        <ModalHeader toggle={this.props.toggleShowSettings}>ZenCash Wallet Settings</ModalHeader>
+        <ModalHeader toggle={this.props.toggleShowSettings}>ZenCash Wallet Settings</ModalHeader>                  
         <ModalBody>
+          <p>
+            <ZWalletSelectUnlockType
+              setUnlockType={this.props.setUnlockType}
+              unlockType={this.props.settings.unlockType}
+            />
+          </p>
+
           <InputGroup>
             <InputGroupAddon>Insight API</InputGroupAddon>
             <Input 
@@ -203,7 +260,7 @@ class ZWalletSettings extends React.Component {
               </Label>
             </Col>
           </Row>
-        </ModalBody>
+        </ModalBody>        
         <ModalFooter>
           <Label>
             <Input
@@ -585,6 +642,32 @@ class ZSendZEN extends React.Component {
   }
 }
 
+class ZWalletSelectUnlockType extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = { cSelected: this.props.unlockType }
+  }
+
+  onRadioBtnClick(s){
+    this.setState({
+      cSelected: s
+    })
+
+    this.props.setUnlockType(s)
+  }
+
+  render() {
+    return (              
+      <ButtonGroup>
+        <Button color="secondary" onClick={() => this.onRadioBtnClick(UNLOCK_WALLET_TYPE.IMPORT_WALLET)} active={this.state.cSelected === UNLOCK_WALLET_TYPE.IMPORT_WALLET}>Load wallet.dat</Button>
+        <Button color="secondary" onClick={() => this.onRadioBtnClick(UNLOCK_WALLET_TYPE.IMPORT_PRIV_KEY)} active={this.state.cSelected === UNLOCK_WALLET_TYPE.IMPORT_PRIV_KEY}>Load private keys</Button>
+        <Button color="secondary" onClick={() => this.onRadioBtnClick(UNLOCK_WALLET_TYPE.PASTE_PRIV_KEY)} active={this.state.cSelected === UNLOCK_WALLET_TYPE.PASTE_PRIV_KEY}>Paste private key</Button>
+      </ButtonGroup>      
+    )
+  }
+}
+
 class ZWalletTabs extends React.Component {
   constructor(props){
     super(props)
@@ -651,7 +734,8 @@ export default class ZWallet extends React.Component {
     this.resetKeys = this.resetKeys.bind(this)
     this.handleUnlockPrivateKey = this.handleUnlockPrivateKey.bind(this)
     this.setPrivateKey = this.setPrivateKey.bind(this)        
-    this.setInsightAPI = this.setInsightAPI.bind(this)    
+    this.setInsightAPI = this.setInsightAPI.bind(this)
+    this.setUnlockType = this.setUnlockType.bind(this)
     this.toggleUseTestNet = this.toggleUseTestNet.bind(this)
     this.toggleCompressPubKey = this.toggleCompressPubKey.bind(this)
     this.toggleShowSettings = this.toggleShowSettings.bind(this)
@@ -666,7 +750,8 @@ export default class ZWallet extends React.Component {
         compressPubKey: true,
         insightAPI: 'https://explorer.zensystem.io/insight-api-zen/',
         explorerURL: 'https://explorer.zensystem.io/insight/',
-        useTestNet: false
+        useTestNet: false,
+        unlockType: UNLOCK_WALLET_TYPE.IMPORT_WALLET
       }
     };    
   }
@@ -729,6 +814,15 @@ export default class ZWallet extends React.Component {
     })
   }  
 
+  setUnlockType(t){
+    var _settings = this.state.settings
+    _settings.unlockType = t
+
+    this.setState({
+      _settings: _settings
+    })
+  }
+
   toggleCompressPubKey(b){
     var _settings = this.state.settings
     _settings.compressPubKey = !_settings.compressPubKey    
@@ -778,12 +872,13 @@ export default class ZWallet extends React.Component {
     return (
       <Container>
         <Row>
-          <Col>            
+          <Col md={{size: 8, offset: 2}}>     
             <h1 className='display-6'>ZenCash Wallet&nbsp;
               <ToolTipButton onClick={this.toggleShowSettings} id={1} buttonText={<MDSettings/>} tooltipText={'settings'}/>&nbsp;
               <ToolTipButton disabled={this.state.publicAddress === null} onClick={this.resetKeys} id={2} buttonText={<FARepeat/>} tooltipText={'reset wallet'}/>
             </h1>            
             <ZWalletSettings 
+              setUnlockType={this.setUnlockType}
               toggleShowSettings={this.toggleShowSettings}
               toggleCompressPubKey={this.toggleCompressPubKey}           
               toggleShowWalletGen={this.toggleShowWalletGen}
@@ -796,12 +891,17 @@ export default class ZWallet extends React.Component {
           </Col>
         </Row>
         <Row>
-          <Col>            
+          <Col md={{size: 8, offset: 2}}>
             { this.state.publicAddress === null ?
-              (<ZWalletUnlockKey
-                handleUnlockPrivateKey={this.handleUnlockPrivateKey}
-                setPrivateKey={this.setPrivateKey}
-              />)
+              (
+                <div>                                
+                  <ZWalletUnlockKey
+                  handleUnlockPrivateKey={this.handleUnlockPrivateKey}
+                  setPrivateKey={this.setPrivateKey}
+                  unlockType={this.state.settings.unlockType}
+                  />
+                </div>
+              )
               :
               (<ZWalletTabs
                 publicAddress={this.state.publicAddress}
