@@ -1,4 +1,5 @@
 import { Alert, Form, FormText, ButtonGroup, UncontrolledAlert, Tooltip, CardBlock, CardFooter, Modal, ModalHeader, ModalBody, ModalFooter, ListGroup, ListGroupItem, Badge, Progress, FormGroup, Label, Container, Jumbotron, TabContent, InputGroup, Input, InputGroupAddon, InputGroupButton, Table, TabPane, Nav, NavItem, NavLink, Card, CardSubtitle, Button, CardTitle, CardText, Row, Col } from 'reactstrap';
+import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 
 import axios from 'axios'
 import React from 'react'
@@ -409,16 +410,15 @@ class ZAddressInfo extends React.Component {
       if (key !== undefined){
         // Add to address    
         addresses.push(
-          <tr>
-            <th scope="row"><a href={this.props.publicAddresses[key].transactionURL}>{key}</a></th>
-            <td>
-              <CopyToClipboard text={this.props.publicAddresses[key].privateKeyWIF}>
-                <ToolTipButton id={key} buttonText={<MDCopy/>} tooltipText={'copy wif private key'}/>                
-              </CopyToClipboard>
-            </td>
-            <td>{this.props.publicAddresses[key].confirmedBalance}</td>
-            <td>{this.props.publicAddresses[key].unconfirmedBalance}</td>                      
-          </tr>
+          {
+            address: {
+              address: key,
+              transactionURL: this.props.publicAddresses[key].transactionURL
+            },
+            privateKeyWIF: this.props.publicAddresses[key].privateKeyWIF,
+            confirmedBalance: this.props.publicAddresses[key].confirmedBalance,
+            unconfirmedBalance: this.props.publicAddresses[key].unconfirmedBalance
+          }
         )
 
         const c_confirmed = Number(this.props.publicAddresses[key].confirmedBalance)
@@ -431,56 +431,61 @@ class ZAddressInfo extends React.Component {
           totalUnconfirmed += c_unconfirmed
         }
       }
-    }.bind(this))    
+    }.bind(this))  
+
+    // <tr>
+    //   <th scope="row"><a href={this.props.publicAddresses[key].transactionURL}>{key}</a></th>
+    //   <td>
+        // <CopyToClipboard text={this.props.publicAddresses[key].privateKeyWIF}>
+        //   <ToolTipButton id={key} buttonText={<MDCopy/>} tooltipText={'copy wif private key'}/>                
+        // </CopyToClipboard>
+    //   </td>
+    //   <td>{this.props.publicAddresses[key].confirmedBalance}</td>
+    //   <td>{this.props.publicAddresses[key].unconfirmedBalance}</td>                      
+    // </tr>
+    
+    // Functions to format data in table
+    function tableAddressFormatter(cell, row) {
+      return '<a href="' + cell.transactionURL + '">' + cell.address + '</a>'
+    }
+
+    function tableWIFFormatter(cell, row) {
+      return (
+        <CopyToClipboard text={cell}>
+          <ToolTipButton id={cell} buttonText={<MDCopy/>} tooltipText={'copy wif private key'}/>                
+        </CopyToClipboard>
+      )
+    }
 
     return (
       <Row>
         <Col>     
           <Card>
-            <CardBlock>                    
-              <CardText>
-                {this.state.retrieveAddressError ?
-                <Alert color="danger">Error connecting to the Insight API. Double check the Insight API supplied in settings.</Alert>
-                :
-                <Alert color="warning">The balance displayed here is dependent on the insight node.<br/>Automatically updates every 5 minutes.</Alert>
-                }                
-                <ToolTipButton onClick={this.updateAddressesInfo} id={5} buttonText={<MDRefresh/>} tooltipText={'manually refresh balance'}/>                
-              </CardText>         
+            <CardBlock>                                  
+              {this.state.retrieveAddressError ?
+              <Alert color="danger">Error connecting to the Insight API. Double check the Insight API supplied in settings.</Alert>
+              :
+              <Alert color="warning">The balance displayed here is dependent on the insight node.<br/>Automatically updates every 5 minutes.</Alert>
+              }                
+              <ToolTipButton onClick={this.updateAddressesInfo} id={5} buttonText={<MDRefresh/>} tooltipText={'manually refresh balance'}/>                                 
             </CardBlock>
           </Card>
           <Card>
             <CardBlock>
-              <Table bordered>                    
-                  <thead>
-                    <tr>                      
-                      <th>Total Confirmed</th>
-                      <th>Total Unconfirmed</th>                      
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <th>{totalConfirmed}</th>
-                      <th>{totalUnconfirmed}</th>
-                    </tr>                    
-                  </tbody>
-                </Table>                                     
+              <BootstrapTable data={[{totalConfirmed: totalConfirmed, totalUnconfirmed: totalUnconfirmed}]} striped hover> 
+                <TableHeaderColumn isKey={true} dataField='totalConfirmed'>Total Confirmed</TableHeaderColumn>
+                <TableHeaderColumn dataField='totalUnconfirmed'>Total Unconfirmed</TableHeaderColumn>                                    
+              </BootstrapTable>
             </CardBlock>
           </Card>          
           <Card>
             <CardBlock>                                            
-              <Table bordered>                    
-                <thead>
-                  <tr>
-                    <th>Address</th>
-                    <th>WIF</th>
-                    <th>Confirmed</th>
-                    <th>Unconfirmed</th>                      
-                  </tr>
-                </thead>
-                <tbody>
-                  {addresses}
-                </tbody>
-              </Table>                                                       
+              <BootstrapTable data={addresses} striped hover>
+                <TableHeaderColumn isKey dataField='address' dataFormat={tableAddressFormatter} width='60%'>Address</TableHeaderColumn>
+                <TableHeaderColumn dataField='privateKeyWIF' dataFormat={tableWIFFormatter}>WIF</TableHeaderColumn>
+                <TableHeaderColumn dataField='confirmedBalance'>Confirmed</TableHeaderColumn>
+                <TableHeaderColumn dataField='unconfirmedBalance'>Unconfirmed</TableHeaderColumn>
+              </BootstrapTable>                                                       
             </CardBlock>
           </Card>
         </Col>
@@ -747,36 +752,34 @@ class ZSendZEN extends React.Component {
         <Col>
           <Card>
             <CardBlock>       
-              <Alert color="danger">ALWAYS VALIDATE YOUR DESINATION ADDRESS BY SENDING SMALL AMOUNTS OF ZEN FIRST</Alert>
-              <CardText>
-                <InputGroup>
-                  <InputGroupAddon>From Address</InputGroupAddon>
-                  <Input type="select" onChange={this.handleUpdateSelectedAddress}>
-                    <option value=''></option>
-                    {sendAddresses}
-                  </Input>
-                </InputGroup>
-                <InputGroup>
-                  <InputGroupAddon>To Address</InputGroupAddon>
-                  <Input onChange={this.handleUpdateRecipientAddress} placeholder="e.g znSDvF9nA5VCdse5HbEKmsoNbjCbsEA3VAH" />
-                </InputGroup>
-                <InputGroup>
-                  <InputGroupAddon>Amount</InputGroupAddon>
-                  <Input onChange={this.handleUpdateAmount} placeholder="e.g 42" />
-                </InputGroup>
-                <InputGroup>
-                  <InputGroupAddon>Fee</InputGroupAddon>
-                  <Input onChange={this.handleUpdateFee} placeholder="e.g 0.001" />
-                </InputGroup>
-              </CardText>
-              <CardText>
-                <FormGroup check>
-                  <Label check>
-                    <Input onChange={this.handleCheckChanged} type="checkbox" />{' '}
-                    Yes, I would like to send these ZEN
-                  </Label>
-                </FormGroup>                
-              </CardText>   
+              <Alert color="danger">ALWAYS VALIDATE YOUR DESINATION ADDRESS BY SENDING SMALL AMOUNTS OF ZEN FIRST</Alert>              
+              <InputGroup>
+                <InputGroupAddon>From Address</InputGroupAddon>
+                <Input type="select" onChange={this.handleUpdateSelectedAddress}>
+                  <option value=''></option>
+                  {sendAddresses}
+                </Input>
+              </InputGroup>
+              <InputGroup>
+                <InputGroupAddon>To Address</InputGroupAddon>
+                <Input onChange={this.handleUpdateRecipientAddress} placeholder="e.g znSDvF9nA5VCdse5HbEKmsoNbjCbsEA3VAH" />
+              </InputGroup>
+              <InputGroup>
+                <InputGroupAddon>Amount</InputGroupAddon>
+                <Input onChange={this.handleUpdateAmount} placeholder="e.g 42" />
+              </InputGroup>
+              <InputGroup>
+                <InputGroupAddon>Fee</InputGroupAddon>
+                <Input onChange={this.handleUpdateFee} placeholder="e.g 0.001" />
+              </InputGroup>
+              <br/>
+              <FormGroup check>
+                <Label check>
+                  <Input onChange={this.handleCheckChanged} type="checkbox" />{' '}
+                  Yes, I would like to send these ZEN
+                </Label>
+              </FormGroup> 
+              <br/>                           
               <Button color="warning" className="btn-block" disabled={!this.state.confirmSend} onClick={this.handleSendZEN}>Send</Button>
             </CardBlock>
             <CardFooter> 
@@ -807,8 +810,8 @@ class ZWalletSelectUnlockType extends React.Component {
 
   render() {
     return ( 
-      <div>  
-        <ButtonGroup>                 
+      <div style={{textAlign: 'center'}}>  
+        <ButtonGroup vertical>                 
           <Button color="secondary" onClick={() => this.onRadioBtnClick(UNLOCK_WALLET_TYPE.HD_WALLET)} active={this.state.cSelected === UNLOCK_WALLET_TYPE.HD_WALLET}>Enter secret phrase</Button>
           <Button color="secondary" onClick={() => this.onRadioBtnClick(UNLOCK_WALLET_TYPE.IMPORT_WALLET)} active={this.state.cSelected === UNLOCK_WALLET_TYPE.IMPORT_WALLET}>Load wallet.dat</Button>        
           <Button color="secondary" onClick={() => this.onRadioBtnClick(UNLOCK_WALLET_TYPE.PASTE_PRIV_KEY)} active={this.state.cSelected === UNLOCK_WALLET_TYPE.PASTE_PRIV_KEY}>Paste private key</Button>      
