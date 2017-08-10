@@ -46246,6 +46246,10 @@ var _zencashjs = __webpack_require__(327);
 
 var _zencashjs2 = _interopRequireDefault(_zencashjs);
 
+var _refresh = __webpack_require__(439);
+
+var _refresh2 = _interopRequireDefault(_refresh);
+
 var _contentCopy = __webpack_require__(432);
 
 var _contentCopy2 = _interopRequireDefault(_contentCopy);
@@ -46271,8 +46275,6 @@ var _eye = __webpack_require__(437);
 var _eye2 = _interopRequireDefault(_eye);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -46379,38 +46381,34 @@ var ZWalletGenerator = function (_React$Component2) {
     key: 'render',
     value: function render() {
       return _react2.default.createElement(
-        _reactstrap.Row,
+        'div',
         null,
         _react2.default.createElement(
-          _reactstrap.Col,
+          'h3',
+          { className: 'display-6' },
+          'Create New Wallet'
+        ),
+        _react2.default.createElement('br', null),
+        _react2.default.createElement(
+          _reactstrap.InputGroup,
           null,
+          _react2.default.createElement(_reactstrap.Input, { onChange: this.handlePasswordPhrase, placeholder: 'Password phrase. Do NOT forget to save this! Use >15 words to be safe.' })
+        ),
+        _react2.default.createElement('br', null),
+        _react2.default.createElement(
+          _reactstrap.InputGroup,
+          null,
+          _react2.default.createElement(_reactstrap.Input, { value: this.state.privateKey, placeholder: 'Private key generated from password phrase' }),
           _react2.default.createElement(
-            'h3',
-            { className: 'display-6' },
-            'Create New Wallet'
-          ),
-          _react2.default.createElement('br', null),
-          _react2.default.createElement(
-            _reactstrap.InputGroup,
+            _reactstrap.InputGroupButton,
             null,
-            _react2.default.createElement(_reactstrap.Input, { onChange: this.handlePasswordPhrase, placeholder: 'Password phrase. Do NOT forget to save this! Use >15 words to be safe.' })
-          ),
-          _react2.default.createElement('br', null),
-          _react2.default.createElement(
-            _reactstrap.InputGroup,
-            null,
-            _react2.default.createElement(_reactstrap.Input, { value: this.state.privateKey, placeholder: 'Private key generated from password phrase' }),
             _react2.default.createElement(
-              _reactstrap.InputGroupButton,
-              null,
+              _reactCopyToClipboard2.default,
+              { text: this.state.privateKey },
               _react2.default.createElement(
-                _reactCopyToClipboard2.default,
-                { text: this.state.privateKey },
-                _react2.default.createElement(
-                  _reactstrap.Button,
-                  null,
-                  _react2.default.createElement(_contentCopy2.default, null)
-                )
+                _reactstrap.Button,
+                null,
+                _react2.default.createElement(_contentCopy2.default, null)
               )
             )
           )
@@ -46624,14 +46622,14 @@ var ZWalletSettings = function (_React$Component4) {
         _react2.default.createElement(
           _reactstrap.ModalBody,
           null,
-          _react2.default.createElement(
-            'p',
-            null,
-            _react2.default.createElement(ZWalletSelectUnlockType, {
-              setUnlockType: this.props.setUnlockType,
-              unlockType: this.props.settings.unlockType
-            })
-          ),
+          _react2.default.createElement(ZWalletSelectUnlockType, {
+            setUnlockType: this.props.setUnlockType,
+            unlockType: this.props.settings.unlockType
+          })
+        ),
+        _react2.default.createElement(
+          _reactstrap.ModalBody,
+          null,
           _react2.default.createElement(
             _reactstrap.InputGroup,
             null,
@@ -46746,29 +46744,15 @@ var ZAddressInfo = function (_React$Component5) {
       _axios2.default.get(info_url).then(function (response) {
         var data = response.data;
 
-        this.setState(_defineProperty({}, address, {
-          confirmedBalance: data.balance,
-          unconfirmedBalance: data.unconfirmedBalance,
+        this.props.setPublicAddressesKeyValue(address, 'confirmedBalance', data.balance);
+        this.props.setPublicAddressesKeyValue(address, 'unconfirmedBalance', data.unconfirmedBalance);
+        this.setState({
           retrieveAddressError: false
-        }));
+        });
       }.bind(this)).catch(function (error) {
         this.setState({
           retrieveAddressError: true
         });
-      }.bind(this));
-    }
-  }, {
-    key: 'componentWillMount',
-    value: function componentWillMount() {
-      // Setup state
-      Object.keys(this.props.publicAddresses).forEach(function (address) {
-        if (address !== undefined) {
-          this.setState(_defineProperty({}, address, {
-            transactionURL: urlAppend(this.props.settings.explorerURL, 'address/') + address,
-            confirmedBalance: 'loading...',
-            unconfirmedBalance: 'loading...'
-          }));
-        }
       }.bind(this));
     }
   }, {
@@ -46778,7 +46762,7 @@ var ZAddressInfo = function (_React$Component5) {
       this.updateAddressesInfo();
 
       // Update every 30 seconds    
-      this.interval = setInterval(this.updateAddressesInfo, 30000);
+      this.interval = setInterval(this.updateAddressesInfo, 300000);
     }
   }, {
     key: 'componentWillUnmount',
@@ -46790,8 +46774,11 @@ var ZAddressInfo = function (_React$Component5) {
     value: function render() {
       // Key is the address
       var addresses = [];
+      var totalConfirmed = 0.0;
+      var totalUnconfirmed = 0.0;
       Object.keys(this.props.publicAddresses).forEach(function (key) {
         if (key !== undefined) {
+          // Add to address    
           addresses.push(_react2.default.createElement(
             'tr',
             null,
@@ -46800,21 +46787,40 @@ var ZAddressInfo = function (_React$Component5) {
               { scope: 'row' },
               _react2.default.createElement(
                 'a',
-                { href: this.state[key].transactionURL },
+                { href: this.props.publicAddresses[key].transactionURL },
                 key
               )
             ),
             _react2.default.createElement(
               'td',
               null,
-              this.state[key].confirmedBalance
+              _react2.default.createElement(
+                _reactCopyToClipboard2.default,
+                { text: this.props.publicAddresses[key].privateKeyWIF },
+                _react2.default.createElement(ToolTipButton, { id: key, buttonText: _react2.default.createElement(_contentCopy2.default, null), tooltipText: 'copy wif private key' })
+              )
             ),
             _react2.default.createElement(
               'td',
               null,
-              this.state[key].unconfirmedBalance
+              this.props.publicAddresses[key].confirmedBalance
+            ),
+            _react2.default.createElement(
+              'td',
+              null,
+              this.props.publicAddresses[key].unconfirmedBalance
             )
           ));
+
+          var c_confirmed = Number(this.props.publicAddresses[key].confirmedBalance);
+          var c_unconfirmed = Number(this.props.publicAddresses[key].unconfirmedBalance);
+          if (!isNaN(c_confirmed)) {
+            totalConfirmed += c_confirmed;
+          }
+
+          if (!isNaN(c_unconfirmed)) {
+            totalUnconfirmed += c_unconfirmed;
+          }
         }
       }.bind(this));
 
@@ -46840,7 +46846,58 @@ var ZAddressInfo = function (_React$Component5) {
                 ) : _react2.default.createElement(
                   _reactstrap.Alert,
                   { color: 'warning' },
-                  'The balance displayed here is dependent on the insight node'
+                  'The balance displayed here is dependent on the insight node.',
+                  _react2.default.createElement('br', null),
+                  'Automatically updates every 5 minutes.'
+                ),
+                _react2.default.createElement(ToolTipButton, { onClick: this.updateAddressesInfo, id: 5, buttonText: _react2.default.createElement(_refresh2.default, null), tooltipText: 'manually refresh balance' })
+              )
+            )
+          ),
+          _react2.default.createElement(
+            _reactstrap.Card,
+            null,
+            _react2.default.createElement(
+              _reactstrap.CardBlock,
+              null,
+              _react2.default.createElement(
+                _reactstrap.Table,
+                { bordered: true },
+                _react2.default.createElement(
+                  'thead',
+                  null,
+                  _react2.default.createElement(
+                    'tr',
+                    null,
+                    _react2.default.createElement(
+                      'th',
+                      null,
+                      'Total Confirmed'
+                    ),
+                    _react2.default.createElement(
+                      'th',
+                      null,
+                      'Total Unconfirmed'
+                    )
+                  )
+                ),
+                _react2.default.createElement(
+                  'tbody',
+                  null,
+                  _react2.default.createElement(
+                    'tr',
+                    null,
+                    _react2.default.createElement(
+                      'th',
+                      null,
+                      totalConfirmed
+                    ),
+                    _react2.default.createElement(
+                      'th',
+                      null,
+                      totalUnconfirmed
+                    )
+                  )
                 )
               )
             )
@@ -46864,6 +46921,11 @@ var ZAddressInfo = function (_React$Component5) {
                       'th',
                       null,
                       'Address'
+                    ),
+                    _react2.default.createElement(
+                      'th',
+                      null,
+                      'WIF'
                     ),
                     _react2.default.createElement(
                       'th',
@@ -46978,6 +47040,12 @@ var ZSendZEN = function (_React$Component6) {
       var value = this.state.amount;
       var fee = this.state.fee;
       var recipientAddress = this.state.recipientAddress;
+      var senderAddress = this.state.selectedAddress;
+
+      // Convert how much we wanna send
+      // to satoshis
+      var satoshisToSend = Math.round(value * 100000000);
+      var satoshisfeesToSend = Math.round(fee * 100000000);
 
       // Reset zen send progress and error message
       this.setProgressValue(0);
@@ -46986,13 +47054,22 @@ var ZSendZEN = function (_React$Component6) {
       // Error strings
       var errString = '';
 
-      // Validation
+      // Validation    
+      if (senderAddress === '') {
+        errString += '`From Address` field can\'t be empty.;';
+      }
+
       if (recipientAddress.length !== 35) {
-        errString = 'Invalid address. Only transparent addresses are supported at this point in time.;';
+        errString += 'Invalid address. Only transparent addresses are supported at this point in time.;';
       }
 
       if (typeof parseInt(value) !== 'number' || value === '') {
         errString += 'Invalid amount.;';
+      }
+
+      // Can't send 0 satoshis
+      if (satoshisToSend === 0) {
+        errString += 'Amount can\'t be 0.;';
       }
 
       if (typeof parseInt(fee) !== 'number' || fee === '') {
@@ -47004,22 +47081,13 @@ var ZSendZEN = function (_React$Component6) {
         return;
       }
 
+      // Private key
+      var senderPrivateKey = this.props.publicAddresses[senderAddress].privateKey;
+
       // Get previous transactions
-      var prevTxURL = urlAppend(this.props.settings.insightAPI, 'addr/') + this.props.publicAddresses + '/utxo';
+      var prevTxURL = urlAppend(this.props.settings.insightAPI, 'addr/') + senderAddress + '/utxo';
       var infoURL = urlAppend(this.props.settings.insightAPI, 'status?q=getInfo');
       var sendRawTxURL = urlAppend(this.props.settings.insightAPI, 'tx/send');
-
-      // Convert how much we wanna send
-      // to satoshis
-      var satoshisToSend = Math.round(value * 100000000);
-      var satoshisfeesToSend = Math.round(fee * 100000000);
-
-      // Can't send 0 satoshis
-      if (satoshisToSend === 0) {
-        this.setSendErrorMessage('Amount can\'t be 0');
-        this.setProgressValue(0);
-        return;
-      }
 
       // Building our transaction TXOBJ
       // How many satoshis do we have so far
@@ -47077,7 +47145,7 @@ var ZSendZEN = function (_React$Component6) {
             // Refund remaining to current address
             if (satoshisSoFar !== satoshisToSend + satoshisfeesToSend) {
               var refundSatoshis = satoshisSoFar - satoshisToSend - satoshisfeesToSend;
-              recipients = recipients.concat({ address: this.props.publicAddresses, satoshis: refundSatoshis });
+              recipients = recipients.concat({ address: senderAddress, satoshis: refundSatoshis });
             }
 
             // Create transaction
@@ -47085,7 +47153,7 @@ var ZSendZEN = function (_React$Component6) {
 
             // Sign each history transcation          
             for (var i = 0; i < history.length; i++) {
-              txObj = _zencashjs2.default.transaction.signTx(txObj, i, this.props.privateKey, this.props.settings.compressPubKey);
+              txObj = _zencashjs2.default.transaction.signTx(txObj, i, senderPrivateKey, this.props.settings.compressPubKey);
             }
 
             // Convert it to hex string
@@ -47133,7 +47201,7 @@ var ZSendZEN = function (_React$Component6) {
         );
       }
 
-      // Else
+      // Else show error why
       else if (this.state.sendErrorMessage !== '') {
           zenTxLink = this.state.sendErrorMessage.split(';').map(function (s) {
             if (s !== '') {
@@ -47151,6 +47219,22 @@ var ZSendZEN = function (_React$Component6) {
             }
           });
         }
+
+      // Send addresses
+      // Key is the address btw
+      var sendAddresses = [];
+      Object.keys(this.props.publicAddresses).forEach(function (key) {
+        if (key !== undefined) {
+          sendAddresses.push(_react2.default.createElement(
+            'option',
+            { value: key },
+            '[',
+            this.props.publicAddresses[key].confirmedBalance,
+            '] - ',
+            key
+          ));
+        }
+      }.bind(this));
 
       return _react2.default.createElement(
         _reactstrap.Row,
@@ -47178,26 +47262,13 @@ var ZSendZEN = function (_React$Component6) {
                   _react2.default.createElement(
                     _reactstrap.InputGroupAddon,
                     null,
-                    'From'
+                    'From Address'
                   ),
                   _react2.default.createElement(
                     _reactstrap.Input,
                     { type: 'select', onChange: this.handleUpdateSelectedAddress },
-                    _react2.default.createElement(
-                      'option',
-                      { value: 'znSDvF9nA5VCdse5HbEKmsoNbjCbsEA3VAH' },
-                      'znSDvF9nA5VCdse5HbEKmsoNbjCbsEA3VAH - 50.92'
-                    ),
-                    _react2.default.createElement(
-                      'option',
-                      { value: '1' },
-                      'znSDvF9nA5VCdse5HbEKmsoNbjCbsEA3VAH - 32.92'
-                    ),
-                    _react2.default.createElement(
-                      'option',
-                      { value: '2' },
-                      'znSDvF9nA5VCdse5HbEKmsoNbjCbsEA3VAH - 1-.92'
-                    )
+                    _react2.default.createElement('option', { value: '' }),
+                    sendAddresses
                   )
                 ),
                 _react2.default.createElement(
@@ -47206,7 +47277,7 @@ var ZSendZEN = function (_React$Component6) {
                   _react2.default.createElement(
                     _reactstrap.InputGroupAddon,
                     null,
-                    'Address'
+                    'To Address'
                   ),
                   _react2.default.createElement(_reactstrap.Input, { onChange: this.handleUpdateRecipientAddress, placeholder: 'e.g znSDvF9nA5VCdse5HbEKmsoNbjCbsEA3VAH' })
                 ),
@@ -47389,7 +47460,8 @@ var ZWalletTabs = function (_React$Component8) {
             { tabId: '1' },
             _react2.default.createElement(ZAddressInfo, {
               publicAddresses: this.props.publicAddresses,
-              settings: this.props.settings
+              settings: this.props.settings,
+              setPublicAddressesKeyValue: this.props.setPublicAddressesKeyValue
             })
           ),
           _react2.default.createElement(
@@ -47421,6 +47493,7 @@ var ZWallet = function (_React$Component9) {
     _this14.setPrivateKeys = _this14.setPrivateKeys.bind(_this14);
     _this14.setInsightAPI = _this14.setInsightAPI.bind(_this14);
     _this14.setUnlockType = _this14.setUnlockType.bind(_this14);
+    _this14.setPublicAddressesKeyValue = _this14.setPublicAddressesKeyValue.bind(_this14);
     _this14.toggleUseTestNet = _this14.toggleUseTestNet.bind(_this14);
     _this14.toggleCompressPubKey = _this14.toggleCompressPubKey.bind(_this14);
     _this14.toggleShowSettings = _this14.toggleShowSettings.bind(_this14);
@@ -47428,13 +47501,13 @@ var ZWallet = function (_React$Component9) {
 
     _this14.state = {
       privateKeys: '',
-      publicAddresses: null, // Public address will be {address: privateKey}
+      publicAddresses: null, // Public address will be {address: {privateKey: '', transactionURL: '', privateKeyWIF: ''}
       settings: {
         showSettings: false,
         showWalletGen: false,
         compressPubKey: true,
         insightAPI: 'https://explorer.zensystem.io/insight-api-zen/',
-        explorerURL: 'https://explorer.zensystem.io/insight/',
+        explorerURL: 'https://explorer.zensystem.io/',
         useTestNet: false,
         unlockType: UNLOCK_WALLET_TYPE.IMPORT_WALLET
       }
@@ -47465,10 +47538,20 @@ var ZWallet = function (_React$Component9) {
         var publicAddresses = {};
 
         for (var i = 0; i < this.state.privateKeys.length; i++) {
+          var pubKeyHash = this.state.settings.useTestNet ? _zencashjs2.default.config.testnet.wif : _zencashjs2.default.config.mainnet.wif;
+
           var c_pk = this.state.privateKeys[i];
+
+          var c_pk_wif = _zencashjs2.default.address.privKeyToWIF(c_pk, true, pubKeyHash);
           var c_addr = _privKeyToAddr(c_pk, this.state.settings.compressPubKey, this.state.settings.useTestNet);
 
-          publicAddresses[c_addr] = c_pk;
+          publicAddresses[c_addr] = {
+            privateKey: c_pk,
+            privateKeyWIF: c_pk_wif,
+            transactionURL: urlAppend(this.state.settings.explorerURL, 'address/') + c_addr,
+            confirmedBalance: 'loading...',
+            unconfirmedBalance: 'loading...'
+          };
         }
 
         // Set public address
@@ -47502,6 +47585,16 @@ var ZWallet = function (_React$Component9) {
     value: function setPublicAddresses(pa) {
       this.setState({
         publicAddresses: pa
+      });
+    }
+  }, {
+    key: 'setPublicAddressesKeyValue',
+    value: function setPublicAddressesKeyValue(address, key, value) {
+      var newPublicAddresses = this.state.publicAddresses;
+      newPublicAddresses[address][key] = value;
+
+      this.setState({
+        publicAddresses: newPublicAddresses
       });
     }
   }, {
@@ -47583,7 +47676,7 @@ var ZWallet = function (_React$Component9) {
           null,
           _react2.default.createElement(
             _reactstrap.Col,
-            { md: { size: 8, offset: 2 } },
+            null,
             _react2.default.createElement(
               'h1',
               { className: 'display-6' },
@@ -47610,7 +47703,7 @@ var ZWallet = function (_React$Component9) {
           null,
           _react2.default.createElement(
             _reactstrap.Col,
-            { md: { size: 8, offset: 2 } },
+            null,
             this.state.publicAddresses === null ? _react2.default.createElement(ZWalletUnlockKey, {
               handleUnlockPrivateKeys: this.handleUnlockPrivateKeys,
               setPrivateKeys: this.setPrivateKeys,
@@ -47618,17 +47711,26 @@ var ZWallet = function (_React$Component9) {
             }) : _react2.default.createElement(ZWalletTabs, {
               publicAddresses: this.state.publicAddresses,
               settings: this.state.settings,
+              setPublicAddressesKeyValue: this.setPublicAddressesKeyValue,
               privateKeys: this.state.privateKeys
             })
           )
         ),
-        this.state.settings.showWalletGen ? _react2.default.createElement(
-          'div',
+        _react2.default.createElement(
+          _reactstrap.Row,
           null,
-          _react2.default.createElement('br', null),
-          _react2.default.createElement('hr', null),
-          _react2.default.createElement(ZWalletGenerator, { settings: this.state.settings })
-        ) : null
+          _react2.default.createElement(
+            _reactstrap.Col,
+            null,
+            this.state.settings.showWalletGen ? _react2.default.createElement(
+              'div',
+              null,
+              _react2.default.createElement('br', null),
+              _react2.default.createElement('hr', null),
+              _react2.default.createElement(ZWalletGenerator, { settings: this.state.settings })
+            ) : null
+          )
+        )
       );
     }
   }]);
@@ -66816,6 +66918,44 @@ var ZFooter = function (_React$Component) {
 }(_react2.default.Component);
 
 exports.default = ZFooter;
+
+/***/ }),
+/* 439 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _react = __webpack_require__(9);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactIconBase = __webpack_require__(35);
+
+var _reactIconBase2 = _interopRequireDefault(_reactIconBase);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var MdRefresh = function MdRefresh(props) {
+    return _react2.default.createElement(
+        _reactIconBase2.default,
+        _extends({ viewBox: '0 0 40 40' }, props),
+        _react2.default.createElement(
+            'g',
+            null,
+            _react2.default.createElement('path', { d: 'm29.5 10.5l3.9-3.9v11.8h-11.8l5.4-5.4c-1.8-1.8-4.3-3-7-3-5.5 0-10 4.5-10 10s4.5 10 10 10c4.4 0 8.1-2.7 9.5-6.6h3.4c-1.5 5.7-6.6 10-12.9 10-7.3 0-13.3-6.1-13.3-13.4s6-13.4 13.3-13.4c3.7 0 7 1.5 9.5 3.9z' })
+        )
+    );
+};
+
+exports.default = MdRefresh;
+module.exports = exports['default'];
 
 /***/ })
 /******/ ]);
