@@ -5,6 +5,7 @@ import React from 'react'
 import classnames from 'classnames'
 import CopyToClipboard from 'react-copy-to-clipboard'
 import zencashjs from 'zencashjs'
+import hdwallet from '../lib/hdwallet'
 
 import MDRefresh from 'react-icons/lib/md/refresh'
 import MDCopy from 'react-icons/lib/md/content-copy'
@@ -27,7 +28,7 @@ function urlAppend(url, param){
 // Unlock wallet enum
 var UNLOCK_WALLET_TYPE = {
   IMPORT_WALLET: 0,
-  IMPORT_PRIV_KEY: 1,
+  HD_WALLET: 1,
   PASTE_PRIV_KEY: 2
 }
 
@@ -86,13 +87,13 @@ class ZWalletGenerator extends React.Component {
 
     this.setState({
       privateKey: pkwif
-    })    
+    })
   }
-
+  
   render () {
     return (
       <div>                  
-        <h3 className='display-6'>Create New Wallet</h3>
+        <h3 className='display-6'>Generate New Address</h3>
         <br/>
         <InputGroup>          
           <Input onChange={this.handlePasswordPhrase} placeholder="Password phrase. Do NOT forget to save this! Use >15 words to be safe." />            
@@ -116,13 +117,16 @@ class ZWalletUnlockKey extends React.Component {
   constructor(props){
     super(props)
 
+    this.unlockHDWallet = this.unlockHDWallet.bind(this)
     this.loadWalletDat = this.loadWalletDat.bind(this)
     this.toggleShowPassword = this.toggleShowPassword.bind(this)
-    this.unlockPrivateKeys = this.unlockPrivateKeys.bind(this)
+    this.unlockPrivateKeys = this.unlockPrivateKeys.bind(this)    
 
     this.state = {
       showPassword: false,
+      secretPhrase: '',
       invalidPrivateKey: false,
+      secretPhraseTooShort: false,      
 
       // Style for input button
       inputFileStyle: {
@@ -130,7 +134,7 @@ class ZWalletUnlockKey extends React.Component {
           cursor: 'pointer'
       }   
     }
-  }
+  }  
 
   toggleShowPassword(){
     this.setState({
@@ -145,6 +149,24 @@ class ZWalletUnlockKey extends React.Component {
     if (!success){
       this.setState({
         invalidPrivateKey: true, 
+      })
+    }
+  }
+
+  unlockHDWallet(){
+    try{
+      // Generate private keys from secret phrase
+      const pk = hdwallet.phraseToHDWallet(this.state.secretPhrase)
+
+      this.setState({
+        secretPhraseTooShort: false
+      })
+
+      // Set private key and unlock them (we know it'll work so no need to validate)
+      this.props.setPrivateKeys(pk, true)
+    } catch (err){
+      this.setState({
+        secretPhraseTooShort: true
       })
     }
   }
@@ -166,7 +188,7 @@ class ZWalletUnlockKey extends React.Component {
         x = x.replace('\x30\x81\xD3\x02\x01\x01\x04\x20', '')
         x = Buffer.from(x, 'latin1').toString('hex')
         return x
-      })            
+      })      
 
       // Set private key
       this.props.setPrivateKeys(privateKeys)
@@ -235,6 +257,33 @@ class ZWalletUnlockKey extends React.Component {
         </div>
       )
     }
+
+    else if (this.props.unlockType == UNLOCK_WALLET_TYPE.HD_WALLET){
+      return (
+        <div>
+          <Alert color="warning"><strong>Warning.</strong>&nbsp;Make sure you have saved your secret phrase somewhere.</Alert>
+          {this.state.secretPhraseTooShort ? <Alert color="danger"><strong>Error.</strong>&nbsp;Secret phrase too short</Alert> : '' }
+          <InputGroup>                                       
+            <InputGroupButton>
+              <ToolTipButton id={7}
+                onClick={this.toggleShowPassword}
+                buttonText={this.state.showPassword? <FAEye/> : <FAEyeSlash/>}
+                tooltipText={this.state.showPassword? 'show phrase' : 'hide phrase'}
+              />
+            </InputGroupButton>
+            <Input
+              type={this.state.showPassword ? "text" : "password"}
+              maxLength="64"
+              onChange={(e) => this.setState({secretPhrase: e.target.value})}
+              placeholder="Secret phrase. e.g. cash cow money heros cardboard money bag late green"
+            />
+            <InputGroupButton> 
+              <ToolTipButton onClick={this.unlockHDWallet} id={8} buttonText={<FAUnlock/>} tooltipText={'unlock HD wallet'}/>
+            </InputGroupButton>
+          </InputGroup>
+        </div>
+      )
+    }
   }
 }
 
@@ -274,7 +323,7 @@ class ZWalletSettings extends React.Component {
                   defaultChecked={this.props.settings.showWalletGen} type="checkbox" 
                   onChange={this.props.toggleShowWalletGen}
                 />{' '}
-                Show Wallet Generator
+                Show Address Generator
               </Label>
             </Col>
           </Row>
@@ -758,9 +807,12 @@ class ZWalletSelectUnlockType extends React.Component {
 
   render() {
     return ( 
-      <div>                   
-        <Button color="secondary" onClick={() => this.onRadioBtnClick(UNLOCK_WALLET_TYPE.IMPORT_WALLET)} active={this.state.cSelected === UNLOCK_WALLET_TYPE.IMPORT_WALLET}>Load wallet.dat</Button>          
-        <Button color="secondary" onClick={() => this.onRadioBtnClick(UNLOCK_WALLET_TYPE.PASTE_PRIV_KEY)} active={this.state.cSelected === UNLOCK_WALLET_TYPE.PASTE_PRIV_KEY}>Paste private key</Button>      
+      <div>  
+        <ButtonGroup>                 
+          <Button color="secondary" onClick={() => this.onRadioBtnClick(UNLOCK_WALLET_TYPE.HD_WALLET)} active={this.state.cSelected === UNLOCK_WALLET_TYPE.HD_WALLET}>Enter secret phrase</Button>
+          <Button color="secondary" onClick={() => this.onRadioBtnClick(UNLOCK_WALLET_TYPE.IMPORT_WALLET)} active={this.state.cSelected === UNLOCK_WALLET_TYPE.IMPORT_WALLET}>Load wallet.dat</Button>        
+          <Button color="secondary" onClick={() => this.onRadioBtnClick(UNLOCK_WALLET_TYPE.PASTE_PRIV_KEY)} active={this.state.cSelected === UNLOCK_WALLET_TYPE.PASTE_PRIV_KEY}>Paste private key</Button>      
+        </ButtonGroup>
       </div>
     )
   }
@@ -850,19 +902,23 @@ export default class ZWallet extends React.Component {
         insightAPI: 'https://explorer.zensystem.io/insight-api-zen/',
         explorerURL: 'https://explorer.zensystem.io/',
         useTestNet: false,
-        unlockType: UNLOCK_WALLET_TYPE.IMPORT_WALLET
+        unlockType: UNLOCK_WALLET_TYPE.HD_WALLET
       }
     };    
   }  
 
-  handleUnlockPrivateKeys(){
+  handleUnlockPrivateKeys(){    
+    if (this.state.privateKeys.length === 0){
+      return -2
+    }
+
     try{
       var publicAddresses = {}
 
       function _privKeyToAddr(pk, compressPubKey, useTestNet){
         // If not 64 length, probs WIF format
         if (pk.length !== 64){
-          pk = zencashjs.address.WIFToPrivKey(pk)
+          pk = zencashjs.address.WIFToPrivKey(pk)          
         }
 
         // Convert public key to public address
@@ -877,10 +933,20 @@ export default class ZWallet extends React.Component {
 
       for (var i = 0; i < this.state.privateKeys.length; i++){
         const pubKeyHash = this.state.settings.useTestNet ? zencashjs.config.testnet.wif : zencashjs.config.mainnet.wif
+        
+        var c_pk_wif;
+        var c_pk = this.state.privateKeys[i]
 
-        const c_pk = this.state.privateKeys[i]
+        // If not 64 length, probs WIF format
+        if (c_pk.length !== 64){
+          c_pk_wif = c_pk
+          c_pk = zencashjs.address.WIFToPrivKey(c_pk)
+        }
+        else{
+          c_pk_wif = zencashjs.address.privKeyToWIF(c_pk)
+        }          
 
-        const c_pk_wif = zencashjs.address.privKeyToWIF(c_pk, true, pubKeyHash)
+        var c_pk_wif = zencashjs.address.privKeyToWIF(c_pk, true, pubKeyHash)        
         const c_addr = _privKeyToAddr(c_pk, this.state.settings.compressPubKey, this.state.settings.useTestNet)        
 
         publicAddresses[c_addr] = {
@@ -897,8 +963,7 @@ export default class ZWallet extends React.Component {
 
       // Return success
       return 0
-    } catch(err) {
-      console.log(err)
+    } catch(err) {      
       this.setPublicAddresses(null)
       return -1
     }
@@ -911,10 +976,15 @@ export default class ZWallet extends React.Component {
     })
   }
 
-  setPrivateKeys(pk){
+  // Only used for bip32 gen wallet because
+  // of the async nature
+  setPrivateKeys(pk, handleUnlockingKeys){
+    if (handleUnlockingKeys === undefined){
+      handleUnlockingKeys = false
+    }
     this.setState({
       privateKeys: pk
-    })
+    }, handleUnlockingKeys ? this.handleUnlockPrivateKeys : undefined)
   }
 
   setPublicAddresses(pa){
