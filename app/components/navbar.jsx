@@ -28,14 +28,14 @@ export default class ZNavbar extends React.Component {
           <Nav className='ml-auto' navbar>
            <NavItem>
               <NavLink href='http://getzen.cash'>
-                ZENCash faucet (free ZEN)
+                FREE ZEN
               </NavLink>
-            </NavItem>  
+            </NavItem>
             <NavItem>
-              <NavLink href='https://github.com/zencashofficial/myzenwallet'>
-                Source Code
+              <NavLink href='/faq.html'>
+                FAQ
               </NavLink>
-            </NavItem>                       
+            </NavItem>                      
           </Nav>
         </Collapse>
       </Navbar>  

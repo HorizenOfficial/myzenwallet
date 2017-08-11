@@ -6,18 +6,15 @@ const path = require('path');
 const fs = require('fs')
 
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const HtmlWebpackPluginConfig = new HtmlWebpackPlugin({
-    favicon: 'assets/images/favicon.ico',
-    template: './app/index.html',
-    filename: 'index.html',
-    inject: 'body'
-});
 
 module.exports = {
-    entry: './app/index.js',
+    entry: {
+        index: './app/index.js',
+        faq: './app/faq.js'
+    },
     output: {
         path: path.resolve('dist'),
-        filename: 'bundle.js'
+        filename: '[name].js'
     },
     module: {
         loaders: [
@@ -30,7 +27,22 @@ module.exports = {
             }
         ]
     },
-    plugins: [HtmlWebpackPluginConfig],
+    plugins: [
+        new HtmlWebpackPlugin({
+            favicon: 'assets/images/favicon.ico',
+            template: './app/index.html',
+            chunks: ['index'],
+            filename: 'index.html',
+            inject: 'body'
+        }),
+        new HtmlWebpackPlugin({
+            favicon: 'assets/images/favicon.ico',
+            template: './app/faq.html',
+            chunks: ['faq'],
+            filename: 'faq.html',
+            inject: 'body'
+        })
+    ],
     node: {
         fs: 'empty'
     }
