@@ -6,6 +6,7 @@ import React from 'react'
 import classnames from 'classnames'
 import CopyToClipboard from 'react-copy-to-clipboard'
 import zencashjs from 'zencashjs'
+import zenwalletutils from '../lib/utils'
 import hdwallet from '../lib/hdwallet'
 
 import MDRefresh from 'react-icons/lib/md/refresh'
@@ -16,15 +17,8 @@ import FAUnlock from 'react-icons/lib/fa/unlock-alt'
 import FAEyeSlash from 'react-icons/lib/fa/eye-slash'
 import FAEye from 'react-icons/lib/fa/eye'
 
-
-// Append url
-function urlAppend(url, param){
-  if (url.substr(-1) !== '/'){
-    url = url + '/'
-  }
-
-  return url + param
-}
+// Throttled GET request to prevent unusable lag
+const throttledAxiosGet = zenwalletutils.promiseDebounce(axios.get, 1000, 5)
 
 // Unlock wallet enum
 var UNLOCK_WALLET_TYPE = {
@@ -350,6 +344,7 @@ class ZAddressInfo extends React.Component {
 
     this.updateAddressInfo = this.updateAddressInfo.bind(this)
     this.updateAddressesInfo = this.updateAddressesInfo.bind(this)
+    
 
     this.state = {            
       retrieveAddressError: false      
@@ -361,17 +356,19 @@ class ZAddressInfo extends React.Component {
     // The key is the address
     // Value is the private key
     Object.keys(this.props.publicAddresses).forEach(function(key) {
-      this.updateAddressInfo(key)
+      if (key !== undefined){
+        this.updateAddressInfo(key)
+      }
     }.bind(this))    
   }
 
   // Updates a address info
   updateAddressInfo(address) {
     // GET request to URL
-    var info_url = urlAppend(this.props.settings.insightAPI, 'addr/')
-    info_url = urlAppend(info_url, address + '?noTxList=1')
+    var info_url = zenwalletutils.urlAppend(this.props.settings.insightAPI, 'addr/')
+    info_url = zenwalletutils.urlAppend(info_url, address + '?noTxList=1')    
         
-    axios.get(info_url)
+    throttledAxiosGet(info_url)
     .then(function (response){
       var data = response.data;
 
@@ -573,7 +570,7 @@ class ZSendZEN extends React.Component {
     const satoshisfeesToSend = Math.round(fee * 100000000)        
     
     // Reset zen send progress and error message
-    this.setProgressValue(0)
+    this.setProgressValue(1)
     this.setSendErrorMessage('')
 
     // Error strings
@@ -603,6 +600,7 @@ class ZSendZEN extends React.Component {
 
     if (errString !== ''){
       this.setSendErrorMessage(errString)
+      this.setProgressValue(0)
       return
     }
 
@@ -610,9 +608,9 @@ class ZSendZEN extends React.Component {
     const senderPrivateKey = this.props.publicAddresses[senderAddress].privateKey;
 
     // Get previous transactions
-    const prevTxURL = urlAppend(this.props.settings.insightAPI, 'addr/') + senderAddress + '/utxo'
-    const infoURL = urlAppend(this.props.settings.insightAPI, 'status?q=getInfo')
-    const sendRawTxURL = urlAppend(this.props.settings.insightAPI, 'tx/send')
+    const prevTxURL = zenwalletutils.urlAppend(this.props.settings.insightAPI, 'addr/') + senderAddress + '/utxo'
+    const infoURL = zenwalletutils.urlAppend(this.props.settings.insightAPI, 'status?q=getInfo')
+    const sendRawTxURL = zenwalletutils.urlAppend(this.props.settings.insightAPI, 'tx/send')
 
     // Building our transaction TXOBJ
     // How many satoshis do we have so far
@@ -623,7 +621,7 @@ class ZSendZEN extends React.Component {
     // Get transactions and info
     axios.get(prevTxURL)
     .then(function (tx_resp){
-      this.setProgressValue(26)
+      this.setProgressValue(25)
       
       const tx_data = tx_resp.data      
 
@@ -633,7 +631,7 @@ class ZSendZEN extends React.Component {
         const info_data = info_resp.data
 
         const blockHeight = info_data.info.blocks - 300
-        const blockHashURL = urlAppend(this.props.settings.insightAPI, 'block-index/') + blockHeight        
+        const blockHashURL = zenwalletutils.urlAppend(this.props.settings.insightAPI, 'block-index/') + blockHeight        
 
         // Get block hash
         axios.get(blockHashURL)
@@ -713,7 +711,7 @@ class ZSendZEN extends React.Component {
     // If send was successful
     var zenTxLink
     if (this.state.sendProgress === 100){
-      var zentx = urlAppend(this.props.settings.explorerURL, 'tx/') + this.state.sentTxid
+      var zentx = zenwalletutils.urlAppend(this.props.settings.explorerURL, 'tx/') + this.state.sentTxid
       zenTxLink = (
         <Alert color="success">
         <strong>ZEN successfully sent!</strong> <a href={zentx}>Click here to view your transaction</a>
@@ -780,7 +778,11 @@ class ZSendZEN extends React.Component {
                 </Label>
               </FormGroup> 
               <br/>                           
-              <Button color="warning" className="btn-block" disabled={!this.state.confirmSend} onClick={this.handleSendZEN}>Send</Button>
+              <Button 
+                color="warning" className="btn-block"
+                disabled={!this.state.confirmSend || (this.state.sendProgress > 0 && this.state.sendProgress < 100)}
+                onClick={this.handleSendZEN}
+              >Send</Button>
             </CardBlock>
             <CardFooter> 
               {zenTxLink}
@@ -955,7 +957,7 @@ export default class ZWallet extends React.Component {
         publicAddresses[c_addr] = {
           privateKey: c_pk,
           privateKeyWIF: c_pk_wif,
-          transactionURL: urlAppend(this.state.settings.explorerURL, 'address/') + c_addr,        
+          transactionURL: zenwalletutils.urlAppend(this.state.settings.explorerURL, 'address/') + c_addr,        
           confirmedBalance: 'loading...',
           unconfirmedBalance: 'loading...',  
         }

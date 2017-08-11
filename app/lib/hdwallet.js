@@ -13,7 +13,7 @@ function phraseToHDWallet(phraseStr) {
   const hdNode = bitcoinjs.HDNode.fromSeedHex(seedHex)
   var chain = new bip32utils.Chain(hdNode)
 
-  // Creates 5 address from the same chain
+  // Creates 42 address from the same chain
   for (var k = 0; k < 42; k++){
     chain.next()
   }

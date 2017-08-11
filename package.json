@@ -15,6 +15,7 @@
     "babel-preset-env": "^1.6.0",
     "bip32-utils": "^0.10.0",
     "bitcoinjs-lib": "^3.1.1",
+    "bluebird": "^3.5.0",
     "bootstrap": "^4.0.0-alpha.6",
     "bs58": "^4.0.1",
     "bs58check": "^2.0.2",
@@ -35,6 +36,7 @@
     "react-icons": "^2.2.5",
     "reactstrap": "^4.8.0",
     "style-loader": "^0.18.2",
+    "throttled-queue": "^1.0.4",
     "webpack": "^3.3.0",
     "webpack-dev-server": "^2.5.1",
     "zencashjs": "^1.1.4-a"
