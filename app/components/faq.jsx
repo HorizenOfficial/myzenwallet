@@ -6,16 +6,31 @@ export default class ZFaq extends React.Component {
     return (      
       <Container>      
         <Row>
-          <Col>
+          <Col> 
             <p>
-              <b>Q: How is this secure? Its on a web browser!</b><br/>
-              A: MyZenWallet has replicated the core features of the ZEN daemon using JavaScript! So the process of creating and signing the transactions are all within the browser. Nothing sensitive is send through the network.
+              <b>Q: Are my private keys secured?</b><br/>
+              A: Yes they are secured, your private keys never leave your browser.
             </p>
 
             <p>
-              <b>Q: I still don't trust you! What did you use and where's the source code?</b><br/>
-              A: To replicate the primitive features of the ZEN daemon, I used: <a href="https://github.com/kendricktan/zencashjs">zencashjs</a>, as for source code of the myzenwallet: <a href="https://github.com/zencashofficial/myzenwallet">myzenwallet</a>
+              <b>Q: How is this secure? Its on a web browser!</b><br/>
+              A: MyZenWallet has replicated the core features of the ZEN daemon in JavaScript! So the process of creating and signing the transactions are all done within the browser. No sensitive information is sent through the network.
+            </p>         
+
+            <p>
+              <b>Q: Can I have the source code?</b><br/>
+              A: <a href="https://github.com/zencashofficial/myzenwallet">Here you go</a>
+            </p>               
+
+            <p>
+              <b>Q: Why are you doing this?</b><br/>
+              A: MyZenWallet was inspired by <a href="https://myetherwallet.com">MyEtherWallet's</a> mission statement: to provide the people the ability to interact with the ZEN blockchain easily, without having to run a full node.
             </p>
+
+            <p>
+              <b>Q: Can I get free ZEN?</b><br/>
+              A: Sure! Select an address frm your wallet (check out how to create a wallet via <a href="/guide.html">the guide</a> if you don't have one yet) and enter it into <a href="http://getzen.cash">getzen.cash</a>.
+            </p>           
           </Col>
         </Row>
       </Container>

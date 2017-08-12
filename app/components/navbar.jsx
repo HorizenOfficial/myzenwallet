@@ -35,6 +35,11 @@ export default class ZNavbar extends React.Component {
               <NavLink href='/faq.html'>
                 FAQ
               </NavLink>
+            </NavItem>
+            <NavItem>
+              <NavLink href='/guide.html'>
+                GETTING STARTED
+              </NavLink>
             </NavItem>                      
           </Nav>
         </Collapse>
