@@ -12,7 +12,7 @@ export default class ZGuide extends React.Component {
           <Col>                          
             <h3>1. Creating a new wallet</h3>
             <ul>
-              <li>Goto <a href="https://myzenwallet.io">https://myzenwallet.io</a></li>
+              <li>Go to <a href="https://myzenwallet.io">https://myzenwallet.io</a></li>
               <li>Enter a strong but easy to remember secret phrase. Save this somewhere and do NOT forget it.</li>
               <li>Click the <code>Unlock Button</code> (<FAUnlock/>) on the right.</li>
                 <ul><li>This creates a <a href="https://en.bitcoin.it/wiki/Deterministic_wallet">deterministic wallet</a> based on your secret phrase.</li></ul>                        

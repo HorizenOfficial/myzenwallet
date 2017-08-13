@@ -31346,7 +31346,7 @@ var ZGuide = function (_React$Component) {
               _react2.default.createElement(
                 'li',
                 null,
-                'Goto ',
+                'Go to ',
                 _react2.default.createElement(
                   'a',
                   { href: 'https://myzenwallet.io' },

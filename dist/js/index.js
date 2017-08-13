@@ -54211,8 +54211,8 @@ var ZSendZEN = function (_React$Component6) {
       }
 
       // Can't send 0 satoshis
-      if (satoshisToSend === 0) {
-        errString += 'Amount can\'t be 0.;';
+      if (satoshisToSend <= 0) {
+        errString += 'Amount must be greater than 0.;';
       }
 
       if (typeof parseInt(fee) !== 'number' || fee === '') {
