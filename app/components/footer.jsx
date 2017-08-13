@@ -23,7 +23,7 @@ export default class ZFooter extends React.Component {
           <Col md="8">
             <p>MAKE SURE YOU ARE ON <b>MYZENWALLET.IO</b></p>
 
-            <p>Keys are validated client-side and does not leave your browser or network. You are responsible for keeping your own keys safe!!!</p>
+            <p>Keys are validated client-side and do not leave your browser or network. You are responsible for keeping your own keys safe!!!</p>
 
             <p>Suggestions? Email me: kendricktan0814 at gmail.com or find me on slack @ kendricktan.</p>          
 
