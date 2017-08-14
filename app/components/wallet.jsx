@@ -1096,7 +1096,7 @@ export default class ZWallet extends React.Component {
     }
     else{
       _settings.insightAPI = 'https://explorer.zensystem.io/insight-api-zen/'
-      _settings.explorerURL = 'https://explorer.zensystem.io/insight/'
+      _settings.explorerURL = 'https://explorer.zensystem.io/'
     }
 
     this.setState({
