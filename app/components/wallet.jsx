@@ -1,13 +1,14 @@
 import { Alert, Form, FormText, ButtonGroup, UncontrolledAlert, Tooltip, CardBlock, CardFooter, Modal, ModalHeader, ModalBody, ModalFooter, ListGroup, ListGroupItem, Badge, Progress, FormGroup, Label, Container, Jumbotron, TabContent, InputGroup, Input, InputGroupAddon, InputGroupButton, Table, TabPane, Nav, NavItem, NavLink, Card, CardSubtitle, Button, CardTitle, CardText, Row, Col } from 'reactstrap';
-import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 
 import axios from 'axios'
 import React from 'react'
 import classnames from 'classnames'
 import CopyToClipboard from 'react-copy-to-clipboard'
+import ReactTable from 'react-table'
 import zencashjs from 'zencashjs'
 import zenwalletutils from '../lib/utils'
 import hdwallet from '../lib/hdwallet'
+import FileSaver from 'file-saver'
 
 import MDRefresh from 'react-icons/lib/md/refresh'
 import MDCopy from 'react-icons/lib/md/content-copy'
@@ -16,6 +17,8 @@ import FARepeat from 'react-icons/lib/fa/repeat'
 import FAUnlock from 'react-icons/lib/fa/unlock-alt'
 import FAEyeSlash from 'react-icons/lib/fa/eye-slash'
 import FAEye from 'react-icons/lib/fa/eye'
+
+import pjson from '../../package.json'
 
 // Throttled GET request to prevent unusable lag
 const throttledAxiosGet = zenwalletutils.promiseDebounce(axios.get, 1000, 5)
@@ -344,7 +347,7 @@ class ZAddressInfo extends React.Component {
 
     this.updateAddressInfo = this.updateAddressInfo.bind(this)
     this.updateAddressesInfo = this.updateAddressesInfo.bind(this)
-    
+    this.getAddressBlockExplorerURL = this.getAddressBlockExplorerURL.bind(this)    
 
     this.state = {            
       retrieveAddressError: false      
@@ -360,6 +363,11 @@ class ZAddressInfo extends React.Component {
         this.updateAddressInfo(key)
       }
     }.bind(this))    
+  }
+
+  // Gets the blockchain explorer URL for an address
+  getAddressBlockExplorerURL(address) {
+    return zenwalletutils.urlAppend(this.props.settings.explorerURL, 'address/') + address
   }
 
   // Updates a address info
@@ -408,10 +416,7 @@ class ZAddressInfo extends React.Component {
         // Add to address    
         addresses.push(
           {
-            address: {
-              address: key,
-              transactionURL: this.props.publicAddresses[key].transactionURL
-            },
+            address: key,
             privateKeyWIF: this.props.publicAddresses[key].privateKeyWIF,
             confirmedBalance: this.props.publicAddresses[key].confirmedBalance,
             unconfirmedBalance: this.props.publicAddresses[key].unconfirmedBalance
@@ -428,61 +433,68 @@ class ZAddressInfo extends React.Component {
           totalUnconfirmed += c_unconfirmed
         }
       }
-    }.bind(this))  
+    }.bind(this))
 
-    // <tr>
-    //   <th scope="row"><a href={this.props.publicAddresses[key].transactionURL}>{key}</a></th>
-    //   <td>
-        // <CopyToClipboard text={this.props.publicAddresses[key].privateKeyWIF}>
-        //   <ToolTipButton id={key} buttonText={<MDCopy/>} tooltipText={'copy wif private key'}/>                
-        // </CopyToClipboard>
-    //   </td>
-    //   <td>{this.props.publicAddresses[key].confirmedBalance}</td>
-    //   <td>{this.props.publicAddresses[key].unconfirmedBalance}</td>                      
-    // </tr>
-    
-    // Functions to format data in table
-    function tableAddressFormatter(cell, row) {
-      return '<a href="' + cell.transactionURL + '">' + cell.address + '</a>'
-    }
-
-    function tableWIFFormatter(cell, row) {
-      return (
-        <CopyToClipboard text={cell}>
-          <ToolTipButton id={cell} buttonText={<MDCopy/>} tooltipText={'copy wif private key'}/>                
-        </CopyToClipboard>
-      )
-    }
+    const addressColumns = [{
+      Header: 'Address',
+      accessor: 'address',      
+      resizable: true,
+      Cell: props => <a href={this.getAddressBlockExplorerURL(props.value)}>{props.value}</a>
+    }, {
+      Header: 'Confirmed',
+      accessor: 'confirmedBalance',
+      Cell: props => <span className='number'>{props.value}</span>
+    }, {
+      Header: 'Unconfirmed',
+      accessor: 'unconfirmedBalance',
+      Cell: props => <span className='number'>{props.value}</span>
+    }]
 
     return (
       <Row>
         <Col>     
           <Card>
-            <CardBlock>                                  
+            <CardBlock>                                                          
               {this.state.retrieveAddressError ?
               <Alert color="danger">Error connecting to the Insight API. Double check the Insight API supplied in settings.</Alert>
               :
-              <Alert color="warning">The balance displayed here is dependent on the insight node.<br/>Automatically updates every 5 minutes.</Alert>
-              }                
-              <ToolTipButton onClick={this.updateAddressesInfo} id={5} buttonText={<MDRefresh/>} tooltipText={'manually refresh balance'}/>                                 
+              <Alert color="warning">The balance displayed here is dependent on the insight node.<br/>Automatically updates every 5 minutes. Alternatively, you can <a href="#" onClick={() => this.updateAddressesInfo()}>forcefully refresh</a> them.</Alert>
+              }                                          
             </CardBlock>
-          </Card>
+          </Card>  
           <Card>
             <CardBlock>
-              <BootstrapTable data={[{totalConfirmed: totalConfirmed, totalUnconfirmed: totalUnconfirmed}]} striped hover> 
-                <TableHeaderColumn isKey={true} dataField='totalConfirmed'>Total Confirmed</TableHeaderColumn>
-                <TableHeaderColumn dataField='totalUnconfirmed'>Total Unconfirmed</TableHeaderColumn>                                    
-              </BootstrapTable>
+              <ReactTable
+                columns={[{
+                  Header: 'Total Confirmed',
+                  accessor: 'totalConfirmed',
+                  Cell: props => <span className='number'>{props.value}</span>
+                }, {
+                  Header: 'Total Unconfirmed',
+                  accessor: 'totalUnconfirmed',
+                  Cell: props => <span className='number'>{props.value}</span>
+                }]}
+
+                data={[
+                  {
+                    totalConfirmed: totalConfirmed,
+                    totalUnconfirmed: totalUnconfirmed
+                  }
+                ]}
+
+                showPagination={false}
+
+                minRows={1}
+              />
             </CardBlock>
           </Card>          
           <Card>
             <CardBlock>                                            
-              <BootstrapTable data={addresses} striped hover>
-                <TableHeaderColumn isKey dataField='address' dataFormat={tableAddressFormatter} width='60%'>Address</TableHeaderColumn>
-                <TableHeaderColumn dataField='privateKeyWIF' dataFormat={tableWIFFormatter}>WIF</TableHeaderColumn>
-                <TableHeaderColumn dataField='confirmedBalance'>Confirmed</TableHeaderColumn>
-                <TableHeaderColumn dataField='unconfirmedBalance'>Unconfirmed</TableHeaderColumn>
-              </BootstrapTable>                                                       
+              <ReactTable
+                data={addresses} columns={addressColumns}
+                minRows={addresses.length > 20 ? 20 : addresses.length}
+                showPagination={addresses.length > 20}
+              />
             </CardBlock>
           </Card>
         </Col>
@@ -828,6 +840,7 @@ class ZWalletTabs extends React.Component {
     super(props)
 
     this.toggleTabs = this.toggleTabs.bind(this);
+    this.savePrivateKeys = this.savePrivateKeys.bind(this);
     this.state = {
       activeTab: '1'
     }
@@ -839,6 +852,24 @@ class ZWalletTabs extends React.Component {
         activeTab: tab
       });
     }
+  }
+
+  savePrivateKeys(){
+    // ISO 8601
+    var now = new Date();
+    now = now.toISOString().split('.')[0]+'Z';
+
+    var fileStr = '# Wallet dump created by myzenwallet ' + pjson.version + '\n'
+    fileStr += '# Created on ' + now + '\n\n\n'
+
+    Object.keys(this.props.publicAddresses).forEach(function(key) {
+      fileStr += this.props.publicAddresses[key].privateKeyWIF
+      fileStr += ' ' + now + ' ' + 'label=' + ' ' + '# addr=' + key
+      fileStr += '\n'
+    }.bind(this))
+    
+    const pkBlob = new Blob([fileStr], {type: 'text/plain;charset=utf-8'})
+    FileSaver.saveAs(pkBlob, now + '_myzenwallet_private_keys.txt')
   }
 
   render () {
@@ -860,7 +891,15 @@ class ZWalletTabs extends React.Component {
             >
               Send ZEN
             </NavLink>
-          </NavItem>         
+          </NavItem>
+          <NavItem>
+            <NavLink
+              className={classnames({ active: this.state.activeTab === '3' })}
+              onClick={() => { this.toggleTabs('3'); }}
+            >
+              Export
+            </NavLink>
+          </NavItem>       
         </Nav>
         <TabContent activeTab={this.state.activeTab}>
           <TabPane tabId="1">
@@ -875,7 +914,21 @@ class ZWalletTabs extends React.Component {
               settings={this.props.settings}
               publicAddresses={this.props.publicAddresses}            
             />
-          </TabPane>  
+          </TabPane>
+          <TabPane tabId="3">
+            <Row>
+              <Col>
+                <Card>
+                  <CardBlock>
+                    <Button 
+                      color="secondary" className="btn-block"
+                      onClick={this.savePrivateKeys}                  
+                    >Download Private Keys</Button>
+                  </CardBlock>  
+                </Card>
+              </Col>
+            </Row>
+          </TabPane>   
         </TabContent>
       </div>       
     )
@@ -956,8 +1009,7 @@ export default class ZWallet extends React.Component {
 
         publicAddresses[c_addr] = {
           privateKey: c_pk,
-          privateKeyWIF: c_pk_wif,
-          transactionURL: zenwalletutils.urlAppend(this.state.settings.explorerURL, 'address/') + c_addr,        
+          privateKeyWIF: c_pk_wif,          
           confirmedBalance: 'loading...',
           unconfirmedBalance: 'loading...',  
         }
@@ -979,7 +1031,7 @@ export default class ZWallet extends React.Component {
       privateKeys : '',
       publicAddresses: null,
     })
-  }
+  }  
 
   // Only used for bip32 gen wallet because
   // of the async nature

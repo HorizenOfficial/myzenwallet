@@ -1,5 +1,5 @@
 import 'bootstrap/dist/css/bootstrap.css';
-import 'react-bootstrap-table/dist/react-bootstrap-table-all.min.css';
+import 'react-table/react-table.css'
 import React from 'react';
 import ReactDOM from 'react-dom';
 import ZNavbar from './components/navbar.jsx'
