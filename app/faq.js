@@ -3,7 +3,7 @@ import 'react-table/react-table.css'
 import React from 'react';
 import ReactDOM from 'react-dom';
 import ZNavbar from './components/navbar.jsx'
-import ZWallet from './components/wallet.jsx'
+import ZFaq from './components/faq.jsx'
 import ZFooter from './components/footer.jsx'
 
 ReactDOM.render(<ZNavbar />, document.getElementById('navbar'));
