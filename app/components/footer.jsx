@@ -28,7 +28,7 @@ export default class ZFooter extends React.Component {
             <p>Suggestions? Email me: kendricktan0814 at gmail.com or find me on slack @ kendricktan.</p>          
 
             <p style={longP}>Donations are always welcome!<br/>
-              <b>BTC</b>: 14VmTd7Npm27SmJgrg1eUrSPgFEHcMXVGR<br/>
+              <b>BTC</b>: 12cEDPML2PoDkKeGcJUGJmEa5pQos3SVuf<br/>
               <b>ETH</b>: 0x19Ed10db2960B9B21283FdFDe464e7bF3a87D05D<br/>
               <b>ZEN</b>: znSDvF9nA5VCdse5HbEKmsoNbjCbsEA3VAH
             </p>
