@@ -38,14 +38,14 @@ module.exports = {
         }),
         new HtmlWebpackPlugin({
             favicon: 'assets/images/favicon.ico',
-            template: './app/faq.html',
+            template: './app/index.html',
             chunks: ['faq'],
             filename: 'faq.html',
             inject: 'body'
         }),
         new HtmlWebpackPlugin({
             favicon: 'assets/images/favicon.ico',
-            template: './app/guide.html',
+            template: './app/index.html',
             chunks: ['guide'],
             filename: 'guide.html',
             inject: 'body'

@@ -50445,11 +50445,13 @@ var ZWalletUnlockKey = function (_React$Component3) {
             _react2.default.createElement(
               _reactstrap.InputGroupButton,
               null,
-              _react2.default.createElement(ToolTipButton, { id: 4,
-                onClick: this.toggleShowPassword,
-                buttonText: this.state.showPassword ? _react2.default.createElement(_eye2.default, null) : _react2.default.createElement(_eyeSlash2.default, null),
-                tooltipText: this.state.showPassword ? 'show password' : 'hide password'
-              })
+              _react2.default.createElement(
+                _reactstrap.Button,
+                { id: 4,
+                  onClick: this.toggleShowPassword
+                },
+                this.state.showPassword ? _react2.default.createElement(_eye2.default, null) : _react2.default.createElement(_eyeSlash2.default, null)
+              )
             ),
             _react2.default.createElement(_reactstrap.Input, {
               type: this.state.showPassword ? "text" : "password",
@@ -50457,11 +50459,15 @@ var ZWalletUnlockKey = function (_React$Component3) {
                 return _this5.props.setPrivateKeys([e.target.value]);
               } // Set it in a list so we can map over it later
               , placeholder: 'Private key'
-            }),
+            })
+          ),
+          _react2.default.createElement(
+            'div',
+            { style: { paddingTop: '8px' } },
             _react2.default.createElement(
-              _reactstrap.InputGroupButton,
-              null,
-              _react2.default.createElement(ToolTipButton, { onClick: this.unlockPrivateKeys, id: 3, buttonText: _react2.default.createElement(_unlockAlt2.default, null), tooltipText: 'unlock' })
+              _reactstrap.Button,
+              { color: 'secondary', className: 'btn-block', onClick: this.unlockPrivateKeys },
+              'Unlock Private Key'
             )
           )
         );
@@ -50495,11 +50501,13 @@ var ZWalletUnlockKey = function (_React$Component3) {
             _react2.default.createElement(
               _reactstrap.InputGroupButton,
               null,
-              _react2.default.createElement(ToolTipButton, { id: 7,
-                onClick: this.toggleShowPassword,
-                buttonText: this.state.showPassword ? _react2.default.createElement(_eye2.default, null) : _react2.default.createElement(_eyeSlash2.default, null),
-                tooltipText: this.state.showPassword ? 'show phrase' : 'hide phrase'
-              })
+              _react2.default.createElement(
+                _reactstrap.Button,
+                { id: 7,
+                  onClick: this.toggleShowPassword
+                },
+                this.state.showPassword ? _react2.default.createElement(_eye2.default, null) : _react2.default.createElement(_eyeSlash2.default, null)
+              )
             ),
             _react2.default.createElement(_reactstrap.Input, {
               type: this.state.showPassword ? "text" : "password",
@@ -50508,11 +50516,15 @@ var ZWalletUnlockKey = function (_React$Component3) {
                 return _this5.setState({ secretPhrase: e.target.value });
               },
               placeholder: 'Secret phrase. e.g. cash cow money heros cardboard money bag late green'
-            }),
+            })
+          ),
+          _react2.default.createElement(
+            'div',
+            { style: { paddingTop: '8px' } },
             _react2.default.createElement(
-              _reactstrap.InputGroupButton,
-              null,
-              _react2.default.createElement(ToolTipButton, { onClick: this.unlockHDWallet, id: 8, buttonText: _react2.default.createElement(_unlockAlt2.default, null), tooltipText: 'unlock HD wallet' })
+              _reactstrap.Button,
+              { color: 'secondary', className: 'btn-block', onClick: this.unlockHDWallet },
+              'Generate Wallet'
             )
           )
         );
@@ -51633,8 +51645,8 @@ var ZWallet = function (_React$Component9) {
       _settings.useTestNet = !_settings.useTestNet;
 
       if (_settings.useTestNet) {
-        _settings.insightAPI = 'http://aayanl.tech:8081/insight-api-zen/';
-        _settings.explorerURL = 'http://aayanl.tech:8081/';
+        _settings.insightAPI = 'https://aayanl.tech/insight-api-zen/';
+        _settings.explorerURL = 'https://aayanl.tech/';
       } else {
         _settings.insightAPI = 'https://explorer.zensystem.io/insight-api-zen/';
         _settings.explorerURL = 'https://explorer.zensystem.io/';
@@ -80617,7 +80629,7 @@ module.exports = exports['default'];
 
 module.exports = {
 	"name": "myzenwallet",
-	"version": "v2.0.4a",
+	"version": "v2.0.5a",
 	"description": "Secure ZENCash wallet online",
 	"main": "index.js",
 	"repository": "https://github.com/kendricktan/myzenwallet.git",

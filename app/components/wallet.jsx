@@ -237,21 +237,19 @@ class ZWalletUnlockKey extends React.Component {
           {this.state.invalidPrivateKey ? <Alert color="danger"><strong>Error.</strong>&nbsp;Invalid private key</Alert> : ''}
           <InputGroup>                                       
             <InputGroupButton>
-              <ToolTipButton id={4}
-                onClick={this.toggleShowPassword}
-                buttonText={this.state.showPassword? <FAEye/> : <FAEyeSlash/>}
-                tooltipText={this.state.showPassword? 'show password' : 'hide password'}
-              />
+              <Button id={4}
+                onClick={this.toggleShowPassword}             
+              >{this.state.showPassword? <FAEye/> : <FAEyeSlash/>}</Button>
             </InputGroupButton>
             <Input
               type={this.state.showPassword ? "text" : "password"}
               onChange={(e) => this.props.setPrivateKeys([e.target.value])} // Set it in a list so we can map over it later
               placeholder="Private key"
             />
-            <InputGroupButton> 
-              <ToolTipButton onClick={this.unlockPrivateKeys} id={3} buttonText={<FAUnlock/>} tooltipText={'unlock'}/>
-            </InputGroupButton>
           </InputGroup>
+          <div style={{paddingTop: '8px'}}>
+            <Button color="secondary" className="btn-block" onClick={this.unlockPrivateKeys}>Unlock Private Key</Button>
+          </div>
         </div>
       )
     }
@@ -263,22 +261,20 @@ class ZWalletUnlockKey extends React.Component {
           {this.state.secretPhraseTooShort ? <Alert color="danger"><strong>Error.</strong>&nbsp;Secret phrase too short</Alert> : '' }
           <InputGroup>                                       
             <InputGroupButton>
-              <ToolTipButton id={7}
-                onClick={this.toggleShowPassword}
-                buttonText={this.state.showPassword? <FAEye/> : <FAEyeSlash/>}
-                tooltipText={this.state.showPassword? 'show phrase' : 'hide phrase'}
-              />
+              <Button id={7}
+                onClick={this.toggleShowPassword}                
+              >{this.state.showPassword? <FAEye/> : <FAEyeSlash/>}</Button>
             </InputGroupButton>
             <Input
               type={this.state.showPassword ? "text" : "password"}
               maxLength="64"
               onChange={(e) => this.setState({secretPhrase: e.target.value})}
               placeholder="Secret phrase. e.g. cash cow money heros cardboard money bag late green"
-            />
-            <InputGroupButton> 
-              <ToolTipButton onClick={this.unlockHDWallet} id={8} buttonText={<FAUnlock/>} tooltipText={'unlock HD wallet'}/>
-            </InputGroupButton>
+            />                        
           </InputGroup>
+          <div style={{paddingTop: '8px'}}>
+            <Button color="secondary" className="btn-block" onClick={this.unlockHDWallet}>Generate Wallet</Button>
+          </div>
         </div>
       )
     }
@@ -1091,8 +1087,8 @@ export default class ZWallet extends React.Component {
     _settings.useTestNet = !_settings.useTestNet
 
     if (_settings.useTestNet){
-      _settings.insightAPI = 'http://aayanl.tech:8081/insight-api-zen/'
-      _settings.explorerURL = 'http://aayanl.tech:8081/'
+      _settings.insightAPI = 'https://aayanl.tech/insight-api-zen/'
+      _settings.explorerURL = 'https://aayanl.tech/'
     }
     else{
       _settings.insightAPI = 'https://explorer.zensystem.io/insight-api-zen/'
