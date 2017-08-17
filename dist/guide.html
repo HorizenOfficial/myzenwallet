@@ -1,78 +1,47 @@
-<head><link rel="shortcut icon" href="favicon.ico"></head>Html Webpack Plugin:
-<pre>
-  Error: Child compilation failed:
-  Module build failed: Error: ENOENT: no such file or directory, open '/home/kendrick/Development/JavaScript/myzenwallet/app/guide.html'
-  
-  
-  - Error: ENOENT: no such file or directory, open '/home/kendrick/Development/JavaScript/myzenwallet/app/guide.html'
-  
-  - compiler.js:76 
-    [myzenwallet]/[html-webpack-plugin]/lib/compiler.js:76:16
-  
-  - Compiler.js:304 compile
-    [myzenwallet]/[webpack]/lib/Compiler.js:304:11
-  
-  - Compiler.js:520 applyPluginsAsync.err
-    [myzenwallet]/[webpack]/lib/Compiler.js:520:14
-  
-  - Tapable.js:184 next
-    [myzenwallet]/[tapable]/lib/Tapable.js:184:11
-  
-  - CachePlugin.js:62 Compiler.<anonymous>
-    [myzenwallet]/[webpack]/lib/CachePlugin.js:62:5
-  
-  - Tapable.js:188 Compiler.applyPluginsAsyncSeries
-    [myzenwallet]/[tapable]/lib/Tapable.js:188:13
-  
-  - Compiler.js:517 compilation.seal.err
-    [myzenwallet]/[webpack]/lib/Compiler.js:517:11
-  
-  - Tapable.js:177 Compilation.applyPluginsAsyncSeries
-    [myzenwallet]/[tapable]/lib/Tapable.js:177:46
-  
-  - Compilation.js:654 self.applyPluginsAsync.err
-    [myzenwallet]/[webpack]/lib/Compilation.js:654:19
-  
-  - Tapable.js:177 Compilation.applyPluginsAsyncSeries
-    [myzenwallet]/[tapable]/lib/Tapable.js:177:46
-  
-  - Compilation.js:645 self.applyPluginsAsync.err
-    [myzenwallet]/[webpack]/lib/Compilation.js:645:11
-  
-  - Tapable.js:177 Compilation.applyPluginsAsyncSeries
-    [myzenwallet]/[tapable]/lib/Tapable.js:177:46
-  
-  - Compilation.js:640 self.applyPluginsAsync.err
-    [myzenwallet]/[webpack]/lib/Compilation.js:640:10
-  
-  - Tapable.js:177 Compilation.applyPluginsAsyncSeries
-    [myzenwallet]/[tapable]/lib/Tapable.js:177:46
-  
-  - Compilation.js:636 sealPart2
-    [myzenwallet]/[webpack]/lib/Compilation.js:636:9
-  
-  - Tapable.js:177 Compilation.applyPluginsAsyncSeries
-    [myzenwallet]/[tapable]/lib/Tapable.js:177:46
-  
-  - Compilation.js:579 Compilation.seal
-    [myzenwallet]/[webpack]/lib/Compilation.js:579:8
-  
-  - Compiler.js:514 applyPluginsParallel.err
-    [myzenwallet]/[webpack]/lib/Compiler.js:514:17
-  
-  - Tapable.js:271 
-    [myzenwallet]/[tapable]/lib/Tapable.js:271:11
-  
-  - Compilation.js:481 _addModuleChain
-    [myzenwallet]/[webpack]/lib/Compilation.js:481:11
-  
-  - Compilation.js:452 processModuleDependencies.err
-    [myzenwallet]/[webpack]/lib/Compilation.js:452:13
-  
-  - next_tick.js:73 _combinedTickCallback
-    internal/process/next_tick.js:73:7
-  
-  - next_tick.js:104 process._tickCallback
-    internal/process/next_tick.js:104:9
-  
-</pre><script type="text/javascript" src="js/guide.js"></script>
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="favicon.ico">
+    <title>MyZenWallet.io</title>    
+    <style>
+        body {
+            display: flex;
+            min-height: 100vh;
+            flex-direction: column;
+        }
+
+        .aligner {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }   
+    </style>
+<link rel="shortcut icon" href="favicon.ico"></head>
+
+<body>
+    <div id="navbar"></div><br/>
+
+    <div class="aligner">        
+        <div id="wallet"></div>
+        <div id="guide"></div>
+        <div id="faq"></div>
+    </div><br/>
+
+    <div id="footer"></div>
+    
+    <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-71060764-10', 'auto');
+    ga('send', 'pageview');
+    </script>
+<script type="text/javascript" src="js/guide.js"></script></body>
+
+</html>

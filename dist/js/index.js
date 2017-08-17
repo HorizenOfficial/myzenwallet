@@ -80629,7 +80629,7 @@ module.exports = exports['default'];
 
 module.exports = {
 	"name": "myzenwallet",
-	"version": "v2.0.5a",
+	"version": "v2.0.6a",
 	"description": "Secure ZENCash wallet online",
 	"main": "index.js",
 	"repository": "https://github.com/kendricktan/myzenwallet.git",
