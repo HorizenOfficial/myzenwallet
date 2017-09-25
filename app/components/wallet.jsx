@@ -2,6 +2,7 @@ import { Alert, Form, FormText, ButtonGroup, UncontrolledAlert, Tooltip, CardBlo
 
 import axios from 'axios'
 import React from 'react'
+import QRCode from 'qrcode.react';
 import classnames from 'classnames'
 import CopyToClipboard from 'react-copy-to-clipboard'
 import ReactTable from 'react-table'
@@ -831,6 +832,71 @@ class ZWalletSelectUnlockType extends React.Component {
   }
 }
 
+class ZPrintableKeys extends React.Component {
+  constructor(props){
+    super(props);
+
+    this.state = {
+      selectedPublicAddress: '',
+      selectedPrivateKey: '',  
+    }
+
+    this.handleUpdateSelectedAddress = this.handleUpdateSelectedAddress.bind(this)
+  }
+
+  handleUpdateSelectedAddress(e){
+    const selectedPublicAddress = e.target.value;
+    const selectedPrivateKey = selectedPublicAddress === '' ? '' : this.props.publicAddresses[selectedPublicAddress].privateKeyWIF;
+
+    this.setState({
+      selectedPublicAddress: selectedPublicAddress,
+      selectedPrivateKey: selectedPrivateKey
+    })
+
+    console.log(selectedPrivateKey)
+  }
+
+  render() {
+    var sendAddresses = [];
+    Object.keys(this.props.publicAddresses).forEach(function(key) {
+      if (key !== undefined){        
+        sendAddresses.push(
+          <option value={key}>[{this.props.publicAddresses[key].confirmedBalance}] - {key}</option>                                       
+        )
+      }
+    }.bind(this))
+
+    return (
+      <div>
+        <h3>Printable Wallet</h3>
+          <Input type="select" onChange={this.handleUpdateSelectedAddress}>
+            <option value=''></option>
+            {sendAddresses}
+          </Input>
+          <div>
+            {
+              this.state.selectedPublicAddress === '' ?
+              null :
+              (          
+                <Row style={{textAlign: 'center', paddingTop: '75px', paddingBottom: '25px'}}>              
+                  <Col>
+                    <QRCode value={this.state.selectedPublicAddress} /><br/>
+                    { this.state.selectedPublicAddress }
+                  </Col>
+
+                  <Col>
+                    <QRCode value={this.state.selectedPrivateKey} /><br/>
+                    { this.state.selectedPrivateKey }
+                  </Col>
+                </Row> 
+              )           
+            }
+          </div>
+      </div>
+    )
+  }
+}
+
 class ZWalletTabs extends React.Component {
   constructor(props){
     super(props)
@@ -914,13 +980,17 @@ class ZWalletTabs extends React.Component {
           <TabPane tabId="3">
             <Row>
               <Col>
-                <Card>
+                <Card>                  
                   <CardBlock>
+                    <ZPrintableKeys publicAddresses={this.props.publicAddresses}/>                  
+                  </CardBlock>                  
+                  <CardBlock>
+                    <h3>Private Key Dump</h3>
                     <Button 
                       color="secondary" className="btn-block"
                       onClick={this.savePrivateKeys}                  
                     >Download Private Keys</Button>
-                  </CardBlock>  
+                  </CardBlock>
                 </Card>
               </Col>
             </Row>
