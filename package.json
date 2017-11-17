@@ -8,7 +8,8 @@
   "license": "MIT",
   "scripts": {
     "start": "webpack-dev-server",
-    "watch": "webpack --watch"
+    "watch": "webpack --watch",
+    "build": "webpack"
   },
   "dependencies": {
     "axios": "^0.16.2",
@@ -41,7 +42,7 @@
     "throttled-queue": "^1.0.4",
     "webpack": "^3.3.0",
     "webpack-dev-server": "^2.5.1",
-    "zencashjs": "^1.1.4-a"
+    "zencashjs": "^1.1.8-a"
   },
   "devDependencies": {
     "babel-core": "^6.25.0",
