@@ -516,13 +516,23 @@ class ZSendZEN extends React.Component {
     this.state = {
       selectedAddress: '', // which address did we select
       recipientAddress: '',
-      fee: '',
+      fee: 0.00000001,
       amount: '',                        
       sentTxid: '', // Whats the send txid
       sendProgress: 0, // Progress bar, 100 to indicate complete
       sendErrorMessage: '',
       confirmSend: false,
     }
+  }
+
+  componentDidMount() {
+    const statusURL = zenwalletutils.urlAppend(this.props.settings.insightAPI, 'status/')
+    axios.get(statusURL)
+    .then((resp) => {
+      this.setState({
+        fee: resp.data.info.relayfee
+      })
+    })
   }
   
   handleUpdateSelectedAddress(e) {    
@@ -758,8 +768,9 @@ class ZSendZEN extends React.Component {
       <Row>
         <Col>
           <Card>
-            <CardBlock>       
-              <Alert color="danger">ALWAYS VALIDATE YOUR DESINATION ADDRESS BY SENDING SMALL AMOUNTS OF ZEN FIRST</Alert>              
+            <CardBlock>
+              <Alert color="info">Fees are dynamically calculated now</Alert>
+              <Alert color="danger">ALWAYS VALIDATE YOUR DESINATION ADDRESS BY SENDING SMALL AMOUNTS OF ZEN FIRST</Alert>
               <InputGroup>
                 <InputGroupAddon>From Address</InputGroupAddon>
                 <Input type="select" onChange={this.handleUpdateSelectedAddress}>
@@ -777,7 +788,7 @@ class ZSendZEN extends React.Component {
               </InputGroup>
               <InputGroup>
                 <InputGroupAddon>Fee</InputGroupAddon>
-                <Input onChange={this.handleUpdateFee} placeholder="e.g 0.001" />
+                <Input disabled value={this.state.fee} onChange={this.handleUpdateFee} placeholder="e.g 0.001" />
               </InputGroup>
               <br/>
               <FormGroup check>
