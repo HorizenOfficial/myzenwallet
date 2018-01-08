@@ -690,7 +690,11 @@ class ZSendZEN extends React.Component {
           // Refund remaining to current address
           if (satoshisSoFar !== satoshisToSend + satoshisfeesToSend){
             var refundSatoshis = satoshisSoFar - satoshisToSend - satoshisfeesToSend
-            recipients = recipients.concat({address: senderAddress, satoshis: refundSatoshis})
+
+            // Only refund satoshis if its > 60 (otherwise will be left unconfirmed)
+            if (refundSatoshis > 60) {
+              recipients = recipients.concat({address: senderAddress, satoshis: refundSatoshis})
+            }
           }
 
           // Create transaction
