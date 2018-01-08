@@ -51822,7 +51822,7 @@ var ZSendZEN = function (_React$Component6) {
       var statusURL = _utils2.default.urlAppend(this.props.settings.insightAPI, 'status/');
       _axios2.default.get(statusURL).then(function (resp) {
         _this11.setState({
-          fee: resp.data.info.relayfee
+          fee: resp.data.info.relayfee * 2 // Prevent unconfirmed transactions
         });
       });
     }

@@ -530,7 +530,7 @@ class ZSendZEN extends React.Component {
     axios.get(statusURL)
     .then((resp) => {
       this.setState({
-        fee: resp.data.info.relayfee
+        fee: resp.data.info.relayfee * 2 // Prevent unconfirmed transactions
       })
     })
   }
@@ -586,7 +586,7 @@ class ZSendZEN extends React.Component {
     // Convert how much we wanna send
     // to satoshis
     const satoshisToSend = Math.round(value * 100000000)
-    const satoshisfeesToSend = Math.round(fee * 100000000)        
+    const satoshisfeesToSend = Math.round(fee * 100000000)
     
     // Reset zen send progress and error message
     this.setProgressValue(1)
