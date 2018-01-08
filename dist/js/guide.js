@@ -31997,11 +31997,9 @@ var ZGuide = function (_React$Component) {
                 _react2.default.createElement(
                   'code',
                   null,
-                  'Unlock Button'
+                  'Generate Wallet'
                 ),
-                ' (',
-                _react2.default.createElement(_unlockAlt2.default, null),
-                ') on the right.'
+                ' button below'
               ),
               _react2.default.createElement(
                 'ul',
@@ -32087,9 +32085,7 @@ var ZGuide = function (_React$Component) {
                   null,
                   'Paste private key'
                 ),
-                ' option, paste in your private key and click the unlock button (',
-                _react2.default.createElement(_unlockAlt2.default, null),
-                ')'
+                ' option, paste in your private key and click the \'Unlock Private Key\' button'
               )
             )
           )

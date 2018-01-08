@@ -516,7 +516,7 @@ class ZSendZEN extends React.Component {
     this.state = {
       selectedAddress: '', // which address did we select
       recipientAddress: '',
-      fee: 0.00000001,
+      fee: 0.00000002, // Prevent unconfirmed tx's for now...
       amount: '',                        
       sentTxid: '', // Whats the send txid
       sendProgress: 0, // Progress bar, 100 to indicate complete
