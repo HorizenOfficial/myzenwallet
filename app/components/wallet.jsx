@@ -33,7 +33,7 @@ var UNLOCK_WALLET_TYPE = {
 
 // Components
 class ToolTipButton extends React.Component {
-  constructor(props){
+  constructor(props) {
     super(props);
 
     this.toggle = this.toggle.bind(this)
@@ -64,8 +64,8 @@ class ToolTipButton extends React.Component {
 
 class ZWalletGenerator extends React.Component {
   constructor(props) {
-    super(props)    
-    
+    super(props)
+
     this.handlePasswordPhrase = this.handlePasswordPhrase.bind(this);
     this.state = {
       passwordPhrase: '',
@@ -73,14 +73,14 @@ class ZWalletGenerator extends React.Component {
     }
   }
 
-  handlePasswordPhrase(e){
+  handlePasswordPhrase(e) {
     // What wif format do we use?
     var wifHash = this.props.settings.useTestNet ? zencashjs.config.testnet.wif : zencashjs.config.mainnet.wif
 
     var pk = zencashjs.address.mkPrivKey(e.target.value)
     var pkwif = zencashjs.address.privKeyToWIF(pk, true, wifHash)
 
-    if (e.target.value === ''){
+    if (e.target.value === '') {
       pkwif = ''
     }
 
@@ -88,24 +88,24 @@ class ZWalletGenerator extends React.Component {
       privateKey: pkwif
     })
   }
-  
-  render () {
+
+  render() {
     return (
-      <div>                  
+      <div>
         <h3 className='display-6'>Generate New Address</h3>
-        <br/>
-        <InputGroup>          
-          <Input onChange={this.handlePasswordPhrase} placeholder="Password phrase. Do NOT forget to save this! Use >15 words to be safe." />            
+        <br />
+        <InputGroup>
+          <Input onChange={this.handlePasswordPhrase} placeholder="Password phrase. Do NOT forget to save this! Use >15 words to be safe." />
         </InputGroup>
-        <br/>
-        <InputGroup>                      
-          <Input value={this.state.privateKey} placeholder="Private key generated from password phrase" />              
+        <br />
+        <InputGroup>
+          <Input value={this.state.privateKey} placeholder="Private key generated from password phrase" />
           <InputGroupButton>
             <CopyToClipboard text={this.state.privateKey}>
-              <Button><MDCopy/></Button>
+              <Button><MDCopy /></Button>
             </CopyToClipboard>
           </InputGroupButton>
-        </InputGroup>        
+        </InputGroup>
       </div>
     )
   }
@@ -113,47 +113,47 @@ class ZWalletGenerator extends React.Component {
 
 
 class ZWalletUnlockKey extends React.Component {
-  constructor(props){
+  constructor(props) {
     super(props)
 
     this.unlockHDWallet = this.unlockHDWallet.bind(this)
     this.loadWalletDat = this.loadWalletDat.bind(this)
     this.toggleShowPassword = this.toggleShowPassword.bind(this)
-    this.unlockPrivateKeys = this.unlockPrivateKeys.bind(this)    
+    this.unlockPrivateKeys = this.unlockPrivateKeys.bind(this)
 
     this.state = {
       showPassword: false,
       secretPhrase: '',
       invalidPrivateKey: false,
-      secretPhraseTooShort: false,      
+      secretPhraseTooShort: false,
 
       // Style for input button
       inputFileStyle: {
-          WebkitAppearance: 'button',
-          cursor: 'pointer'
-      }   
+        WebkitAppearance: 'button',
+        cursor: 'pointer'
+      }
     }
-  }  
+  }
 
-  toggleShowPassword(){
+  toggleShowPassword() {
     this.setState({
       showPassword: !this.state.showPassword
     })
   }
 
-  unlockPrivateKeys(){
+  unlockPrivateKeys() {
     // Success = return 0
-    const success = this.props.handleUnlockPrivateKeys() === 0        
+    const success = this.props.handleUnlockPrivateKeys() === 0
 
-    if (!success){
+    if (!success) {
       this.setState({
-        invalidPrivateKey: true, 
+        invalidPrivateKey: true,
       })
     }
   }
 
-  unlockHDWallet(){
-    try{
+  unlockHDWallet() {
+    try {
       // Generate private keys from secret phrase
       const pk = hdwallet.phraseToHDWallet(this.state.secretPhrase)
 
@@ -163,14 +163,14 @@ class ZWalletUnlockKey extends React.Component {
 
       // Set private key and unlock them (we know it'll work so no need to validate)
       this.props.setPrivateKeys(pk, true)
-    } catch (err){
+    } catch (err) {
       this.setState({
         secretPhraseTooShort: true
       })
     }
   }
 
-  loadWalletDat(e){    
+  loadWalletDat(e) {
     var reader = new FileReader()
     var file = e.target.files[0]
 
@@ -183,21 +183,21 @@ class ZWalletUnlockKey extends React.Component {
       // Source: https://gist.github.com/moocowmoo/a715c80399bb202a65955771c465530c
       var re = /\x30\x81\xD3\x02\x01\x01\x04\x20(.{32})/gm
       var privateKeys = dataHexStr.match(re)
-      privateKeys = privateKeys.map(function(x) {
+      privateKeys = privateKeys.map(function (x) {
         x = x.replace('\x30\x81\xD3\x02\x01\x01\x04\x20', '')
         x = Buffer.from(x, 'latin1').toString('hex')
         return x
-      })      
+      })
 
       // Set private key
       this.props.setPrivateKeys(privateKeys)
 
       // Unlock private key
       const success = this.props.handleUnlockPrivateKeys() === 0
-      
-      if (!success){
+
+      if (!success) {
         this.setState({
-          invalidPrivateKey: true, 
+          invalidPrivateKey: true,
         })
       }
     }
@@ -206,24 +206,24 @@ class ZWalletUnlockKey extends React.Component {
     reader.readAsBinaryString(file)
   }
 
-  render () {
-    if (this.props.unlockType == UNLOCK_WALLET_TYPE.IMPORT_WALLET){
+  render() {
+    if (this.props.unlockType == UNLOCK_WALLET_TYPE.IMPORT_WALLET) {
       return (
         <Form>
-          <FormGroup row>            
+          <FormGroup row>
             <Col>
               {this.state.invalidPrivateKey ? <Alert color="danger"><strong>Error.</strong>&nbsp;Keys in files are corrupted</Alert> : ''}
               <Label for="walletDatFile" className="btn btn-block btn-secondary" style={this.state.inputFileStyle}>Select wallet.dat file
                 <Input
-                  style={{display: 'none'}}
-                  type="file"                 
+                  style={{ display: 'none' }}
+                  type="file"
                   name="file"
-                  id="walletDatFile"                
+                  id="walletDatFile"
                   onChange={this.loadWalletDat}
                 />
               </Label>
               <FormText color="muted">
-                For Windows, it should be in %APPDATA%/zen<br/>
+                For Windows, it should be in %APPDATA%/zen<br />
                 For Mac/Linux, it should be in ~/.zen
               </FormText>
             </Col>
@@ -232,15 +232,15 @@ class ZWalletUnlockKey extends React.Component {
       )
     }
 
-    else if (this.props.unlockType == UNLOCK_WALLET_TYPE.PASTE_PRIV_KEY){
+    else if (this.props.unlockType == UNLOCK_WALLET_TYPE.PASTE_PRIV_KEY) {
       return (
         <div>
           {this.state.invalidPrivateKey ? <Alert color="danger"><strong>Error.</strong>&nbsp;Invalid private key</Alert> : ''}
-          <InputGroup>                                       
+          <InputGroup>
             <InputGroupButton>
               <Button id={4}
-                onClick={this.toggleShowPassword}             
-              >{this.state.showPassword? <FAEye/> : <FAEyeSlash/>}</Button>
+                onClick={this.toggleShowPassword}
+              >{this.state.showPassword ? <FAEye /> : <FAEyeSlash />}</Button>
             </InputGroupButton>
             <Input
               type={this.state.showPassword ? "text" : "password"}
@@ -248,32 +248,32 @@ class ZWalletUnlockKey extends React.Component {
               placeholder="Private key"
             />
           </InputGroup>
-          <div style={{paddingTop: '8px'}}>
+          <div style={{ paddingTop: '8px' }}>
             <Button color="secondary" className="btn-block" onClick={this.unlockPrivateKeys}>Unlock Private Key</Button>
           </div>
         </div>
       )
     }
 
-    else if (this.props.unlockType == UNLOCK_WALLET_TYPE.HD_WALLET){
+    else if (this.props.unlockType == UNLOCK_WALLET_TYPE.HD_WALLET) {
       return (
         <div>
           <Alert color="warning"><strong>Warning.</strong>&nbsp;Make sure you have saved your secret phrase somewhere.</Alert>
-          {this.state.secretPhraseTooShort ? <Alert color="danger"><strong>Error.</strong>&nbsp;Secret phrase too short</Alert> : '' }
-          <InputGroup>                                       
+          {this.state.secretPhraseTooShort ? <Alert color="danger"><strong>Error.</strong>&nbsp;Secret phrase too short</Alert> : ''}
+          <InputGroup>
             <InputGroupButton>
               <Button id={7}
-                onClick={this.toggleShowPassword}                
-              >{this.state.showPassword? <FAEye/> : <FAEyeSlash/>}</Button>
+                onClick={this.toggleShowPassword}
+              >{this.state.showPassword ? <FAEye /> : <FAEyeSlash />}</Button>
             </InputGroupButton>
             <Input
               type={this.state.showPassword ? "text" : "password"}
               maxLength="64"
-              onChange={(e) => this.setState({secretPhrase: e.target.value})}
+              onChange={(e) => this.setState({ secretPhrase: e.target.value })}
               placeholder="Secret phrase. e.g. cash cow money heros cardboard money bag late green"
-            />                        
+            />
           </InputGroup>
-          <div style={{paddingTop: '8px'}}>
+          <div style={{ paddingTop: '8px' }}>
             <Button color="secondary" className="btn-block" onClick={this.unlockHDWallet}>Generate Wallet</Button>
           </div>
         </div>
@@ -283,30 +283,30 @@ class ZWalletUnlockKey extends React.Component {
 }
 
 class ZWalletSettings extends React.Component {
-  render () {
+  render() {
     return (
       <Modal isOpen={this.props.settings.showSettings} toggle={this.props.toggleModalSettings}>
-        <ModalHeader toggle={this.props.toggleShowSettings}>ZenCash Wallet Settings</ModalHeader>                  
+        <ModalHeader toggle={this.props.toggleShowSettings}>ZenCash Wallet Settings</ModalHeader>
         <ModalBody>
           <ZWalletSelectUnlockType
-              setUnlockType={this.props.setUnlockType}
-              unlockType={this.props.settings.unlockType}
-            />  
+            setUnlockType={this.props.setUnlockType}
+            unlockType={this.props.settings.unlockType}
+          />
         </ModalBody>
-        <ModalBody>                              
+        <ModalBody>
           <InputGroup>
             <InputGroupAddon>Insight API</InputGroupAddon>
-            <Input 
+            <Input
               value={this.props.settings.insightAPI}
               onChange={(e) => this.props.setInsightAPI(e.target.value)}
             />
-          </InputGroup><br/>
+          </InputGroup><br />
           <Row>
             <Col sm="6">
               <Label check>
                 <Input
                   disabled={!(this.props.publicAddresses === null)}
-                  defaultChecked={this.props.settings.compressPubKey} type="checkbox" 
+                  defaultChecked={this.props.settings.compressPubKey} type="checkbox"
                   onChange={this.props.toggleCompressPubKey}
                 />{' '}
                 Compress Public Key
@@ -314,20 +314,20 @@ class ZWalletSettings extends React.Component {
             </Col>
             <Col sm="6">
               <Label check>
-                <Input                                    
-                  defaultChecked={this.props.settings.showWalletGen} type="checkbox" 
+                <Input
+                  defaultChecked={this.props.settings.showWalletGen} type="checkbox"
                   onChange={this.props.toggleShowWalletGen}
                 />{' '}
                 Show Address Generator
               </Label>
             </Col>
           </Row>
-        </ModalBody>        
+        </ModalBody>
         <ModalFooter>
           <Label>
             <Input
               disabled={!(this.props.publicAddresses === null)}
-              defaultChecked={this.props.settings.useTestNet} type="checkbox" 
+              defaultChecked={this.props.settings.useTestNet} type="checkbox"
               onChange={this.props.toggleUseTestNet}
             />{' '}
             testnet
@@ -344,22 +344,22 @@ class ZAddressInfo extends React.Component {
 
     this.updateAddressInfo = this.updateAddressInfo.bind(this)
     this.updateAddressesInfo = this.updateAddressesInfo.bind(this)
-    this.getAddressBlockExplorerURL = this.getAddressBlockExplorerURL.bind(this)    
+    this.getAddressBlockExplorerURL = this.getAddressBlockExplorerURL.bind(this)
 
-    this.state = {            
-      retrieveAddressError: false      
+    this.state = {
+      retrieveAddressError: false
     }
   }
 
   // Updates all address info
-  updateAddressesInfo() {    
+  updateAddressesInfo() {
     // The key is the address
     // Value is the private key
-    Object.keys(this.props.publicAddresses).forEach(function(key) {
-      if (key !== undefined){
+    Object.keys(this.props.publicAddresses).forEach(function (key) {
+      if (key !== undefined) {
         this.updateAddressInfo(key)
       }
-    }.bind(this))    
+    }.bind(this))
   }
 
   // Gets the blockchain explorer URL for an address
@@ -371,24 +371,24 @@ class ZAddressInfo extends React.Component {
   updateAddressInfo(address) {
     // GET request to URL
     var info_url = zenwalletutils.urlAppend(this.props.settings.insightAPI, 'addr/')
-    info_url = zenwalletutils.urlAppend(info_url, address + '?noTxList=1')    
-        
+    info_url = zenwalletutils.urlAppend(info_url, address + '?noTxList=1')
+
     throttledAxiosGet(info_url)
-    .then(function (response){
-      var data = response.data;
+      .then(function (response) {
+        var data = response.data;
 
-      this.props.setPublicAddressesKeyValue(address, 'confirmedBalance', data.balance)
-      this.props.setPublicAddressesKeyValue(address, 'unconfirmedBalance', data.unconfirmedBalance)
-      this.setState({
-        retrieveAddressError: false
-      })
+        this.props.setPublicAddressesKeyValue(address, 'confirmedBalance', data.balance)
+        this.props.setPublicAddressesKeyValue(address, 'unconfirmedBalance', data.unconfirmedBalance)
+        this.setState({
+          retrieveAddressError: false
+        })
 
-    }.bind(this))
-    .catch(function (error){
-      this.setState({
-        retrieveAddressError: true
-      })
-    }.bind(this))
+      }.bind(this))
+      .catch(function (error) {
+        this.setState({
+          retrieveAddressError: true
+        })
+      }.bind(this))
   }
 
   componentDidMount() {
@@ -403,13 +403,13 @@ class ZAddressInfo extends React.Component {
     clearInterval(this.interval)
   }
 
-  render() {   
+  render() {
     // Key is the address
     var addresses = [];
     var totalConfirmed = 0.0;
     var totalUnconfirmed = 0.0;
-    Object.keys(this.props.publicAddresses).forEach(function(key) {
-      if (key !== undefined){
+    Object.keys(this.props.publicAddresses).forEach(function (key) {
+      if (key !== undefined) {
         // Add to address    
         addresses.push(
           {
@@ -422,11 +422,11 @@ class ZAddressInfo extends React.Component {
 
         const c_confirmed = Number(this.props.publicAddresses[key].confirmedBalance)
         const c_unconfirmed = Number(this.props.publicAddresses[key].unconfirmedBalance)
-        if (!isNaN(c_confirmed)){
+        if (!isNaN(c_confirmed)) {
           totalConfirmed += c_confirmed
         }
 
-        if (!isNaN(c_unconfirmed)){
+        if (!isNaN(c_unconfirmed)) {
           totalUnconfirmed += c_unconfirmed
         }
       }
@@ -434,7 +434,7 @@ class ZAddressInfo extends React.Component {
 
     const addressColumns = [{
       Header: 'Address',
-      accessor: 'address',      
+      accessor: 'address',
       resizable: true,
       Cell: props => <a href={this.getAddressBlockExplorerURL(props.value)}>{props.value}</a>
     }, {
@@ -449,16 +449,16 @@ class ZAddressInfo extends React.Component {
 
     return (
       <Row>
-        <Col>     
+        <Col>
           <Card>
-            <CardBlock>                                                          
+            <CardBlock>
               {this.state.retrieveAddressError ?
-              <Alert color="danger">Error connecting to the Insight API. Double check the Insight API supplied in settings.</Alert>
-              :
-              <Alert color="warning">The balance displayed here is dependent on the insight node.<br/>Automatically updates every 5 minutes. Alternatively, you can <a href="#" onClick={() => this.updateAddressesInfo()}>forcefully refresh</a> them.</Alert>
-              }                                          
+                <Alert color="danger">Error connecting to the Insight API. Double check the Insight API supplied in settings.</Alert>
+                :
+                <Alert color="warning">The balance displayed here is dependent on the insight node.<br />Automatically updates every 5 minutes. Alternatively, you can <a href="#" onClick={() => this.updateAddressesInfo()}>forcefully refresh</a> them.</Alert>
+              }
             </CardBlock>
-          </Card>  
+          </Card>
           <Card>
             <CardBlock>
               <ReactTable
@@ -484,9 +484,9 @@ class ZAddressInfo extends React.Component {
                 minRows={1}
               />
             </CardBlock>
-          </Card>          
+          </Card>
           <Card>
-            <CardBlock>                                            
+            <CardBlock>
               <ReactTable
                 data={addresses} columns={addressColumns}
                 minRows={addresses.length > 20 ? 20 : addresses.length}
@@ -500,24 +500,181 @@ class ZAddressInfo extends React.Component {
   }
 }
 
+class ZFixUnconfirmed extends React.Component {
+  constructor(props) {
+    super(props)
+
+    this.fixUnconfirmedZen = this.fixUnconfirmedZen.bind(this)
+
+    this.state = {
+      sendErrorMessage: '',
+      unconfirmedTxid: '',
+      fixProgress: 0
+    }    
+  }
+
+  fixUnconfirmedZen() {
+    const txBaseUrl = zenwalletutils.urlAppend(this.props.settings.insightAPI, 'tx/')
+    const sendRawTxURL = zenwalletutils.urlAppend(this.props.settings.insightAPI, 'tx/send')
+    
+    axios.get(txBaseUrl + this.state.unconfirmedTxid.split(' ').join(''))
+      .then((resp_) => {
+        this.setState({
+          fixProgress: 50
+        })
+
+        const resp = resp_.data
+
+        // Vins
+        let vins = resp.vin.map((x) => {
+          return {
+            senderAddress: x.addr,
+            txid: x.txid,
+            vout: x.vout,
+            scriptPubKey: undefined
+          }
+        })
+
+        // Get vout and fix dust value
+        const vouts = resp.vout.map((o) => {
+          return {
+            address: o.scriptPubKey.addresses[0],
+            satoshis: Math.round(parseFloat(o.value) * 100000000)
+          }
+        }).filter(x => x.satoshis > 60)
+
+        // Get previous pub key
+        axios.all(vins.map((x) => axios.get(txBaseUrl + x.txid)))
+          .then(axios.spread((...args) => {
+            for (let i = 0; i < args.length; i++) {              
+              const data = args[i].data              
+              vins[i].scriptPubKey = data.vout[vins[i].vout].scriptPubKey.hex
+            }
+            
+            const blockHeight = 142091
+            const blockHash = '00000001cf4e27ce1dd8028408ed0a48edd445ba388170c9468ba0d42fff3052'
+
+            let txObj = zencashjs.transaction.createRawTx(
+              vins,
+              vouts,
+              blockHeight,
+              blockHash
+            )
+
+            // Sign tx
+            for (let i = 0; i < vins.length; i++) {
+              try {
+                const senderPrivateKey = this.props.publicAddresses[vins[i].senderAddress].privateKey;              
+                txObj = zencashjs.transaction.signTx(txObj, i, senderPrivateKey, this.props.settings.compressPubKey)
+              } catch (e) {
+                this.setState({
+                  fixProgress: 0,
+                  sendErrorMessage: 'You do not own the private keys needed for the corresponding address: ' + vins[i].senderAddress
+                })                
+                return
+              }
+            }
+
+            // Send tx
+            const txHexString = zencashjs.transaction.serializeTx(txObj)
+            console.log(txHexString)
+
+            this.setState({
+              fixProgress: 75,
+            })
+            
+            axios.post(sendRawTxURL, { rawtx: txHexString })
+              .then((sendtx_resp) => {
+                this.setState({
+                  fixProgress: 100,
+                  sentTxid: sendtx_resp.data.txid
+                })
+              })
+              .catch((error) => {
+                console.log(error)
+                this.setState({
+                  fixProgress: 0,
+                  sendErrorMessage: error + ''
+                })
+                return
+              })              
+          }))
+      })
+  }
+
+  render() {
+    // If send was successful
+    var zenTxLink
+    if (this.state.fixProgress === 100) {
+      var zentx = zenwalletutils.urlAppend(this.props.settings.explorerURL, 'tx/') + this.state.sentTxid
+      zenTxLink = (
+        <Alert color="success">
+          <strong>Resent Tx!</strong> <a href={zentx}>Click here to view your transaction</a>
+        </Alert>
+      )
+    }
+
+    // Else show error why
+    else if (this.state.sendErrorMessage !== '') {
+      zenTxLink = (
+        this.state.sendErrorMessage.split(';').map(function (s) {
+          if (s !== '') {
+            return (
+              <Alert color="danger">
+                <strong>Error.</strong> {s}
+              </Alert>
+            )
+          }
+        })
+      )
+    }
+
+    return (
+      <Row>
+        <Col>
+          <Card>
+            <CardBlock>
+              <Alert color="info">This tool fixes your unconfirmed transactions.</Alert>
+              <InputGroup>
+                <InputGroupAddon>Txid</InputGroupAddon>
+                <Input onChange={(e) => this.setState({ unconfirmedTxid: e.target.value })} placeholder="Your unconfirmed txid" />
+              </InputGroup>
+              <br />
+              <Button
+                color="warning" className="btn-block"
+                disabled={this.state.fixProgress > 0}
+                onClick={this.fixUnconfirmedZen}
+              >Fix</Button>
+            </CardBlock>
+            <CardFooter>
+              {zenTxLink}
+              <Progress value={this.state.fixProgress} />
+            </CardFooter>
+          </Card>
+        </Col>
+      </Row>
+    )
+  }
+}
+
 class ZSendZEN extends React.Component {
   constructor(props) {
-    super(props)    
-    
+    super(props)
+
     this.setProgressValue = this.setProgressValue.bind(this);
-    this.setSendErrorMessage = this.setSendErrorMessage.bind(this);    
+    this.setSendErrorMessage = this.setSendErrorMessage.bind(this);
     this.handleUpdateSelectedAddress = this.handleUpdateSelectedAddress.bind(this);
     this.handleUpdateRecipientAddress = this.handleUpdateRecipientAddress.bind(this);
     this.handleUpdateAmount = this.handleUpdateAmount.bind(this);
     this.handleCheckChanged = this.handleCheckChanged.bind(this);
     this.handleUpdateFee = this.handleUpdateFee.bind(this);
-    this.handleSendZEN = this.handleSendZEN.bind(this);    
+    this.handleSendZEN = this.handleSendZEN.bind(this);
 
     this.state = {
       selectedAddress: '', // which address did we select
       recipientAddress: '',
-      fee: 0.00000002, // Prevent unconfirmed tx's for now...
-      amount: '',                        
+      fee: 0.000002, // Prevent unconfirmed tx's for now...
+      amount: '',
       sentTxid: '', // Whats the send txid
       sendProgress: 0, // Progress bar, 100 to indicate complete
       sendErrorMessage: '',
@@ -528,14 +685,17 @@ class ZSendZEN extends React.Component {
   componentDidMount() {
     const statusURL = zenwalletutils.urlAppend(this.props.settings.insightAPI, 'status/')
     axios.get(statusURL)
-    .then((resp) => {
-      this.setState({
-        fee: resp.data.info.relayfee * 2 // Prevent unconfirmed transactions
+      .then((resp) => {
+        const feeData = resp.data.info.relayfee
+        if (feeData > this.state.fee && feeData < 0.001) {
+          this.setState({
+            fee: feeData * 2 // Prevent unconfirmed transactions
+          })
+        }
       })
-    })
   }
-  
-  handleUpdateSelectedAddress(e) {    
+
+  handleUpdateSelectedAddress(e) {
     this.setState({
       selectedAddress: e.target.value
     })
@@ -553,31 +713,31 @@ class ZSendZEN extends React.Component {
     })
   }
 
-  handleUpdateAmount(e) {    
+  handleUpdateAmount(e) {
     this.setState({
       amount: e.target.value
     })
   }
 
-  handleCheckChanged(e){    
+  handleCheckChanged(e) {
     this.setState({
       confirmSend: e.target.checked
     })
   }
 
-  setProgressValue(v){
+  setProgressValue(v) {
     this.setState({
       sendProgress: v
     })
   }
 
-  setSendErrorMessage(msg){
+  setSendErrorMessage(msg) {
     this.setState({
       sendErrorMessage: msg
     })
   }
 
-  handleSendZEN(){      
+  handleSendZEN() {
     const value = this.state.amount;
     const fee = this.state.fee;
     const recipientAddress = this.state.recipientAddress;
@@ -587,7 +747,7 @@ class ZSendZEN extends React.Component {
     // to satoshis
     const satoshisToSend = Math.round(value * 100000000)
     const satoshisfeesToSend = Math.round(fee * 100000000)
-    
+
     // Reset zen send progress and error message
     this.setProgressValue(1)
     this.setSendErrorMessage('')
@@ -596,7 +756,7 @@ class ZSendZEN extends React.Component {
     var errString = ''
 
     // Validation    
-    if (senderAddress === ''){
+    if (senderAddress === '') {
       errString += '`From Address` field can\'t be empty.;'
     }
 
@@ -604,20 +764,20 @@ class ZSendZEN extends React.Component {
       errString += 'Invalid address. Only transparent addresses are supported at this point in time.;'
     }
 
-    if (typeof parseInt(value) !== 'number' || value === ''){
+    if (typeof parseInt(value) !== 'number' || value === '') {
       errString += 'Invalid amount.;'
     }
 
     // Can't send 0 satoshis
-    if (satoshisToSend <= 0){
-      errString += 'Amount must be greater than 0.;'      
+    if (satoshisToSend <= 0) {
+      errString += 'Amount must be greater than 0.;'
     }
 
-    if (typeof parseInt(fee) !== 'number' || fee === ''){
+    if (typeof parseInt(fee) !== 'number' || fee === '') {
       errString += 'Invalid fee.;'
     }
 
-    if (errString !== ''){
+    if (errString !== '') {
       this.setSendErrorMessage(errString)
       this.setProgressValue(0)
       return
@@ -635,135 +795,135 @@ class ZSendZEN extends React.Component {
     // How many satoshis do we have so far
     var satoshisSoFar = 0
     var history = []
-    var recipients = [{address: recipientAddress, satoshis: satoshisToSend}]
+    var recipients = [{ address: recipientAddress, satoshis: satoshisToSend }]
 
     // Get transactions and info
     axios.get(prevTxURL)
-    .then(function (tx_resp){
-      this.setProgressValue(25)
-      
-      const tx_data = tx_resp.data      
+      .then(function (tx_resp) {
+        this.setProgressValue(25)
 
-      axios.get(infoURL)
-      .then(function (info_resp){
-        this.setProgressValue(50)
-        const info_data = info_resp.data
+        const tx_data = tx_resp.data
 
-        const blockHeight = info_data.info.blocks - 300
-        const blockHashURL = zenwalletutils.urlAppend(this.props.settings.insightAPI, 'block-index/') + blockHeight        
+        axios.get(infoURL)
+          .then(function (info_resp) {
+            this.setProgressValue(50)
+            const info_data = info_resp.data
 
-        // Get block hash
-        axios.get(blockHashURL)
-        .then(function(response_bhash){
-          this.setProgressValue(75)
-          
-          const blockHash = response_bhash.data.blockHash
+            const blockHeight = info_data.info.blocks - 300
+            const blockHashURL = zenwalletutils.urlAppend(this.props.settings.insightAPI, 'block-index/') + blockHeight
 
-          // Iterate through each utxo
-          // append it to history
-          for (var i = 0; i < tx_data.length; i ++){
-            if (tx_data[i].confirmations == 0){
-              continue;
-            }
+            // Get block hash
+            axios.get(blockHashURL)
+              .then(function (response_bhash) {
+                this.setProgressValue(75)
 
-            history = history.concat({
-              txid: tx_data[i].txid,
-              vout: tx_data[i].vout,
-              scriptPubKey: tx_data[i].scriptPubKey,            
-            });
-            
-            // How many satoshis do we have so far
-            satoshisSoFar = satoshisSoFar + tx_data[i].satoshis;
-            if (satoshisSoFar >= satoshisToSend + satoshisfeesToSend){
-              break;
-            }
-          }
+                const blockHash = response_bhash.data.blockHash
 
-          // If we don't have enough address
-          // fail and tell user
-          if (satoshisSoFar < satoshisToSend + satoshisfeesToSend){            
-            this.setSendErrorMessage('Not enough confirmed ZEN in account to perform transaction')
-            this.setProgressValue(0)          
-          }
+                // Iterate through each utxo
+                // append it to history
+                for (var i = 0; i < tx_data.length; i++) {
+                  if (tx_data[i].confirmations == 0) {
+                    continue;
+                  }
 
-          // If we don't have exact amount
-          // Refund remaining to current address
-          if (satoshisSoFar !== satoshisToSend + satoshisfeesToSend){
-            var refundSatoshis = satoshisSoFar - satoshisToSend - satoshisfeesToSend
+                  history = history.concat({
+                    txid: tx_data[i].txid,
+                    vout: tx_data[i].vout,
+                    scriptPubKey: tx_data[i].scriptPubKey,
+                  });
 
-            // Only refund satoshis if its > 60 (otherwise will be left unconfirmed)
-            if (refundSatoshis > 60) {
-              recipients = recipients.concat({address: senderAddress, satoshis: refundSatoshis})
-            }
-          }
+                  // How many satoshis do we have so far
+                  satoshisSoFar = satoshisSoFar + tx_data[i].satoshis;
+                  if (satoshisSoFar >= satoshisToSend + satoshisfeesToSend) {
+                    break;
+                  }
+                }
 
-          // Create transaction
-          var txObj = zencashjs.transaction.createRawTx(history, recipients, blockHeight, blockHash)
+                // If we don't have enough address
+                // fail and tell user
+                if (satoshisSoFar < satoshisToSend + satoshisfeesToSend) {
+                  this.setSendErrorMessage('Not enough confirmed ZEN in account to perform transaction')
+                  this.setProgressValue(0)
+                }
 
-          // Sign each history transcation          
-          for (var i = 0; i < history.length; i ++){
-            txObj = zencashjs.transaction.signTx(txObj, i, senderPrivateKey, this.props.settings.compressPubKey)
-          }
+                // If we don't have exact amount
+                // Refund remaining to current address
+                if (satoshisSoFar !== satoshisToSend + satoshisfeesToSend) {
+                  var refundSatoshis = satoshisSoFar - satoshisToSend - satoshisfeesToSend
 
-          // Convert it to hex string
-          const txHexString = zencashjs.transaction.serializeTx(txObj)
+                  // Only refund satoshis if its > 60 (otherwise will be left unconfirmed)
+                  if (refundSatoshis > 60) {
+                    recipients = recipients.concat({ address: senderAddress, satoshis: refundSatoshis })
+                  }
+                }
 
-          axios.post(sendRawTxURL, {rawtx: txHexString})
-          .then(function(sendtx_resp){         
-            this.setState({
-              sendProgress: 100,
-              sentTxid: sendtx_resp.data.txid
-            })
+                // Create transaction
+                var txObj = zencashjs.transaction.createRawTx(history, recipients, blockHeight, blockHash)
+
+                // Sign each history transcation          
+                for (var i = 0; i < history.length; i++) {
+                  txObj = zencashjs.transaction.signTx(txObj, i, senderPrivateKey, this.props.settings.compressPubKey)
+                }
+
+                // Convert it to hex string
+                const txHexString = zencashjs.transaction.serializeTx(txObj)
+
+                axios.post(sendRawTxURL, { rawtx: txHexString })
+                  .then(function (sendtx_resp) {
+                    this.setState({
+                      sendProgress: 100,
+                      sentTxid: sendtx_resp.data.txid
+                    })
+                  }.bind(this))
+                  .catch(function (error) {
+                    this.setSendErrorMessage(error + '')
+                    this.setProgressValue(0)
+                    return
+                  }.bind(this))
+              }.bind(this))
           }.bind(this))
-          .catch(function(error) {            
-            this.setSendErrorMessage(error + '')
-            this.setProgressValue(0)
-            return
-          }.bind(this))
-        }.bind(this))
       }.bind(this))
-    }.bind(this))
-    .catch(function(error){      
-      this.setSendErrorMessage(error)
-      this.setProgressValue(0)
-      return
-    }.bind(this));
-  } 
+      .catch(function (error) {
+        this.setSendErrorMessage(error)
+        this.setProgressValue(0)
+        return
+      }.bind(this));
+  }
 
   render() {
     // If send was successful
     var zenTxLink
-    if (this.state.sendProgress === 100){
+    if (this.state.sendProgress === 100) {
       var zentx = zenwalletutils.urlAppend(this.props.settings.explorerURL, 'tx/') + this.state.sentTxid
       zenTxLink = (
         <Alert color="success">
-        <strong>ZEN successfully sent!</strong> <a href={zentx}>Click here to view your transaction</a>
+          <strong>ZEN successfully sent!</strong> <a href={zentx}>Click here to view your transaction</a>
         </Alert>
-      )      
+      )
     }
 
     // Else show error why
-    else if (this.state.sendErrorMessage !== ''){
+    else if (this.state.sendErrorMessage !== '') {
       zenTxLink = (
         this.state.sendErrorMessage.split(';').map(function (s) {
-          if (s !== ''){
+          if (s !== '') {
             return (
               <Alert color="danger">
-              <strong>Error.</strong> {s}
+                <strong>Error.</strong> {s}
               </Alert>
             )
           }
         })
-      )      
+      )
     }
 
     // Send addresses
     // Key is the address btw
     var sendAddresses = [];
-    Object.keys(this.props.publicAddresses).forEach(function(key) {
-      if (key !== undefined){        
+    Object.keys(this.props.publicAddresses).forEach(function (key) {
+      if (key !== undefined) {
         sendAddresses.push(
-          <option value={key}>[{this.props.publicAddresses[key].confirmedBalance}] - {key}</option>                                       
+          <option value={key}>[{this.props.publicAddresses[key].confirmedBalance}] - {key}</option>
         )
       }
     }.bind(this))
@@ -794,24 +954,24 @@ class ZSendZEN extends React.Component {
                 <InputGroupAddon>Fee</InputGroupAddon>
                 <Input disabled value={this.state.fee} onChange={this.handleUpdateFee} placeholder="e.g 0.001" />
               </InputGroup>
-              <br/>
+              <br />
               <FormGroup check>
                 <Label check>
                   <Input onChange={this.handleCheckChanged} type="checkbox" />{' '}
                   Yes, I would like to send these ZEN
                 </Label>
-              </FormGroup> 
-              <br/>                           
-              <Button 
+              </FormGroup>
+              <br />
+              <Button
                 color="warning" className="btn-block"
                 disabled={!this.state.confirmSend || (this.state.sendProgress > 0 && this.state.sendProgress < 100)}
                 onClick={this.handleSendZEN}
               >Send</Button>
             </CardBlock>
-            <CardFooter> 
+            <CardFooter>
               {zenTxLink}
-              <Progress value={this.state.sendProgress} />                                  
-            </CardFooter>       
+              <Progress value={this.state.sendProgress} />
+            </CardFooter>
           </Card>
         </Col>
       </Row>
@@ -826,7 +986,7 @@ class ZWalletSelectUnlockType extends React.Component {
     this.state = { cSelected: this.props.unlockType }
   }
 
-  onRadioBtnClick(s){
+  onRadioBtnClick(s) {
     this.setState({
       cSelected: s
     })
@@ -835,12 +995,12 @@ class ZWalletSelectUnlockType extends React.Component {
   }
 
   render() {
-    return ( 
-      <div style={{textAlign: 'center'}}>  
-        <ButtonGroup vertical>                 
+    return (
+      <div style={{ textAlign: 'center' }}>
+        <ButtonGroup vertical>
           <Button color="secondary" onClick={() => this.onRadioBtnClick(UNLOCK_WALLET_TYPE.HD_WALLET)} active={this.state.cSelected === UNLOCK_WALLET_TYPE.HD_WALLET}>Enter secret phrase</Button>
-          <Button color="secondary" onClick={() => this.onRadioBtnClick(UNLOCK_WALLET_TYPE.IMPORT_WALLET)} active={this.state.cSelected === UNLOCK_WALLET_TYPE.IMPORT_WALLET}>Load wallet.dat</Button>        
-          <Button color="secondary" onClick={() => this.onRadioBtnClick(UNLOCK_WALLET_TYPE.PASTE_PRIV_KEY)} active={this.state.cSelected === UNLOCK_WALLET_TYPE.PASTE_PRIV_KEY}>Paste private key</Button>      
+          <Button color="secondary" onClick={() => this.onRadioBtnClick(UNLOCK_WALLET_TYPE.IMPORT_WALLET)} active={this.state.cSelected === UNLOCK_WALLET_TYPE.IMPORT_WALLET}>Load wallet.dat</Button>
+          <Button color="secondary" onClick={() => this.onRadioBtnClick(UNLOCK_WALLET_TYPE.PASTE_PRIV_KEY)} active={this.state.cSelected === UNLOCK_WALLET_TYPE.PASTE_PRIV_KEY}>Paste private key</Button>
         </ButtonGroup>
       </div>
     )
@@ -848,18 +1008,18 @@ class ZWalletSelectUnlockType extends React.Component {
 }
 
 class ZPrintableKeys extends React.Component {
-  constructor(props){
+  constructor(props) {
     super(props);
 
     this.state = {
       selectedPublicAddress: '',
-      selectedPrivateKey: '',  
+      selectedPrivateKey: '',
     }
 
     this.handleUpdateSelectedAddress = this.handleUpdateSelectedAddress.bind(this)
   }
 
-  handleUpdateSelectedAddress(e){
+  handleUpdateSelectedAddress(e) {
     const selectedPublicAddress = e.target.value;
     const selectedPrivateKey = selectedPublicAddress === '' ? '' : this.props.publicAddresses[selectedPublicAddress].privateKeyWIF;
 
@@ -873,10 +1033,10 @@ class ZPrintableKeys extends React.Component {
 
   render() {
     var sendAddresses = [];
-    Object.keys(this.props.publicAddresses).forEach(function(key) {
-      if (key !== undefined){        
+    Object.keys(this.props.publicAddresses).forEach(function (key) {
+      if (key !== undefined) {
         sendAddresses.push(
-          <option value={key}>[{this.props.publicAddresses[key].confirmedBalance}] - {key}</option>                                       
+          <option value={key}>[{this.props.publicAddresses[key].confirmedBalance}] - {key}</option>
         )
       }
     }.bind(this))
@@ -884,36 +1044,36 @@ class ZPrintableKeys extends React.Component {
     return (
       <div>
         <h3>Printable Wallet</h3>
-          <Input type="select" onChange={this.handleUpdateSelectedAddress}>
-            <option value=''></option>
-            {sendAddresses}
-          </Input>
-          <div>
-            {
-              this.state.selectedPublicAddress === '' ?
+        <Input type="select" onChange={this.handleUpdateSelectedAddress}>
+          <option value=''></option>
+          {sendAddresses}
+        </Input>
+        <div>
+          {
+            this.state.selectedPublicAddress === '' ?
               null :
-              (          
-                <Row style={{textAlign: 'center', paddingTop: '75px', paddingBottom: '25px'}}>              
+              (
+                <Row style={{ textAlign: 'center', paddingTop: '75px', paddingBottom: '25px' }}>
                   <Col>
-                    <QRCode value={this.state.selectedPublicAddress} /><br/>
-                    { this.state.selectedPublicAddress }
+                    <QRCode value={this.state.selectedPublicAddress} /><br />
+                    {this.state.selectedPublicAddress}
                   </Col>
 
                   <Col>
-                    <QRCode value={this.state.selectedPrivateKey} /><br/>
-                    { this.state.selectedPrivateKey }
+                    <QRCode value={this.state.selectedPrivateKey} /><br />
+                    {this.state.selectedPrivateKey}
                   </Col>
-                </Row> 
-              )           
-            }
-          </div>
+                </Row>
+              )
+          }
+        </div>
       </div>
     )
   }
 }
 
 class ZWalletTabs extends React.Component {
-  constructor(props){
+  constructor(props) {
     super(props)
 
     this.toggleTabs = this.toggleTabs.bind(this);
@@ -931,26 +1091,26 @@ class ZWalletTabs extends React.Component {
     }
   }
 
-  savePrivateKeys(){
+  savePrivateKeys() {
     // ISO 8601
     var now = new Date();
-    now = now.toISOString().split('.')[0]+'Z';
+    now = now.toISOString().split('.')[0] + 'Z';
 
     var fileStr = '# Wallet dump created by myzenwallet ' + pjson.version + '\n'
     fileStr += '# Created on ' + now + '\n\n\n'
 
-    Object.keys(this.props.publicAddresses).forEach(function(key) {
+    Object.keys(this.props.publicAddresses).forEach(function (key) {
       fileStr += this.props.publicAddresses[key].privateKeyWIF
       fileStr += ' ' + now + ' ' + 'label=' + ' ' + '# addr=' + key
       fileStr += '\n'
     }.bind(this))
-    
-    const pkBlob = new Blob([fileStr], {type: 'text/plain;charset=utf-8'})
+
+    const pkBlob = new Blob([fileStr], { type: 'text/plain;charset=utf-8' })
     FileSaver.saveAs(pkBlob, now + '_myzenwallet_private_keys.txt')
   }
 
-  render () {
-    return (      
+  render() {
+    return (
       <div>
         <Nav tabs>
           <NavItem>
@@ -971,12 +1131,20 @@ class ZWalletTabs extends React.Component {
           </NavItem>
           <NavItem>
             <NavLink
+              className={classnames({ active: this.state.activeTab === '4' })}
+              onClick={() => { this.toggleTabs('4'); }}
+            >
+              Fix Unconfirmed ZEN
+            </NavLink>
+          </NavItem>
+          <NavItem>
+            <NavLink
               className={classnames({ active: this.state.activeTab === '3' })}
               onClick={() => { this.toggleTabs('3'); }}
             >
               Export
             </NavLink>
-          </NavItem>       
+          </NavItem>
         </Nav>
         <TabContent activeTab={this.state.activeTab}>
           <TabPane tabId="1">
@@ -987,31 +1155,37 @@ class ZWalletTabs extends React.Component {
             />
           </TabPane>
           <TabPane tabId="2">
-            <ZSendZEN 
+            <ZSendZEN
               settings={this.props.settings}
-              publicAddresses={this.props.publicAddresses}            
+              publicAddresses={this.props.publicAddresses}
+            />
+          </TabPane>
+          <TabPane tabId="4">
+            <ZFixUnconfirmed
+              settings={this.props.settings}
+              publicAddresses={this.props.publicAddresses}
             />
           </TabPane>
           <TabPane tabId="3">
             <Row>
               <Col>
-                <Card>                  
+                <Card>
                   <CardBlock>
-                    <ZPrintableKeys publicAddresses={this.props.publicAddresses}/>                  
-                  </CardBlock>                  
+                    <ZPrintableKeys publicAddresses={this.props.publicAddresses} />
+                  </CardBlock>
                   <CardBlock>
                     <h3>Private Key Dump</h3>
-                    <Button 
+                    <Button
                       color="secondary" className="btn-block"
-                      onClick={this.savePrivateKeys}                  
+                      onClick={this.savePrivateKeys}
                     >Download Private Keys</Button>
                   </CardBlock>
                 </Card>
               </Col>
             </Row>
-          </TabPane>   
+          </TabPane>
         </TabContent>
-      </div>       
+      </div>
     )
   }
 }
@@ -1022,17 +1196,17 @@ export default class ZWallet extends React.Component {
 
     this.resetKeys = this.resetKeys.bind(this)
     this.handleUnlockPrivateKeys = this.handleUnlockPrivateKeys.bind(this)
-    this.setPrivateKeys = this.setPrivateKeys.bind(this)        
+    this.setPrivateKeys = this.setPrivateKeys.bind(this)
     this.setInsightAPI = this.setInsightAPI.bind(this)
     this.setUnlockType = this.setUnlockType.bind(this)
     this.setPublicAddressesKeyValue = this.setPublicAddressesKeyValue.bind(this)
     this.toggleUseTestNet = this.toggleUseTestNet.bind(this)
     this.toggleCompressPubKey = this.toggleCompressPubKey.bind(this)
     this.toggleShowSettings = this.toggleShowSettings.bind(this)
-    this.toggleShowWalletGen = this.toggleShowWalletGen.bind(this)     
+    this.toggleShowWalletGen = this.toggleShowWalletGen.bind(this)
 
     this.state = {
-      privateKeys : '',
+      privateKeys: '',
       publicAddresses: null, // Public address will be {address: {privateKey: '', transactionURL: '', privateKeyWIF: ''}
       settings: {
         showSettings: false,
@@ -1043,21 +1217,21 @@ export default class ZWallet extends React.Component {
         useTestNet: false,
         unlockType: UNLOCK_WALLET_TYPE.HD_WALLET
       }
-    };    
-  }  
+    };
+  }
 
-  handleUnlockPrivateKeys(){    
-    if (this.state.privateKeys.length === 0){
+  handleUnlockPrivateKeys() {
+    if (this.state.privateKeys.length === 0) {
       return -2
     }
 
-    try{
+    try {
       var publicAddresses = {}
 
-      function _privKeyToAddr(pk, compressPubKey, useTestNet){
+      function _privKeyToAddr(pk, compressPubKey, useTestNet) {
         // If not 64 length, probs WIF format
-        if (pk.length !== 64){
-          pk = zencashjs.address.WIFToPrivKey(pk)          
+        if (pk.length !== 64) {
+          pk = zencashjs.address.WIFToPrivKey(pk)
         }
 
         // Convert public key to public address
@@ -1070,54 +1244,54 @@ export default class ZWallet extends React.Component {
         return publicAddr
       }
 
-      for (var i = 0; i < this.state.privateKeys.length; i++){
+      for (var i = 0; i < this.state.privateKeys.length; i++) {
         const pubKeyHash = this.state.settings.useTestNet ? zencashjs.config.testnet.wif : zencashjs.config.mainnet.wif
-        
+
         var c_pk_wif;
         var c_pk = this.state.privateKeys[i]
 
         // If not 64 length, probs WIF format
-        if (c_pk.length !== 64){
+        if (c_pk.length !== 64) {
           c_pk_wif = c_pk
           c_pk = zencashjs.address.WIFToPrivKey(c_pk)
         }
-        else{
+        else {
           c_pk_wif = zencashjs.address.privKeyToWIF(c_pk)
-        }          
+        }
 
-        var c_pk_wif = zencashjs.address.privKeyToWIF(c_pk, true, pubKeyHash)        
-        const c_addr = _privKeyToAddr(c_pk, this.state.settings.compressPubKey, this.state.settings.useTestNet)        
+        var c_pk_wif = zencashjs.address.privKeyToWIF(c_pk, true, pubKeyHash)
+        const c_addr = _privKeyToAddr(c_pk, this.state.settings.compressPubKey, this.state.settings.useTestNet)
 
         publicAddresses[c_addr] = {
           privateKey: c_pk,
-          privateKeyWIF: c_pk_wif,          
+          privateKeyWIF: c_pk_wif,
           confirmedBalance: 'loading...',
-          unconfirmedBalance: 'loading...',  
+          unconfirmedBalance: 'loading...',
         }
-      }      
+      }
 
       // Set public address
       this.setPublicAddresses(publicAddresses)
 
       // Return success
       return 0
-    } catch(err) {      
+    } catch (err) {
       this.setPublicAddresses(null)
       return -1
     }
   }
 
-  resetKeys(){
+  resetKeys() {
     this.setState({
-      privateKeys : '',
+      privateKeys: '',
       publicAddresses: null,
     })
-  }  
+  }
 
   // Only used for bip32 gen wallet because
   // of the async nature
-  setPrivateKeys(pk, handleUnlockingKeys){
-    if (handleUnlockingKeys === undefined){
+  setPrivateKeys(pk, handleUnlockingKeys) {
+    if (handleUnlockingKeys === undefined) {
       handleUnlockingKeys = false
     }
     this.setState({
@@ -1125,13 +1299,13 @@ export default class ZWallet extends React.Component {
     }, handleUnlockingKeys ? this.handleUnlockPrivateKeys : undefined)
   }
 
-  setPublicAddresses(pa){
+  setPublicAddresses(pa) {
     this.setState({
       publicAddresses: pa
     })
   }
 
-  setPublicAddressesKeyValue(address, key, value){
+  setPublicAddressesKeyValue(address, key, value) {
     var newPublicAddresses = this.state.publicAddresses
     newPublicAddresses[address][key] = value
 
@@ -1140,16 +1314,16 @@ export default class ZWallet extends React.Component {
     })
   }
 
-  setInsightAPI(uri){    
+  setInsightAPI(uri) {
     var _settings = this.state.settings
     _settings.insightAPI = uri
 
     this.setState({
       _settings: _settings
     })
-  }  
+  }
 
-  setUnlockType(t){
+  setUnlockType(t) {
     var _settings = this.state.settings
     _settings.unlockType = t
 
@@ -1158,34 +1332,34 @@ export default class ZWallet extends React.Component {
     })
   }
 
-  toggleCompressPubKey(b){
+  toggleCompressPubKey(b) {
     var _settings = this.state.settings
-    _settings.compressPubKey = !_settings.compressPubKey    
+    _settings.compressPubKey = !_settings.compressPubKey
 
     this.setState({
       _settings: _settings
     })
   }
 
-  toggleUseTestNet(){
+  toggleUseTestNet() {
     var _settings = this.state.settings
     _settings.useTestNet = !_settings.useTestNet
 
-    if (_settings.useTestNet){
+    if (_settings.useTestNet) {
       _settings.insightAPI = 'https://aayanl.tech/insight-api-zen/'
       _settings.explorerURL = 'https://aayanl.tech/'
     }
-    else{
+    else {
       _settings.insightAPI = 'https://explorer.zensystem.io/insight-api-zen/'
       _settings.explorerURL = 'https://explorer.zensystem.io/'
     }
 
     this.setState({
       settings: _settings
-    })    
+    })
   }
 
-  toggleShowSettings(){
+  toggleShowSettings() {
     var _settings = this.state.settings
     _settings.showSettings = !_settings.showSettings
 
@@ -1194,7 +1368,7 @@ export default class ZWallet extends React.Component {
     })
   }
 
-  toggleShowWalletGen(){
+  toggleShowWalletGen() {
     var _settings = this.state.settings
     _settings.showWalletGen = !_settings.showWalletGen
 
@@ -1203,37 +1377,37 @@ export default class ZWallet extends React.Component {
     })
   }
 
-  render() {        
+  render() {
     return (
       <Container>
         <Row>
           <Col>
             <h1 className='display-6'>ZenCash Wallet&nbsp;
-              <ToolTipButton onClick={this.toggleShowSettings} id={1} buttonText={<MDSettings/>} tooltipText={'settings'}/>&nbsp;
-              <ToolTipButton disabled={this.state.publicAddresses === null} onClick={this.resetKeys} id={2} buttonText={<FARepeat/>} tooltipText={'reset wallet'}/>
+              <ToolTipButton onClick={this.toggleShowSettings} id={1} buttonText={<MDSettings />} tooltipText={'settings'} />&nbsp;
+              <ToolTipButton disabled={this.state.publicAddresses === null} onClick={this.resetKeys} id={2} buttonText={<FARepeat />} tooltipText={'reset wallet'} />
             </h1>
-            <ZWalletSettings 
-              setUnlockType={this.setUnlockType}              
+            <ZWalletSettings
+              setUnlockType={this.setUnlockType}
               toggleShowSettings={this.toggleShowSettings}
-              toggleCompressPubKey={this.toggleCompressPubKey}           
+              toggleCompressPubKey={this.toggleCompressPubKey}
               toggleShowWalletGen={this.toggleShowWalletGen}
-              toggleUseTestNet={this.toggleUseTestNet}              
+              toggleUseTestNet={this.toggleUseTestNet}
               setInsightAPI={this.setInsightAPI}
               settings={this.state.settings}
               publicAddresses={this.state.publicAddresses}
             />
-            <br/>
+            <br />
           </Col>
         </Row>
         <Row>
           <Col>
-            { this.state.publicAddresses === null ?
-              (                                              
+            {this.state.publicAddresses === null ?
+              (
                 <ZWalletUnlockKey
-                handleUnlockPrivateKeys={this.handleUnlockPrivateKeys}
-                setPrivateKeys={this.setPrivateKeys}
-                unlockType={this.state.settings.unlockType}
-                />                
+                  handleUnlockPrivateKeys={this.handleUnlockPrivateKeys}
+                  setPrivateKeys={this.setPrivateKeys}
+                  unlockType={this.state.settings.unlockType}
+                />
               )
               :
               (<ZWalletTabs
@@ -1247,8 +1421,8 @@ export default class ZWallet extends React.Component {
         </Row>
         <Row>
           <Col>
-            { this.state.settings.showWalletGen ?
-              (<div><br/><hr/><ZWalletGenerator settings={this.state.settings}/></div>) : null
+            {this.state.settings.showWalletGen ?
+              (<div><br /><hr /><ZWalletGenerator settings={this.state.settings} /></div>) : null
             }
           </Col>
         </Row>
