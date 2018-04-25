@@ -52908,8 +52908,8 @@ var ZWallet = function (_React$Component11) {
       _settings.useTestNet = !_settings.useTestNet;
 
       if (_settings.useTestNet) {
-        _settings.insightAPI = 'https://aayanl.tech/insight-api-zen/';
-        _settings.explorerURL = 'https://aayanl.tech/';
+        _settings.insightAPI = 'https://explorer-testnet.zen-solutions.io/insight-api-zen/';
+        _settings.explorerURL = 'https://explorer-testnet.zen-solutions.io/';
       } else {
         _settings.insightAPI = 'https://explorer.zensystem.io/insight-api-zen/';
         _settings.explorerURL = 'https://explorer.zensystem.io/';
