@@ -51326,7 +51326,7 @@ var ZWalletUnlockKey = function (_React$Component3) {
               _react2.default.createElement(
                 _reactstrap.FormText,
                 { color: 'muted' },
-                'For Windows, it should be in %APPDATA%/zen',
+                'For Windows, it should be in %APPDATA%\\zen',
                 _react2.default.createElement('br', null),
                 'For Mac/Linux, it should be in ~/.zen'
               )
