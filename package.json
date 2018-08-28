@@ -1,7 +1,7 @@
 {
   "name": "myzenwallet",
   "version": "v2.0.8a",
-  "description": "Secure ZENCash wallet online",
+  "description": "Secure ZEN wallet online",
   "main": "index.js",
   "repository": "https://github.com/kendricktan/myzenwallet.git",
   "author": "Kendrick Tan <kendricktan0814@gmail.com>",

@@ -15,17 +15,17 @@ export default class ZFooter extends React.Component {
   }
 
   render () {
-    return (      
+    return (
       <div style={footer}>
         <br/>
-        <Container>      
+        <Container>
         <Row>
           <Col md="8">
             <p>MAKE SURE YOU ARE ON <b>MYZENWALLET.IO</b></p>
 
             <p>Keys are validated client-side and do not leave your browser or network. You are responsible for keeping your own keys safe!!!</p>
 
-            <p>Suggestions? Email me: kendricktan0814 at gmail.com or find me on slack @ kendricktan.</p>          
+            <p>Suggestions? Email me: kendricktan0814 at gmail.com or find me on slack @ kendricktan.</p>
 
             <p style={longP}>Donations are always welcome!<br/>
               <b>BTC</b>: 12cEDPML2PoDkKeGcJUGJmEa5pQos3SVuf<br/>
@@ -34,11 +34,11 @@ export default class ZFooter extends React.Component {
             </p>
           </Col>
           <Col md="4">
-            <a href="https://zensystem.io/">website</a><br/>
-            <a href="https://blog.zensystem.io/">blog</a><br/>
-            <a href="https://forum.zensystem.io/">forum</a><br/>
-            <a href="https://github.com/ZencashOfficial">github</a><br/>
-            <a href="https://slackinvite.zensystem.io/">slack</a><br/>
+            <a href="https://horizen.global/">website</a><br/>
+            <a href="https://blog.horizen.global/">blog</a><br/>
+            <a href="https://forum.horizen.global/">forum</a><br/>
+            <a href="https://github.com/ZencashOfficial/">github</a><br/>
+            <a href="https://discordapp.com/invite/Hu5mQxR">discord</a><br/>
           </Col>
         </Row>
         </Container>

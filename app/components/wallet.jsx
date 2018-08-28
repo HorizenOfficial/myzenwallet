@@ -286,7 +286,7 @@ class ZWalletSettings extends React.Component {
   render() {
     return (
       <Modal isOpen={this.props.settings.showSettings} toggle={this.props.toggleModalSettings}>
-        <ModalHeader toggle={this.props.toggleShowSettings}>ZenCash Wallet Settings</ModalHeader>
+        <ModalHeader toggle={this.props.toggleShowSettings}>Zen Wallet Settings</ModalHeader>
         <ModalBody>
           <ZWalletSelectUnlockType
             setUnlockType={this.props.setUnlockType}
@@ -395,7 +395,7 @@ class ZAddressInfo extends React.Component {
     // Run immediately
     this.updateAddressesInfo()
 
-    // Update every 30 seconds    
+    // Update every 30 seconds
     this.interval = setInterval(this.updateAddressesInfo, 300000)
   }
 
@@ -410,7 +410,7 @@ class ZAddressInfo extends React.Component {
     var totalUnconfirmed = 0.0;
     Object.keys(this.props.publicAddresses).forEach(function (key) {
       if (key !== undefined) {
-        // Add to address    
+        // Add to address
         addresses.push(
           {
             address: key,
@@ -510,13 +510,13 @@ class ZFixUnconfirmed extends React.Component {
       sendErrorMessage: '',
       unconfirmedTxid: '',
       fixProgress: 0
-    }    
+    }
   }
 
   fixUnconfirmedZen() {
     const txBaseUrl = zenwalletutils.urlAppend(this.props.settings.insightAPI, 'tx/')
     const sendRawTxURL = zenwalletutils.urlAppend(this.props.settings.insightAPI, 'tx/send')
-    
+
     axios.get(txBaseUrl + this.state.unconfirmedTxid.split(' ').join(''))
       .then((resp_) => {
         this.setState({
@@ -546,11 +546,11 @@ class ZFixUnconfirmed extends React.Component {
         // Get previous pub key
         axios.all(vins.map((x) => axios.get(txBaseUrl + x.txid)))
           .then(axios.spread((...args) => {
-            for (let i = 0; i < args.length; i++) {              
-              const data = args[i].data              
+            for (let i = 0; i < args.length; i++) {
+              const data = args[i].data
               vins[i].scriptPubKey = data.vout[vins[i].vout].scriptPubKey.hex
             }
-            
+
             const blockHeight = 142091
             const blockHash = '00000001cf4e27ce1dd8028408ed0a48edd445ba388170c9468ba0d42fff3052'
 
@@ -564,13 +564,13 @@ class ZFixUnconfirmed extends React.Component {
             // Sign tx
             for (let i = 0; i < vins.length; i++) {
               try {
-                const senderPrivateKey = this.props.publicAddresses[vins[i].senderAddress].privateKey;              
+                const senderPrivateKey = this.props.publicAddresses[vins[i].senderAddress].privateKey;
                 txObj = zencashjs.transaction.signTx(txObj, i, senderPrivateKey, this.props.settings.compressPubKey)
               } catch (e) {
                 this.setState({
                   fixProgress: 0,
                   sendErrorMessage: 'You do not own the private keys needed for the corresponding address: ' + vins[i].senderAddress
-                })                
+                })
                 return
               }
             }
@@ -582,7 +582,7 @@ class ZFixUnconfirmed extends React.Component {
             this.setState({
               fixProgress: 75,
             })
-            
+
             axios.post(sendRawTxURL, { rawtx: txHexString })
               .then((sendtx_resp) => {
                 this.setState({
@@ -597,7 +597,7 @@ class ZFixUnconfirmed extends React.Component {
                   sendErrorMessage: error + ''
                 })
                 return
-              })              
+              })
           }))
       })
   }
@@ -755,7 +755,7 @@ class ZSendZEN extends React.Component {
     // Error strings
     var errString = ''
 
-    // Validation    
+    // Validation
     if (senderAddress === '') {
       errString += '`From Address` field can\'t be empty.;'
     }
@@ -860,7 +860,7 @@ class ZSendZEN extends React.Component {
                 // Create transaction
                 var txObj = zencashjs.transaction.createRawTx(history, recipients, blockHeight, blockHash)
 
-                // Sign each history transcation          
+                // Sign each history transcation
                 for (var i = 0; i < history.length; i++) {
                   txObj = zencashjs.transaction.signTx(txObj, i, senderPrivateKey, this.props.settings.compressPubKey)
                 }
@@ -1212,8 +1212,8 @@ export default class ZWallet extends React.Component {
         showSettings: false,
         showWalletGen: false,
         compressPubKey: true,
-        insightAPI: 'https://explorer.zensystem.io/insight-api-zen/',
-        explorerURL: 'https://explorer.zensystem.io/',
+        insightAPI: 'https://explorer.horizen.global/insight-api-zen/',
+        explorerURL: 'https://explorer.horizen.global/',
         useTestNet: false,
         unlockType: UNLOCK_WALLET_TYPE.HD_WALLET
       }
@@ -1350,8 +1350,8 @@ export default class ZWallet extends React.Component {
       _settings.explorerURL = 'https://aayanl.tech/'
     }
     else {
-      _settings.insightAPI = 'https://explorer.zensystem.io/insight-api-zen/'
-      _settings.explorerURL = 'https://explorer.zensystem.io/'
+      _settings.insightAPI = 'https://explorer.horizen.global/insight-api-zen/'
+      _settings.explorerURL = 'https://explorer.horizen.global/'
     }
 
     this.setState({
@@ -1382,7 +1382,7 @@ export default class ZWallet extends React.Component {
       <Container>
         <Row>
           <Col>
-            <h1 className='display-6'>ZenCash Wallet&nbsp;
+            <h1 className='display-6'>Zen Wallet&nbsp;
               <ToolTipButton onClick={this.toggleShowSettings} id={1} buttonText={<MDSettings />} tooltipText={'settings'} />&nbsp;
               <ToolTipButton disabled={this.state.publicAddresses === null} onClick={this.resetKeys} id={2} buttonText={<FARepeat />} tooltipText={'reset wallet'} />
             </h1>
