@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 set -eo pipefail
 
-# Push our latest revision to GitHub
+# Push our latest revision to GitHub, you should bump the version number and tag first
+tag=$(git describe --tags $(git rev-list --tags --max-count=1))
 git push origin development
 
 # Clean rebuild
@@ -17,7 +18,7 @@ git remote add origin git@github.com:ZencashOfficial/myzenwallet.git
 cp -r ../dist/* .
 echo "myzenwallet.io" >> CNAME
 git add .
-git commit -m 'Publish'
+git commit -S -m "Publish $tag"
 git push -f origin master
 
 # Cleanup .deploy directory after a successful push

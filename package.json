@@ -1,10 +1,10 @@
 {
   "name": "myzenwallet",
-  "version": "v2.0.8a",
+  "version": "v2.0.9a",
   "description": "Secure ZEN wallet online",
   "main": "index.js",
-  "repository": "https://github.com/kendricktan/myzenwallet.git",
-  "author": "Kendrick Tan <kendricktan0814@gmail.com>",
+  "repository": "https://github.com/ZencashOfficial/myzenwallet.git",
+  "author": "Horizen Infrastructure Team <infrastructure@horizen.global>",
   "license": "MIT",
   "scripts": {
     "start": "webpack-dev-server",
@@ -43,7 +43,7 @@
     "throttled-queue": "^1.0.4",
     "webpack": "^3.3.0",
     "webpack-dev-server": "^2.5.1",
-    "zencashjs": "^1.1.8-a"
+    "zencashjs": "^1.2.0"
   },
   "devDependencies": {
     "babel-core": "^6.25.0",
