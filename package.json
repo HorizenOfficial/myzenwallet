@@ -12,7 +12,7 @@
     "build": "webpack"
   },
   "dependencies": {
-    "axios": "^0.16.2",
+    "axios": "^0.19.0",
     "babel-preset-env": "^1.6.0",
     "bip32-utils": "^0.10.0",
     "bitcoinjs-lib": "^3.1.1",
