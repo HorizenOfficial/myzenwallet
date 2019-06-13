@@ -25,13 +25,7 @@ export default class ZFooter extends React.Component {
 
             <p>Keys are validated client-side and do not leave your browser or network. You are responsible for keeping your own keys safe!!!</p>
 
-            <p>Suggestions? Email me: kendricktan0814 at gmail.com or find me on slack @ kendricktan.</p>
-
-            <p style={longP}>Donations are always welcome!<br/>
-              <b>BTC</b>: 12cEDPML2PoDkKeGcJUGJmEa5pQos3SVuf<br/>
-              <b>ETH</b>: 0x19Ed10db2960B9B21283FdFDe464e7bF3a87D05D<br/>
-              <b>ZEN</b>: znSDvF9nA5VCdse5HbEKmsoNbjCbsEA3VAH
-            </p>
+            <p>For assistance please take a look in the <a href="https://horizenofficial.atlassian.net/wiki/spaces/ZEN/overview">ZenWiki</a> or contact the <a href="https://support.horizen.global">support</a></p>
           </Col>
           <Col md="4">
             <a href="https://horizen.global/">website</a><br/>
