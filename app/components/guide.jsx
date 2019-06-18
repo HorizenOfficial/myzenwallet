@@ -1,21 +1,21 @@
 import React from 'react'
 import {Container, Row, Col} from 'reactstrap';
 
-import FAUnlock from 'react-icons/lib/fa/unlock-alt'
-import MDSettings from 'react-icons/lib/md/settings'
+import { FaUnlock } from 'react-icons/fa'
+import { MdSettings } from 'react-icons/md'
 
 export default class ZGuide extends React.Component {
   render () {
-    return (      
-      <Container>      
+    return (
+      <Container>
         <Row>
-          <Col>                          
+          <Col>
             <h3>1. Creating a new wallet</h3>
             <ul>
               <li>Go to <a href="https://myzenwallet.io">https://myzenwallet.io</a></li>
               <li>Enter a strong but easy to remember secret phrase. Save this somewhere and do NOT forget it.</li>
               <li>Click the <code>Generate Wallet</code> button below</li>
-                <ul><li>This creates a <a href="https://en.bitcoin.it/wiki/Deterministic_wallet">deterministic wallet</a> based on your secret phrase.</li></ul>                        
+                <ul><li>This creates a <a href="https://en.bitcoin.it/wiki/Deterministic_wallet">deterministic wallet</a> based on your secret phrase.</li></ul>
             </ul>
 
             <br/>

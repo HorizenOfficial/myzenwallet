@@ -4,7 +4,7 @@ var zencashjs = require('zencashjs');
 var bs58check = require('bs58check');
 
 // Hierarchical Deterministic wallet
-function phraseToHDWallet(phraseStr) {
+export function phraseToHDWallet(phraseStr) {
   // Seed key, make it fucking strong
   // phraseStr: string
   const seedHex = Buffer.from(phraseStr).toString('hex')
@@ -20,11 +20,6 @@ function phraseToHDWallet(phraseStr) {
 
   // Get private keys from them
   var privateKeys = chain.getAll().map((x) => chain.derive(x).keyPair.toWIF())
-  
+
   return privateKeys
-}
-
-
-module.exports = {
-  phraseToHDWallet: phraseToHDWallet  
 }

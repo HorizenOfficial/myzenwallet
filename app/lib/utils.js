@@ -1,7 +1,7 @@
 import Promise from 'bluebird'
 
 // Append url
-function urlAppend(url, param){
+export function urlAppend(url, param){
   if (url.substr(-1) !== '/'){
     url = url + '/'
   }
@@ -10,7 +10,7 @@ function urlAppend(url, param){
 }
 
 // Debounce promise
-function promiseDebounce(fn, delay, count) {
+export function promiseDebounce(fn, delay, count) {
   var working = 0, queue = [];
   function work() {
     if ((queue.length === 0) || (working === count)) return;
@@ -26,9 +26,4 @@ function promiseDebounce(fn, delay, count) {
       if (working < count) work();
     }.bind(this));
   }
-}
-
-module.exports = {
-  promiseDebounce: promiseDebounce,
-  urlAppend: urlAppend
 }

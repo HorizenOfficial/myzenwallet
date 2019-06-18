@@ -1,4 +1,4 @@
-import { Alert, Form, FormText, ButtonGroup, UncontrolledAlert, Tooltip, CardBlock, CardFooter, Modal, ModalHeader, ModalBody, ModalFooter, ListGroup, ListGroupItem, Badge, Progress, FormGroup, Label, Container, Jumbotron, TabContent, InputGroup, Input, InputGroupAddon, InputGroupButton, Table, TabPane, Nav, NavItem, NavLink, Card, CardSubtitle, Button, CardTitle, CardText, Row, Col } from 'reactstrap';
+import { Alert, Form, FormText, ButtonGroup, UncontrolledAlert, Tooltip, CardBody, CardFooter, Modal, ModalHeader, ModalBody, ModalFooter, ListGroup, ListGroupItem, Badge, Progress, FormGroup, Label, Container, Jumbotron, TabContent, InputGroup, Input, InputGroupAddon, Table, TabPane, Nav, NavItem, NavLink, Card, CardSubtitle, Button, CardTitle, CardText, Row, Col } from 'reactstrap';
 
 import axios from 'axios'
 import React from 'react'
@@ -7,22 +7,21 @@ import classnames from 'classnames'
 import CopyToClipboard from 'react-copy-to-clipboard'
 import ReactTable from 'react-table'
 import zencashjs from 'zencashjs'
-import zenwalletutils from '../lib/utils'
-import hdwallet from '../lib/hdwallet'
+import { urlAppend, promiseDebounce } from '../lib/utils'
+import { phraseToHDWallet } from '../lib/hdwallet'
 import FileSaver from 'file-saver'
 
-import MDRefresh from 'react-icons/lib/md/refresh'
-import MDCopy from 'react-icons/lib/md/content-copy'
-import MDSettings from 'react-icons/lib/md/settings'
-import FARepeat from 'react-icons/lib/fa/repeat'
-import FAUnlock from 'react-icons/lib/fa/unlock-alt'
-import FAEyeSlash from 'react-icons/lib/fa/eye-slash'
-import FAEye from 'react-icons/lib/fa/eye'
+import { MdRefresh } from 'react-icons/md'
+import { MdContentCopy } from 'react-icons/md'
+import { MdSettings } from 'react-icons/md'
+import { FaUnlock } from 'react-icons/fa'
+import { FaEyeSlash } from 'react-icons/fa'
+import { FaEye } from 'react-icons/fa'
 
 import pjson from '../../package.json'
 
 // Throttled GET request to prevent unusable lag
-const throttledAxiosGet = zenwalletutils.promiseDebounce(axios.get, 1000, 5)
+const throttledAxiosGet = promiseDebounce(axios.get, 1000, 5)
 
 // Unlock wallet enum
 var UNLOCK_WALLET_TYPE = {
@@ -100,11 +99,11 @@ class ZWalletGenerator extends React.Component {
         <br />
         <InputGroup>
           <Input value={this.state.privateKey} placeholder="Private key generated from password phrase" />
-          <InputGroupButton>
+          <InputGroupAddon>
             <CopyToClipboard text={this.state.privateKey}>
-              <Button><MDCopy /></Button>
+              <Button><MdCopy /></Button>
             </CopyToClipboard>
-          </InputGroupButton>
+          </InputGroupAddon>
         </InputGroup>
       </div>
     )
@@ -237,11 +236,11 @@ class ZWalletUnlockKey extends React.Component {
         <div>
           {this.state.invalidPrivateKey ? <Alert color="danger"><strong>Error.</strong>&nbsp;Invalid private key</Alert> : ''}
           <InputGroup>
-            <InputGroupButton>
+            <InputGroupAddon>
               <Button id={4}
                 onClick={this.toggleShowPassword}
-              >{this.state.showPassword ? <FAEye /> : <FAEyeSlash />}</Button>
-            </InputGroupButton>
+              >{this.state.showPassword ? <FaEye /> : <FaEyeSlash />}</Button>
+            </InputGroupAddon>
             <Input
               type={this.state.showPassword ? "text" : "password"}
               onChange={(e) => this.props.setPrivateKeys([e.target.value])} // Set it in a list so we can map over it later
@@ -261,11 +260,11 @@ class ZWalletUnlockKey extends React.Component {
           <Alert color="warning"><strong>Warning.</strong>&nbsp;Make sure you have saved your secret phrase somewhere.</Alert>
           {this.state.secretPhraseTooShort ? <Alert color="danger"><strong>Error.</strong>&nbsp;Secret phrase too short</Alert> : ''}
           <InputGroup>
-            <InputGroupButton>
+            <InputGroupAddon>
               <Button id={7}
                 onClick={this.toggleShowPassword}
-              >{this.state.showPassword ? <FAEye /> : <FAEyeSlash />}</Button>
-            </InputGroupButton>
+              >{this.state.showPassword ? <FaEye /> : <FaEyeSlash />}</Button>
+            </InputGroupAddon>
             <Input
               type={this.state.showPassword ? "text" : "password"}
               maxLength="64"
@@ -364,14 +363,14 @@ class ZAddressInfo extends React.Component {
 
   // Gets the blockchain explorer URL for an address
   getAddressBlockExplorerURL(address) {
-    return zenwalletutils.urlAppend(this.props.settings.explorerURL, 'address/') + address
+    return urlAppend(this.props.settings.explorerURL, 'address/') + address
   }
 
   // Updates a address info
   updateAddressInfo(address) {
     // GET request to URL
-    var info_url = zenwalletutils.urlAppend(this.props.settings.insightAPI, 'addr/')
-    info_url = zenwalletutils.urlAppend(info_url, address + '?noTxList=1')
+    var info_url = urlAppend(this.props.settings.insightAPI, 'addr/')
+    info_url = urlAppend(info_url, address + '?noTxList=1')
 
     throttledAxiosGet(info_url)
       .then(function (response) {
@@ -451,16 +450,16 @@ class ZAddressInfo extends React.Component {
       <Row>
         <Col>
           <Card>
-            <CardBlock>
+            <CardBody>
               {this.state.retrieveAddressError ?
                 <Alert color="danger">Error connecting to the Insight API. Double check the Insight API supplied in settings.</Alert>
                 :
                 <Alert color="warning">The balance displayed here is dependent on the insight node.<br />Automatically updates every 5 minutes. Alternatively, you can <a href="#" onClick={() => this.updateAddressesInfo()}>forcefully refresh</a> them.</Alert>
               }
-            </CardBlock>
+            </CardBody>
           </Card>
           <Card>
-            <CardBlock>
+            <CardBody>
               <ReactTable
                 columns={[{
                   Header: 'Total Confirmed',
@@ -483,16 +482,16 @@ class ZAddressInfo extends React.Component {
 
                 minRows={1}
               />
-            </CardBlock>
+            </CardBody>
           </Card>
           <Card>
-            <CardBlock>
+            <CardBody>
               <ReactTable
                 data={addresses} columns={addressColumns}
                 minRows={addresses.length > 20 ? 20 : addresses.length}
                 showPagination={addresses.length > 20}
               />
-            </CardBlock>
+            </CardBody>
           </Card>
         </Col>
       </Row>
@@ -514,8 +513,8 @@ class ZFixUnconfirmed extends React.Component {
   }
 
   fixUnconfirmedZen() {
-    const txBaseUrl = zenwalletutils.urlAppend(this.props.settings.insightAPI, 'tx/')
-    const sendRawTxURL = zenwalletutils.urlAppend(this.props.settings.insightAPI, 'tx/send')
+    const txBaseUrl = urlAppend(this.props.settings.insightAPI, 'tx/')
+    const sendRawTxURL = urlAppend(this.props.settings.insightAPI, 'tx/send')
 
     axios.get(txBaseUrl + this.state.unconfirmedTxid.split(' ').join(''))
       .then((resp_) => {
@@ -606,7 +605,7 @@ class ZFixUnconfirmed extends React.Component {
     // If send was successful
     var zenTxLink
     if (this.state.fixProgress === 100) {
-      var zentx = zenwalletutils.urlAppend(this.props.settings.explorerURL, 'tx/') + this.state.sentTxid
+      var zentx = urlAppend(this.props.settings.explorerURL, 'tx/') + this.state.sentTxid
       zenTxLink = (
         <Alert color="success">
           <strong>Resent Tx!</strong> <a href={zentx}>Click here to view your transaction</a>
@@ -633,7 +632,7 @@ class ZFixUnconfirmed extends React.Component {
       <Row>
         <Col>
           <Card>
-            <CardBlock>
+            <CardBody>
               <Alert color="info">This tool fixes your unconfirmed transactions.</Alert>
               <InputGroup>
                 <InputGroupAddon>Txid</InputGroupAddon>
@@ -645,7 +644,7 @@ class ZFixUnconfirmed extends React.Component {
                 disabled={this.state.fixProgress > 0}
                 onClick={this.fixUnconfirmedZen}
               >Fix</Button>
-            </CardBlock>
+            </CardBody>
             <CardFooter>
               {zenTxLink}
               <Progress value={this.state.fixProgress} />
@@ -683,7 +682,7 @@ class ZSendZEN extends React.Component {
   }
 
   componentDidMount() {
-    const statusURL = zenwalletutils.urlAppend(this.props.settings.insightAPI, 'status/')
+    const statusURL = urlAppend(this.props.settings.insightAPI, 'status/')
     axios.get(statusURL)
       .then((resp) => {
         const feeData = resp.data.info.relayfee
@@ -787,9 +786,9 @@ class ZSendZEN extends React.Component {
     const senderPrivateKey = this.props.publicAddresses[senderAddress].privateKey;
 
     // Get previous transactions
-    const prevTxURL = zenwalletutils.urlAppend(this.props.settings.insightAPI, 'addr/') + senderAddress + '/utxo'
-    const infoURL = zenwalletutils.urlAppend(this.props.settings.insightAPI, 'status?q=getInfo')
-    const sendRawTxURL = zenwalletutils.urlAppend(this.props.settings.insightAPI, 'tx/send')
+    const prevTxURL = urlAppend(this.props.settings.insightAPI, 'addr/') + senderAddress + '/utxo'
+    const infoURL = urlAppend(this.props.settings.insightAPI, 'status?q=getInfo')
+    const sendRawTxURL = urlAppend(this.props.settings.insightAPI, 'tx/send')
 
     // Building our transaction TXOBJ
     // How many satoshis do we have so far
@@ -810,7 +809,7 @@ class ZSendZEN extends React.Component {
             const info_data = info_resp.data
 
             const blockHeight = info_data.info.blocks - 300
-            const blockHashURL = zenwalletutils.urlAppend(this.props.settings.insightAPI, 'block-index/') + blockHeight
+            const blockHashURL = urlAppend(this.props.settings.insightAPI, 'block-index/') + blockHeight
 
             // Get block hash
             axios.get(blockHashURL)
@@ -894,7 +893,7 @@ class ZSendZEN extends React.Component {
     // If send was successful
     var zenTxLink
     if (this.state.sendProgress === 100) {
-      var zentx = zenwalletutils.urlAppend(this.props.settings.explorerURL, 'tx/') + this.state.sentTxid
+      var zentx = urlAppend(this.props.settings.explorerURL, 'tx/') + this.state.sentTxid
       zenTxLink = (
         <Alert color="success">
           <strong>ZEN successfully sent!</strong> <a href={zentx}>Click here to view your transaction</a>
@@ -932,7 +931,7 @@ class ZSendZEN extends React.Component {
       <Row>
         <Col>
           <Card>
-            <CardBlock>
+            <CardBody>
               <Alert color="info">Fees are dynamically calculated now</Alert>
               <Alert color="danger">ALWAYS VALIDATE YOUR DESINATION ADDRESS BY SENDING SMALL AMOUNTS OF ZEN FIRST</Alert>
               <InputGroup>
@@ -967,7 +966,7 @@ class ZSendZEN extends React.Component {
                 disabled={!this.state.confirmSend || (this.state.sendProgress > 0 && this.state.sendProgress < 100)}
                 onClick={this.handleSendZEN}
               >Send</Button>
-            </CardBlock>
+            </CardBody>
             <CardFooter>
               {zenTxLink}
               <Progress value={this.state.sendProgress} />
@@ -1170,16 +1169,16 @@ class ZWalletTabs extends React.Component {
             <Row>
               <Col>
                 <Card>
-                  <CardBlock>
+                  <CardBody>
                     <ZPrintableKeys publicAddresses={this.props.publicAddresses} />
-                  </CardBlock>
-                  <CardBlock>
+                  </CardBody>
+                  <CardBody>
                     <h3>Private Key Dump</h3>
                     <Button
                       color="secondary" className="btn-block"
                       onClick={this.savePrivateKeys}
                     >Download Private Keys</Button>
-                  </CardBlock>
+                  </CardBody>
                 </Card>
               </Col>
             </Row>
@@ -1383,8 +1382,8 @@ export default class ZWallet extends React.Component {
         <Row>
           <Col>
             <h1 className='display-6'>Zen Wallet&nbsp;
-              <ToolTipButton onClick={this.toggleShowSettings} id={1} buttonText={<MDSettings />} tooltipText={'settings'} />&nbsp;
-              <ToolTipButton disabled={this.state.publicAddresses === null} onClick={this.resetKeys} id={2} buttonText={<FARepeat />} tooltipText={'reset wallet'} />
+              <ToolTipButton onClick={this.toggleShowSettings} id={1} buttonText={<MdSettings />} tooltipText={'settings'} />&nbsp;
+              <ToolTipButton disabled={this.state.publicAddresses === null} onClick={this.resetKeys} id={2} buttonText={<MdRefresh />} tooltipText={'reset wallet'} />
             </h1>
             <ZWalletSettings
               setUnlockType={this.setUnlockType}
