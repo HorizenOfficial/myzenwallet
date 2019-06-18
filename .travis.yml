@@ -1,0 +1,12 @@
+language: node_js
+node_js:
+  - "8"
+  - "10"
+  - "11"
+  - "12"
+services:
+  - docker
+before_install:
+  - version=`node --version | grep -oP '(?<=v)\d*?(?=\.)'`
+  - docker run --rm node:$version-alpine /bin/sh -c "cd /home/node && apk add --no-cache git build-base python2 && git clone https://github.com/ZencashOfficial/myzenwallet.git && cd myzenwallet && npm install && npm run build"
+  - npm install && npm run build
