@@ -8,5 +8,16 @@ services:
   - docker
 before_install:
   - version=`node --version | grep -oP '(?<=v)\d*?(?=\.)'`
-  - docker run --rm node:$version-alpine /bin/sh -c "cd /home/node && apk add --no-cache git build-base python2 && git clone https://github.com/ZencashOfficial/myzenwallet.git && cd myzenwallet && npm install && npm run build"
+  - branch=`git branch | grep -oP "(?<=^  )(.*)(?=$)"`
+  - docker run --rm node:$version-alpine /bin/sh -c "cd /home/node && apk add --no-cache git build-base python2 && git clone https://github.com/ZencashOfficial/myzenwallet.git && cd myzenwallet && git checkout $branch && npm install && npm run build"
   - npm install && npm run build
+deploy:
+  provider: pages
+  skip_cleanup: true
+  github_token: $GITHUB_TOKEN
+  keep_history: true
+  verbose: true
+  local_dir: build
+  on:
+    branch: master
+    tags: true
