@@ -2,12 +2,14 @@
  * ./webpack.config.js
  */
 
+const webpack = require("webpack");
 const path = require('path');
 const fs = require('fs')
 
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
+    devtool: "source-map",
     entry: {
         index: './app/index.js',
         faq: './app/faq.js',
@@ -56,9 +58,13 @@ module.exports = {
             chunks: ['guide'],
             filename: 'guide.html',
             inject: 'body'
+        }),
+        new webpack.DefinePlugin({
+            global: 'window'		// Placeholder for global used in any node_modules
         })
     ],
     node: {
-        fs: 'empty'
+        fs: 'empty',
+        global: false
     }
 }
