@@ -154,7 +154,7 @@ class ZWalletUnlockKey extends React.Component {
   unlockHDWallet() {
     try {
       // Generate private keys from secret phrase
-      const pk = hdwallet.phraseToHDWallet(this.state.secretPhrase)
+      const pk = phraseToHDWallet(this.state.secretPhrase)
 
       this.setState({
         secretPhraseTooShort: false
