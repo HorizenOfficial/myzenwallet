@@ -27,7 +27,7 @@
     "classnames": "^2.2.6",
     "css-loader": "^3.0.0",
     "eslint": "^5.16.0",
-    "file-loader": "^4.0.0",
+    "file-loader": "^4.1.0",
     "file-saver": "^2.0.2",
     "fs": "0.0.2",
     "hash.js": "^1.1.7",
