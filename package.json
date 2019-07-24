@@ -46,7 +46,7 @@
     "reactstrap": "^8.0.0",
     "style-loader": "^0.23.1",
     "throttled-queue": "^1.0.5",
-    "webpack": "^4.34.0",
+    "webpack": "^4.37.0",
     "webpack-cli": "^3.3.4",
     "webpack-dev-server": "^3.7.1",
     "zencashjs": "^1.2.0"
