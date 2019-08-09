@@ -101,7 +101,7 @@ class ZWalletGenerator extends React.Component {
           <Input value={this.state.privateKey} placeholder="Private key generated from password phrase" />
           <InputGroupAddon>
             <CopyToClipboard text={this.state.privateKey}>
-              <Button><MdCopy /></Button>
+              <Button><MdContentCopy /></Button>
             </CopyToClipboard>
           </InputGroupAddon>
         </InputGroup>
