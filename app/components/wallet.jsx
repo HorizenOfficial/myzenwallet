@@ -1211,7 +1211,7 @@ export default class ZWallet extends React.Component {
         showSettings: false,
         showWalletGen: false,
         compressPubKey: true,
-        insightAPI: 'https://explorer.horizen.global/insight-api-zen/',
+        insightAPI: 'https://explorer.horizen.global/api/',
         explorerURL: 'https://explorer.horizen.global/',
         useTestNet: false,
         unlockType: UNLOCK_WALLET_TYPE.HD_WALLET
@@ -1345,11 +1345,11 @@ export default class ZWallet extends React.Component {
     _settings.useTestNet = !_settings.useTestNet
 
     if (_settings.useTestNet) {
-      _settings.insightAPI = 'https://aayanl.tech/insight-api-zen/'
-      _settings.explorerURL = 'https://aayanl.tech/'
+      _settings.insightAPI = 'https://explorer-testnet.horizen.global/api/'
+      _settings.explorerURL = 'https://explorer-testnet.horizen.global/'
     }
     else {
-      _settings.insightAPI = 'https://explorer.horizen.global/insight-api-zen/'
+      _settings.insightAPI = 'https://explorer.horizen.global/api/'
       _settings.explorerURL = 'https://explorer.horizen.global/'
     }
 
