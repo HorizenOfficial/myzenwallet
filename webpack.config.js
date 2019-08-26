@@ -8,6 +8,12 @@ const fs = require('fs')
 
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
+const allowedDomains = [
+    'https://explorer.horizen.global',
+    'https://explorer.zensystem.io',
+    'https://explorer-testnet.zensystem.io',
+].join(' ');
+
 module.exports = {
     devtool: "source-map",
     entry: {
@@ -44,7 +50,8 @@ module.exports = {
             chunks: ['index'],
             filename: 'index.html',
             inject: 'body',
-            customDomain: process.env.CUSTOM_DOMAIN
+            customDomain: process.env.CUSTOM_DOMAIN,
+            customLocalDomain: allowedDomains
         }),
         new HtmlWebpackPlugin({
             favicon: 'assets/images/favicon.ico',
@@ -52,7 +59,8 @@ module.exports = {
             chunks: ['faq'],
             filename: 'faq.html',
             inject: 'body',
-            customDomain: process.env.CUSTOM_DOMAIN
+            customDomain: process.env.CUSTOM_DOMAIN,
+            customLocalDomain: allowedDomains
         }),
         new HtmlWebpackPlugin({
             favicon: 'assets/images/favicon.ico',
@@ -60,7 +68,8 @@ module.exports = {
             chunks: ['guide'],
             filename: 'guide.html',
             inject: 'body',
-            customDomain: process.env.CUSTOM_DOMAIN
+            customDomain: process.env.CUSTOM_DOMAIN,
+            customLocalDomain: allowedDomains
         }),
         new webpack.DefinePlugin({
             global: 'window'		// Placeholder for global used in any node_modules

@@ -5,10 +5,10 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Content-Security-Policy" content="
-      default-src 'self' <%= htmlWebpackPlugin.options.customDomain %>;
+      default-src 'self' <%= htmlWebpackPlugin.options.customLocalDomain %> <%= htmlWebpackPlugin.options.customDomain %>;
       img-src 'self' data: https:;
-      script-src 'self' https://www.google-analytics.com/analytics.js 'sha256-/hhSd5nRyKjWb//rxH7lc8gvybhIOuvvke5o5v54hRw=' <%= htmlWebpackPlugin.options.customDomain %>;
-      style-src 'self' 'unsafe-inline' https://www.google-analytics.com https://fonts.googleapis.com/css <%= htmlWebpackPlugin.options.customDomain %>;
+      script-src 'self' https://www.google-analytics.com/analytics.js 'sha256-/hhSd5nRyKjWb//rxH7lc8gvybhIOuvvke5o5v54hRw=' <%= htmlWebpackPlugin.options.customLocalDomain %> <%= htmlWebpackPlugin.options.customDomain %>;
+      style-src 'self' 'unsafe-inline' https://www.google-analytics.com https://fonts.googleapis.com/css <%= htmlWebpackPlugin.options.customLocalDomain %> <%= htmlWebpackPlugin.options.customDomain %>;
       font-src 'self';
     ">
     <link rel="shortcut icon" href="./favicon.ico">
