@@ -439,11 +439,11 @@ class ZAddressInfo extends React.Component {
     }, {
       Header: 'Confirmed',
       accessor: 'confirmedBalance',
-      Cell: props => <span className='number'>{props.value}</span>
+      Cell: props => <div className='number text-center w-100'>{props.value}</div>
     }, {
       Header: 'Unconfirmed',
       accessor: 'unconfirmedBalance',
-      Cell: props => <span className='number'>{props.value}</span>
+      Cell: props => <div className='number text-center w-100'>{props.value}</div>
     }]
 
     return (
@@ -464,11 +464,11 @@ class ZAddressInfo extends React.Component {
                 columns={[{
                   Header: 'Total Confirmed',
                   accessor: 'totalConfirmed',
-                  Cell: props => <span className='number'>{props.value}</span>
+                  Cell: props => <div className='number text-center w-100'>{props.value}</div>
                 }, {
                   Header: 'Total Unconfirmed',
                   accessor: 'totalUnconfirmed',
-                  Cell: props => <span className='number'>{props.value}</span>
+                  Cell: props => <div className='number text-center w-100'>{props.value}</div>
                 }]}
 
                 data={[
@@ -933,7 +933,7 @@ class ZSendZEN extends React.Component {
           <Card>
             <CardBody>
               <Alert color="info">Fees are dynamically calculated now</Alert>
-              <Alert color="danger">ALWAYS VALIDATE YOUR DESINATION ADDRESS BY SENDING SMALL AMOUNTS OF ZEN FIRST</Alert>
+              <Alert color="danger">ALWAYS VALIDATE YOUR DESTINATION ADDRESS BY SENDING SMALL AMOUNTS OF ZEN FIRST</Alert>
               <InputGroup>
                 <InputGroupAddon>From Address</InputGroupAddon>
                 <Input type="select" onChange={this.handleUpdateSelectedAddress}>
