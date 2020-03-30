@@ -1,23 +1,22 @@
+dist: bionic
 language: node_js
-node_js:
-  - "8"
-  - "10"
-  - "11"
-  - "12"
-services:
-  - docker
-before_install:
-  - version=`node --version | grep -oP '(?<=v)\d*?(?=\.)'`
-  - branch=`git branch | grep -oP "(?<=^  )(.*)(?=$)"`
-  - docker run --rm node:$version-alpine /bin/sh -c "cd /home/node && apk add --no-cache git build-base python2 && git clone https://github.com/ZencashOfficial/myzenwallet.git && cd myzenwallet && git checkout $branch && npm install && npm run build"
-  - npm install && npm run build
-deploy:
-  provider: pages
-  skip_cleanup: true
-  github_token: $GITHUB_TOKEN
-  keep_history: true
-  verbose: true
-  local_dir: build
-  on:
-    branch: master
-    tags: true
+notifications:
+  email: false
+install:
+- npm ci
+jobs:
+  include:
+    - stage: "Build"
+      script:
+        - npm run build
+      deploy:
+        provider: pages
+        skip_cleanup: true
+        github_token: $GITHUB_TOKEN
+        fqdn: $CUSTOM_DOMAIN
+        keep_history: true
+        local_dir: ./dist
+        on:
+          tags: true
+          branch: master
+          condition: $TRAVIS_TAG =~ ^release.*$

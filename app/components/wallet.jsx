@@ -101,7 +101,7 @@ class ZWalletGenerator extends React.Component {
           <Input value={this.state.privateKey} placeholder="Private key generated from password phrase" />
           <InputGroupAddon>
             <CopyToClipboard text={this.state.privateKey}>
-              <Button><MdCopy /></Button>
+              <Button><MdContentCopy /></Button>
             </CopyToClipboard>
           </InputGroupAddon>
         </InputGroup>
@@ -439,11 +439,11 @@ class ZAddressInfo extends React.Component {
     }, {
       Header: 'Confirmed',
       accessor: 'confirmedBalance',
-      Cell: props => <span className='number'>{props.value}</span>
+      Cell: props => <div className='number text-center w-100'>{props.value}</div>
     }, {
       Header: 'Unconfirmed',
       accessor: 'unconfirmedBalance',
-      Cell: props => <span className='number'>{props.value}</span>
+      Cell: props => <div className='number text-center w-100'>{props.value}</div>
     }]
 
     return (
@@ -464,11 +464,11 @@ class ZAddressInfo extends React.Component {
                 columns={[{
                   Header: 'Total Confirmed',
                   accessor: 'totalConfirmed',
-                  Cell: props => <span className='number'>{props.value}</span>
+                  Cell: props => <div className='number text-center w-100'>{props.value}</div>
                 }, {
                   Header: 'Total Unconfirmed',
                   accessor: 'totalUnconfirmed',
-                  Cell: props => <span className='number'>{props.value}</span>
+                  Cell: props => <div className='number text-center w-100'>{props.value}</div>
                 }]}
 
                 data={[
@@ -933,7 +933,7 @@ class ZSendZEN extends React.Component {
           <Card>
             <CardBody>
               <Alert color="info">Fees are dynamically calculated now</Alert>
-              <Alert color="danger">ALWAYS VALIDATE YOUR DESINATION ADDRESS BY SENDING SMALL AMOUNTS OF ZEN FIRST</Alert>
+              <Alert color="danger">ALWAYS VALIDATE YOUR DESTINATION ADDRESS BY SENDING SMALL AMOUNTS OF ZEN FIRST</Alert>
               <InputGroup>
                 <InputGroupAddon>From Address</InputGroupAddon>
                 <Input type="select" onChange={this.handleUpdateSelectedAddress}>
@@ -1211,7 +1211,7 @@ export default class ZWallet extends React.Component {
         showSettings: false,
         showWalletGen: false,
         compressPubKey: true,
-        insightAPI: 'https://explorer.horizen.global/insight-api-zen/',
+        insightAPI: 'https://explorer.horizen.global/api/',
         explorerURL: 'https://explorer.horizen.global/',
         useTestNet: false,
         unlockType: UNLOCK_WALLET_TYPE.HD_WALLET
@@ -1345,11 +1345,11 @@ export default class ZWallet extends React.Component {
     _settings.useTestNet = !_settings.useTestNet
 
     if (_settings.useTestNet) {
-      _settings.insightAPI = 'https://aayanl.tech/insight-api-zen/'
-      _settings.explorerURL = 'https://aayanl.tech/'
+      _settings.insightAPI = 'https://explorer-testnet.horizen.global/api/'
+      _settings.explorerURL = 'https://explorer-testnet.horizen.global/'
     }
     else {
-      _settings.insightAPI = 'https://explorer.horizen.global/insight-api-zen/'
+      _settings.insightAPI = 'https://explorer.horizen.global/api/'
       _settings.explorerURL = 'https://explorer.horizen.global/'
     }
 
