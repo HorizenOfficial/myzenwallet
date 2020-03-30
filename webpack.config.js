@@ -50,7 +50,7 @@ module.exports = {
             chunks: ['index'],
             filename: 'index.html',
             inject: 'body',
-            customDomain: process.env.CUSTOM_DOMAIN,
+            customDomain: 'https://' + process.env.CUSTOM_DOMAIN,
             customLocalDomain: allowedDomains
         }),
         new HtmlWebpackPlugin({
@@ -59,7 +59,7 @@ module.exports = {
             chunks: ['faq'],
             filename: 'faq.html',
             inject: 'body',
-            customDomain: process.env.CUSTOM_DOMAIN,
+            customDomain: 'https://' + process.env.CUSTOM_DOMAIN,
             customLocalDomain: allowedDomains
         }),
         new HtmlWebpackPlugin({
@@ -68,7 +68,7 @@ module.exports = {
             chunks: ['guide'],
             filename: 'guide.html',
             inject: 'body',
-            customDomain: process.env.CUSTOM_DOMAIN,
+            customDomain: 'https://' + process.env.CUSTOM_DOMAIN,
             customLocalDomain: allowedDomains
         }),
         new webpack.DefinePlugin({
