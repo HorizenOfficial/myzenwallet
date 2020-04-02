@@ -99,7 +99,7 @@ class ZWalletGenerator extends React.Component {
         <br />
         <InputGroup>
           <Input value={this.state.privateKey} placeholder="Private key generated from password phrase" />
-          <InputGroupAddon>
+          <InputGroupAddon addonType="append">
             <CopyToClipboard text={this.state.privateKey}>
               <Button><MdContentCopy /></Button>
             </CopyToClipboard>
@@ -236,16 +236,16 @@ class ZWalletUnlockKey extends React.Component {
         <div>
           {this.state.invalidPrivateKey ? <Alert color="danger"><strong>Error.</strong>&nbsp;Invalid private key</Alert> : ''}
           <InputGroup>
-            <InputGroupAddon>
-              <Button id={4}
-                onClick={this.toggleShowPassword}
-              >{this.state.showPassword ? <FaEye /> : <FaEyeSlash />}</Button>
-            </InputGroupAddon>
             <Input
               type={this.state.showPassword ? "text" : "password"}
               onChange={(e) => this.props.setPrivateKeys([e.target.value])} // Set it in a list so we can map over it later
               placeholder="Private key"
             />
+            <InputGroupAddon addonType="append">
+              <Button id={4}
+                      onClick={this.toggleShowPassword}
+              >{this.state.showPassword ? <FaEye /> : <FaEyeSlash />}</Button>
+            </InputGroupAddon>
           </InputGroup>
           <div style={{ paddingTop: '8px' }}>
             <Button color="secondary" className="btn-block" onClick={this.unlockPrivateKeys}>Unlock Private Key</Button>
@@ -260,17 +260,17 @@ class ZWalletUnlockKey extends React.Component {
           <Alert color="warning"><strong>Warning.</strong>&nbsp;Make sure you have saved your secret phrase somewhere.</Alert>
           {this.state.secretPhraseTooShort ? <Alert color="danger"><strong>Error.</strong>&nbsp;Secret phrase too short</Alert> : ''}
           <InputGroup>
-            <InputGroupAddon>
-              <Button id={7}
-                onClick={this.toggleShowPassword}
-              >{this.state.showPassword ? <FaEye /> : <FaEyeSlash />}</Button>
-            </InputGroupAddon>
             <Input
               type={this.state.showPassword ? "text" : "password"}
               maxLength="64"
               onChange={(e) => this.setState({ secretPhrase: e.target.value })}
               placeholder="Secret phrase. e.g. cash cow money heros cardboard money bag late green"
             />
+            <InputGroupAddon addonType="append">
+              <Button id={7}
+                      onClick={this.toggleShowPassword}
+              >{this.state.showPassword ? <FaEye /> : <FaEyeSlash />}</Button>
+            </InputGroupAddon>
           </InputGroup>
           <div style={{ paddingTop: '8px' }}>
             <Button color="secondary" className="btn-block" onClick={this.unlockHDWallet}>Generate Wallet</Button>
@@ -294,7 +294,7 @@ class ZWalletSettings extends React.Component {
         </ModalBody>
         <ModalBody>
           <InputGroup>
-            <InputGroupAddon>Insight API</InputGroupAddon>
+            <InputGroupAddon addonType="prepend">Insight API</InputGroupAddon>
             <Input
               value={this.props.settings.insightAPI}
               onChange={(e) => this.props.setInsightAPI(e.target.value)}
@@ -576,7 +576,6 @@ class ZFixUnconfirmed extends React.Component {
 
             // Send tx
             const txHexString = zencashjs.transaction.serializeTx(txObj)
-            console.log(txHexString)
 
             this.setState({
               fixProgress: 75,
@@ -590,7 +589,6 @@ class ZFixUnconfirmed extends React.Component {
                 })
               })
               .catch((error) => {
-                console.log(error)
                 this.setState({
                   fixProgress: 0,
                   sendErrorMessage: error + ''
@@ -635,7 +633,7 @@ class ZFixUnconfirmed extends React.Component {
             <CardBody>
               <Alert color="info">This tool fixes your unconfirmed transactions.</Alert>
               <InputGroup>
-                <InputGroupAddon>Txid</InputGroupAddon>
+                <InputGroupAddon addonType="prepend">Txid</InputGroupAddon>
                 <Input onChange={(e) => this.setState({ unconfirmedTxid: e.target.value })} placeholder="Your unconfirmed txid" />
               </InputGroup>
               <br />
@@ -935,22 +933,22 @@ class ZSendZEN extends React.Component {
               <Alert color="info">Fees are dynamically calculated now</Alert>
               <Alert color="danger">ALWAYS VALIDATE YOUR DESTINATION ADDRESS BY SENDING SMALL AMOUNTS OF ZEN FIRST</Alert>
               <InputGroup>
-                <InputGroupAddon>From Address</InputGroupAddon>
+                <InputGroupAddon addonType="prepend">From Address</InputGroupAddon>
                 <Input type="select" onChange={this.handleUpdateSelectedAddress}>
                   <option value=''></option>
                   {sendAddresses}
                 </Input>
               </InputGroup>
               <InputGroup>
-                <InputGroupAddon>To Address</InputGroupAddon>
+                <InputGroupAddon addonType="prepend">To Address</InputGroupAddon>
                 <Input onChange={this.handleUpdateRecipientAddress} placeholder="e.g znSDvF9nA5VCdse5HbEKmsoNbjCbsEA3VAH" />
               </InputGroup>
               <InputGroup>
-                <InputGroupAddon>Amount</InputGroupAddon>
+                <InputGroupAddon addonType="prepend">Amount</InputGroupAddon>
                 <Input onChange={this.handleUpdateAmount} placeholder="e.g 42" />
               </InputGroup>
               <InputGroup>
-                <InputGroupAddon>Fee</InputGroupAddon>
+                <InputGroupAddon addonType="prepend">Fee</InputGroupAddon>
                 <Input disabled value={this.state.fee} onChange={this.handleUpdateFee} placeholder="e.g 0.001" />
               </InputGroup>
               <br />
@@ -1026,8 +1024,6 @@ class ZPrintableKeys extends React.Component {
       selectedPublicAddress: selectedPublicAddress,
       selectedPrivateKey: selectedPrivateKey
     })
-
-    console.log(selectedPrivateKey)
   }
 
   render() {
@@ -1053,19 +1049,102 @@ class ZPrintableKeys extends React.Component {
               null :
               (
                 <Row style={{ textAlign: 'center', paddingTop: '75px', paddingBottom: '25px' }}>
-                  <Col>
+                  <Col className="mb-4">
                     <QRCode value={this.state.selectedPublicAddress} /><br />
-                    {this.state.selectedPublicAddress}
+                    {this.state.selectedPublicAddress}<br/>
+                    <CopyToClipboard text={this.state.selectedPublicAddress}>
+                      <Button color="secondary" size="sm"><MdContentCopy /></Button>
+                    </CopyToClipboard>
                   </Col>
 
                   <Col>
                     <QRCode value={this.state.selectedPrivateKey} /><br />
-                    {this.state.selectedPrivateKey}
+                    {this.state.selectedPrivateKey}<br/>
+                    <CopyToClipboard text={this.state.selectedPrivateKey}>
+                      <Button color="secondary" size="sm"><MdContentCopy /></Button>
+                    </CopyToClipboard>
                   </Col>
                 </Row>
               )
           }
         </div>
+      </div>
+    )
+  }
+}
+
+class ZSignMessage extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      privateKey: '',
+      message: '',
+      signature: '',
+    };
+
+    this.signMessage = this.signMessage.bind(this);
+  }
+
+
+
+  signMessage() {
+    if (!this.state.message.length || !this.state.privateKey.length) {
+      return;
+    }
+
+    const signature = zencashjs.message.sign(this.state.message, this.state.privateKey, true).toString('base64');
+    this.setState({signature});
+  }
+
+  render() {
+    const addrOptions = [];
+    const {publicAddresses} = this.props;
+    Object.keys(publicAddresses).forEach(function (key) {
+      if (key !== undefined) {
+        addrOptions.push(
+          <option value={zencashjs.address.WIFToPrivKey(publicAddresses[key].privateKeyWIF)}>{key}</option>
+        )
+      }
+    });
+
+    return (
+      <div>
+        <h3>Sign Message</h3>
+
+        <FormGroup>
+          <Label>ZEN Address</Label>
+          <Input type="select" value={this.state.privateKey} onChange={(e) => this.setState({privateKey: e.target.value, signature: ''})}>
+            <option value=''/>
+            {addrOptions}
+          </Input>
+        </FormGroup>
+
+        <FormGroup>
+          <Label>Message</Label>
+          <Input type="textarea" rows={3} value={this.state.message} onChange={(e) => this.setState({message: e.target.value, signature: ''})}/>
+        </FormGroup>
+
+        <FormGroup>
+          <Button
+            color="warning" className="btn-block"
+            disabled={!this.state.message.length || !this.state.privateKey.length}
+            onClick={this.signMessage}
+          >
+            Sign
+          </Button>
+        </FormGroup>
+
+        <FormGroup>
+          <Label>
+            Signature
+            <CopyToClipboard text={this.state.signature}>
+              <Button color="secondary" size="sm" className="ml-2"><MdContentCopy /></Button>
+            </CopyToClipboard>
+          </Label>
+          <Input type="textarea" rows={3} value={this.state.signature} readonly="readonly"/>
+        </FormGroup>
+
       </div>
     )
   }
@@ -1138,6 +1217,14 @@ class ZWalletTabs extends React.Component {
           </NavItem>
           <NavItem>
             <NavLink
+              className={classnames({ active: this.state.activeTab === '5' })}
+              onClick={() => { this.toggleTabs('5'); }}
+            >
+              Sign Message
+            </NavLink>
+          </NavItem>
+          <NavItem>
+            <NavLink
               className={classnames({ active: this.state.activeTab === '3' })}
               onClick={() => { this.toggleTabs('3'); }}
             >
@@ -1182,6 +1269,13 @@ class ZWalletTabs extends React.Component {
                 </Card>
               </Col>
             </Row>
+          </TabPane>
+          <TabPane tabId="5">
+            <Card>
+              <CardBody>
+                <ZSignMessage publicAddresses={this.props.publicAddresses} />
+              </CardBody>
+            </Card>
           </TabPane>
         </TabContent>
       </div>
