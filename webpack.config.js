@@ -5,6 +5,7 @@
 const webpack = require("webpack");
 const path = require('path');
 const fs = require('fs')
+const TerserPlugin = require('terser-webpack-plugin');
 
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
@@ -42,6 +43,16 @@ module.exports = {
                 loader: 'file-loader?name=[name].[ext]'  // <-- retain original file name
             }
         ]
+    },
+    optimization: {
+        minimizer: [
+            new TerserPlugin({
+                terserOptions: {
+                    keep_fnames: true,
+                    safari10: true,
+                },
+            }),
+        ],
     },
     plugins: [
         new HtmlWebpackPlugin({
