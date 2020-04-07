@@ -900,7 +900,7 @@ class ZSendZEN extends React.Component {
     }
 
     // Else show error why
-    else if (this.state.sendErrorMessage !== '') {
+    else if (this.state.sendErrorMessage && this.state.sendErrorMessage.length) {
       zenTxLink = (
         this.state.sendErrorMessage.split(';').map(function (s) {
           if (s !== '') {

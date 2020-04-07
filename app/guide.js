@@ -6,7 +6,9 @@ import ReactDOM from 'react-dom';
 import ZNavbar from './components/navbar.jsx'
 import ZGuide from './components/guide.jsx'
 import ZFooter from './components/footer.jsx'
+import ZGoogleAnalytics from "./components/googleAnalytics.jsx";
 
 ReactDOM.render(<ZNavbar />, document.getElementById('navbar'));
 ReactDOM.render(<ZGuide />, document.getElementById('page-content'));
 ReactDOM.render(<ZFooter />, document.getElementById('footer'));
+ReactDOM.render(<ZGoogleAnalytics />, document.getElementById('GoogleAnalytics'));
