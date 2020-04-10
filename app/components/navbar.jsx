@@ -19,15 +19,15 @@ export default class ZNavbar extends React.Component {
   
   render () {
     return (
-      <Navbar color='faded' light toggleable>
-        <NavbarToggler right onClick={this.toggleNavbar} />
+      <Navbar color="light" light expand="md">
         <NavbarBrand href='/'>
-          <img src="/favicon.ico" height={42}/>&nbsp;myzenwallet.io
+          <img src="/favicon.ico" alt="myzenwallet.io" height={42}/>&nbsp;myzenwallet.io
         </NavbarBrand>
+        <NavbarToggler onClick={this.toggleNavbar} />
         <Collapse isOpen={this.state.isOpen} navbar>
-          <Nav className='ml-auto' navbar>
-           <NavItem>
-              <NavLink href='http://getzen.cash'>
+          <Nav className="ml-auto" navbar>
+            <NavItem>
+              <NavLink href='https://getzen.cash'>
                 FREE ZEN
               </NavLink>
             </NavItem>
@@ -40,10 +40,10 @@ export default class ZNavbar extends React.Component {
               <NavLink href='/guide.html'>
                 GETTING STARTED
               </NavLink>
-            </NavItem>                      
+            </NavItem>
           </Nav>
         </Collapse>
-      </Navbar>  
+      </Navbar>
     )
   }
 }
