@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Content-Security-Policy" content="
       default-src 'none';
-      connect-src https://explorer.horizen.global/api/, https://explorer-testnet.horizen.global/api/;
+      connect-src <%= htmlWebpackPlugin.options.customLocalDomain %>;
       img-src 'self' https://www.google-analytics.com;
       script-src 'self' https://www.google-analytics.com/analytics.js;
       style-src 'unsafe-inline'

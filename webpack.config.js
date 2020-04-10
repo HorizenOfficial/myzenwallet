@@ -12,6 +12,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const allowedDomains = [
     'https://explorer.horizen.global',
     'https://explorer.zensystem.io',
+    'https://explorer-testnet.horizen.global',
     'https://explorer-testnet.zensystem.io',
 ].join(' ');
 
