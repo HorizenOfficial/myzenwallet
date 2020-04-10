@@ -1,6 +1,6 @@
 {
   "name": "myzenwallet",
-  "version": "v2.0.9a",
+  "version": "v2.1.0a",
   "description": "Secure ZEN wallet online",
   "main": "index.js",
   "repository": "https://github.com/ZencashOfficial/myzenwallet.git",
