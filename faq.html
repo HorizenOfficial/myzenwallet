@@ -4,8 +4,15 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="shortcut icon" href="favicon.ico">
-    <title>MyZenWallet</title>    
+    <meta http-equiv="Content-Security-Policy" content="
+      default-src 'none';
+      connect-src https://explorer.horizen.global https://explorer.zensystem.io https://explorer-testnet.horizen.global https://explorer-testnet.zensystem.io;
+      img-src 'self' https://www.google-analytics.com;
+      script-src 'self' https://www.google-analytics.com/analytics.js;
+      style-src 'unsafe-inline'
+    ">
+    <link rel="shortcut icon" href="./favicon.ico">
+    <title>MyZenWallet</title>
     <style>
         body {
             display: flex;
@@ -18,30 +25,20 @@
             display: flex;
             align-items: center;
             justify-content: center;
-        }   
+        }
     </style>
 <link rel="shortcut icon" href="favicon.ico"></head>
 
 <body>
-    <div id="navbar"></div><br/>
+    <div id="navbar"></div>
 
-    <div class="aligner">        
-        <div id="wallet"></div>
-        <div id="guide"></div>
-        <div id="faq"></div>
-    </div><br/>
+    <div class="aligner">
+        <div id="page-content"></div>
+    </div>
 
     <div id="footer"></div>
-    
-    <script>
-    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
 
-    ga('create', 'UA-71060764-10', 'auto');
-    ga('send', 'pageview');
-    </script>
+    <div id="GoogleAnalytics"></div>
 <script type="text/javascript" src="js/faq.js"></script></body>
 
 </html>
