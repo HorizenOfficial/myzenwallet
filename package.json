@@ -3,7 +3,7 @@
   "version": "v2.1.0a",
   "description": "Secure ZEN wallet online",
   "main": "index.js",
-  "repository": "https://github.com/ZencashOfficial/myzenwallet.git",
+  "repository": "https://github.com/HorizenOfficial/myzenwallet.git",
   "author": "Horizen Infrastructure Team <infrastructure@horizen.global>",
   "license": "MIT",
   "scripts": {

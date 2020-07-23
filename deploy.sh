@@ -12,7 +12,7 @@ yarn run build
 mkdir .deploy
 cd .deploy
 git init
-git remote add origin git@github.com:ZencashOfficial/myzenwallet.git
+git remote add origin git@github.com:HorizenOfficial/myzenwallet.git
 
 # Add built site files
 cp -r ../dist/* .
