@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.com/HorizenOfficial/myzenwallet.svg?branch=master)](https://travis-ci.com/HorizenOfficial/myzenwallet) [![GitHub release (latest by date)](https://img.shields.io/github/v/release/zencashofficial/myzenwallet)](https://github.com/HorizenOfficial/myzenwallet/releases/latest) [![GitHub All Releases](https://img.shields.io/github/downloads/zencashofficial/myzenwallet/total)](https://github.com/HorizenOfficial/myzenwallet/releases/latest)
+[![Build Status](https://travis-ci.com/HorizenOfficial/myzenwallet.svg?branch=master)](https://travis-ci.com/HorizenOfficial/myzenwallet) [![GitHub release (latest by date)](https://img.shields.io/github/v/release/HorizenOfficial/myzenwallet)](https://github.com/HorizenOfficial/myzenwallet/releases/latest) [![GitHub All Releases](https://img.shields.io/github/downloads/zencashofficial/myzenwallet/total)](https://github.com/HorizenOfficial/myzenwallet/releases/latest)
 # myzenwallet
 
 MyZENWallet is a client-side browser-based wallet for Zen.
