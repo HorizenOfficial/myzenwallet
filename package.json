@@ -38,7 +38,7 @@
     "react": "^16.13.1",
     "react-addons-css-transition-group": "^15.6.2",
     "react-addons-transition-group": "^15.6.2",
-    "react-bootstrap": "^0.32.4",
+    "react-bootstrap": "^1.5.2",
     "react-copy-to-clipboard": "^5.0.2",
     "react-dom": "^16.13.1",
     "react-icons": "^3.9.0",
