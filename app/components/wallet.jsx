@@ -1338,7 +1338,7 @@ export default class ZWallet extends React.Component {
       }
 
       for (var i = 0; i < this.state.privateKeys.length; i++) {
-        const pubKeyHash = this.state.settings.useTestNet ? zencashjs.config.testnet.wif : zencashjs.config.mainnet.wif
+        const wif = this.state.settings.useTestNet ? zencashjs.config.testnet.wif : zencashjs.config.mainnet.wif
 
         var c_pk_wif;
         var c_pk = this.state.privateKeys[i]
@@ -1349,10 +1349,9 @@ export default class ZWallet extends React.Component {
           c_pk = zencashjs.address.WIFToPrivKey(c_pk)
         }
         else {
-          c_pk_wif = zencashjs.address.privKeyToWIF(c_pk)
+          c_pk_wif = zencashjs.address.privKeyToWIF(c_pk, true, wif)
         }
 
-        var c_pk_wif = zencashjs.address.privKeyToWIF(c_pk, true, pubKeyHash)
         const c_addr = _privKeyToAddr(c_pk, this.state.settings.compressPubKey, this.state.settings.useTestNet)
 
         publicAddresses[c_addr] = {
