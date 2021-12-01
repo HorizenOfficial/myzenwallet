@@ -7,7 +7,7 @@
     "author": "Horizen Infrastructure Team <infrastructure@horizen.global>",
     "license": "MIT",
     "scripts": {
-        "serve": "webpack serve  --mode development",
+        "serve": "webpack serve --mode development --stats-error-details --stats-children",
         "watch": "webpack --watch",
         "build": "webpack --mode production --progress",
         "upgrade-interactive": "npm-check --update"
@@ -21,10 +21,12 @@
         "bs58": "^4.0.1",
         "bs58check": "^2.1.2",
         "classnames": "^2.3.1",
+        "crypto-browserify": "^3.12.0",
         "file-saver": "^2.0.5",
         "fs": "0.0.2",
         "hash.js": "^1.1.7",
         "path": "^0.12.7",
+        "process": "^0.11.10",
         "qrcode.react": "^1.0.1",
         "react": "^16.13.1",
         "react-addons-css-transition-group": "^15.6.2",
@@ -35,6 +37,7 @@
         "react-icons": "^3.9.0",
         "react-table": "^6.11.5",
         "reactstrap": "^8.4.1",
+        "stream-browserify": "^3.0.0",
         "throttled-queue": "^1.0.7",
         "zencashjs": "^2.0.1"
     },
@@ -44,14 +47,14 @@
         "@babel/preset-react": "^7.16.0",
         "bootstrap": "^4.6.1",
         "css-loader": "^4.3.0",
-        "eslint": "^8.2.0",
+        "eslint": "^8.3.0",
         "file-loader": "^5.1.0",
-        "html-webpack-plugin": "^4.5.2",
-        "npm-check": "^5.9.2",
+        "html-webpack-plugin": "^5.5.0",
+        "node-polyfill-webpack-plugin": "^1.1.4",
         "style-loader": "^2.0.0",
-        "terser-webpack-plugin": "^4.2.3",
-        "webpack": "^4.46.0",
+        "terser-webpack-plugin": "^5.2.5",
+        "webpack": "^5.64.4",
         "webpack-cli": "^4.9.1",
-        "webpack-dev-server": "^4.5.0"
+        "webpack-dev-server": "^4.6.0"
     }
 }
