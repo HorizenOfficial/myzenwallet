@@ -20,8 +20,8 @@ export default class ZNavbar extends React.Component {
   render () {
     return (
       <Navbar color="light" light expand="md">
-        <NavbarBrand href='/'>
-          <img src="./favicon.ico" alt="myzenwallet.io" height={42}/>&nbsp;myzenwallet.io
+        <NavbarBrand href={window.location.pathname}>
+          <img src="./favicon.ico" alt="myzenwallet.io" height={42}/>&nbsp;myzenwallet
         </NavbarBrand>
         <NavbarToggler onClick={this.toggleNavbar} />
         <Collapse isOpen={this.state.isOpen} navbar>
