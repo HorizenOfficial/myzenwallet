@@ -920,7 +920,7 @@ class ZSendZEN extends React.Component {
     Object.keys(this.props.publicAddresses).forEach(function (key) {
       if (key !== undefined) {
         sendAddresses.push(
-          <option value={key}>[{this.props.publicAddresses[key].confirmedBalance}] - {key}</option>
+          <option key={key.substr(0,8)} value={key}>[{this.props.publicAddresses[key].confirmedBalance}] - {key}</option>
         )
       }
     }.bind(this))
@@ -1031,7 +1031,7 @@ class ZPrintableKeys extends React.Component {
     Object.keys(this.props.publicAddresses).forEach(function (key) {
       if (key !== undefined) {
         sendAddresses.push(
-          <option value={key}>[{this.props.publicAddresses[key].confirmedBalance}] - {key}</option>
+          <option key={key.substr(0,8)} value={key}>[{this.props.publicAddresses[key].confirmedBalance}] - {key}</option>
         )
       }
     }.bind(this))
@@ -1103,7 +1103,7 @@ class ZSignMessage extends React.Component {
     Object.keys(publicAddresses).forEach(function (key) {
       if (key !== undefined) {
         addrOptions.push(
-          <option value={zencashjs.address.WIFToPrivKey(publicAddresses[key].privateKeyWIF)}>{key}</option>
+          <option key={key.substr(0,8)} value={zencashjs.address.WIFToPrivKey(publicAddresses[key].privateKeyWIF)}>{key}</option>
         )
       }
     });
@@ -1142,7 +1142,7 @@ class ZSignMessage extends React.Component {
               <Button color="secondary" size="sm" className="ml-2"><MdContentCopy /></Button>
             </CopyToClipboard>
           </Label>
-          <Input type="textarea" rows={3} value={this.state.signature} readonly="readonly"/>
+          <Input type="textarea" rows={3} value={this.state.signature} readOnly="readonly"/>
         </FormGroup>
 
       </div>
@@ -1338,7 +1338,7 @@ export default class ZWallet extends React.Component {
       }
 
       for (var i = 0; i < this.state.privateKeys.length; i++) {
-        const pubKeyHash = this.state.settings.useTestNet ? zencashjs.config.testnet.wif : zencashjs.config.mainnet.wif
+        const wif = this.state.settings.useTestNet ? zencashjs.config.testnet.wif : zencashjs.config.mainnet.wif
 
         var c_pk_wif;
         var c_pk = this.state.privateKeys[i]
@@ -1349,10 +1349,9 @@ export default class ZWallet extends React.Component {
           c_pk = zencashjs.address.WIFToPrivKey(c_pk)
         }
         else {
-          c_pk_wif = zencashjs.address.privKeyToWIF(c_pk)
+          c_pk_wif = zencashjs.address.privKeyToWIF(c_pk, true, wif)
         }
 
-        var c_pk_wif = zencashjs.address.privKeyToWIF(c_pk, true, pubKeyHash)
         const c_addr = _privKeyToAddr(c_pk, this.state.settings.compressPubKey, this.state.settings.useTestNet)
 
         publicAddresses[c_addr] = {

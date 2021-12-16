@@ -4,10 +4,9 @@
 
 const webpack = require("webpack");
 const path = require('path');
-const fs = require('fs')
 const TerserPlugin = require('terser-webpack-plugin');
-
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const NodePolyfillPlugin = require("node-polyfill-webpack-plugin")
 
 const allowedDomains = [
     'https://explorer.horizen.global',
@@ -16,8 +15,12 @@ const allowedDomains = [
     'https://explorer-testnet.zensystem.io',
 ].join(' ');
 
-module.exports = {
-    devtool: "source-map",
+module.exports = (env, argv) => {
+        // `mode` is `'XX'` if you ran webpack like so: `webpack watch --mode XX` (v5 syntax)
+    const mode = argv.mode || 'development'; // dev mode by default
+    const debug = mode === 'development';
+    return { 
+    devtool: mode === 'production'? false : 'source-map',
     entry: {
         index: './app/index.js',
         faq: './app/faq.js',
@@ -41,8 +44,8 @@ module.exports = {
             { test: /\.css$/, use: [ 'style-loader', 'css-loader' ] },
             {
                 test: /\.jpe?g$|\.ico$|\.gif$|\.png$|\.svg$|\.woff$|\.ttf$|\.wav$|\.mp3$/,
-                loader: 'file-loader?name=[name].[ext]'  // <-- retain original file name
-            }
+                loader: 'file-loader', options:{name:'[name].[ext]'} // <-- retain original file name
+            },
         ]
     },
     optimization: {
@@ -58,6 +61,7 @@ module.exports = {
     plugins: [
         new HtmlWebpackPlugin({
             favicon: 'assets/images/favicon.ico',
+            iconRef: './favicon.ico',
             template: './app/index.html',
             chunks: ['index'],
             filename: 'index.html',
@@ -67,6 +71,7 @@ module.exports = {
         }),
         new HtmlWebpackPlugin({
             favicon: 'assets/images/favicon.ico',
+            iconRef: './favicon.ico',
             template: './app/index.html',
             chunks: ['faq'],
             filename: 'faq.html',
@@ -76,6 +81,7 @@ module.exports = {
         }),
         new HtmlWebpackPlugin({
             favicon: 'assets/images/favicon.ico',
+            iconRef: './favicon.ico',
             template: './app/index.html',
             chunks: ['guide'],
             filename: 'guide.html',
@@ -83,12 +89,20 @@ module.exports = {
             customDomain: 'https://' + process.env.CUSTOM_DOMAIN,
             customLocalDomain: allowedDomains
         }),
+        new webpack.ProvidePlugin({
+            process: 'process/browser',
+          }),
         new webpack.DefinePlugin({
-            global: 'window'		// Placeholder for global used in any node_modules
-        })
+            global: 'window',		// Placeholder for global used in any node_modules
+            'process.env.NODE_ENV': JSON.stringify(mode),
+            'process.env.DEBUG': JSON.stringify(debug),
+        }),
+        new NodePolyfillPlugin()
+                
     ],
     node: {
-        fs: 'empty',
+        // fs: 'empty',
         global: false
     }
+}
 }
