@@ -6,6 +6,8 @@ MyZENWallet is a client-side browser-based wallet for Zen.
 ### Running locally
 Download the latest release tarball [here](https://github.com/HorizenOfficial/myzenwallet/releases/latest), extract it, goto the `dist` folder and double click `index.html`
 
+Alternative: If you have node.js installed it may be used to run a local web server. Extract as above, goto the `dist` folder, open a command window and run `node localserver`. Open a browser window to `localhost:8080`
+
 ### Dev
 ```shell
 npm ci

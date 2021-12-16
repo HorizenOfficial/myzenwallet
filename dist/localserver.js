@@ -1,5 +1,5 @@
 // local http server for testing dist after building
-// start server:  node testserver
+// start server:  node localserver
 
 var fs = require('fs'), http = require('http');
 console.log('server is listening on localhost:8080');
