@@ -61,6 +61,7 @@ module.exports = (env, argv) => {
     plugins: [
         new HtmlWebpackPlugin({
             favicon: 'assets/images/favicon.ico',
+            iconRef: './favicon.ico',
             template: './app/index.html',
             chunks: ['index'],
             filename: 'index.html',
@@ -70,6 +71,7 @@ module.exports = (env, argv) => {
         }),
         new HtmlWebpackPlugin({
             favicon: 'assets/images/favicon.ico',
+            iconRef: './favicon.ico',
             template: './app/index.html',
             chunks: ['faq'],
             filename: 'faq.html',
@@ -79,6 +81,7 @@ module.exports = (env, argv) => {
         }),
         new HtmlWebpackPlugin({
             favicon: 'assets/images/favicon.ico',
+            iconRef: './favicon.ico',
             template: './app/index.html',
             chunks: ['guide'],
             filename: 'guide.html',
