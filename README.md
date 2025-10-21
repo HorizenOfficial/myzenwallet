@@ -1,3 +1,19 @@
+> ⚠️ **Repository Archived**
+
+---
+
+### 🚫 Deprecated — No Longer Maintained
+
+This repository has been **archived** and is **no longer actively maintained**.
+
+- ❌ No further updates, issues, or pull requests will be accepted.  
+- 📦 The code remains available for **reference purposes only**.  
+- ⚠️ **Use at your own discretion.**
+
+---
+
+**Archived on:** _2025-10-15_
+
 [![Build Status](https://travis-ci.com/HorizenOfficial/myzenwallet.svg?branch=master)](https://travis-ci.com/HorizenOfficial/myzenwallet) [![GitHub release (latest by date)](https://img.shields.io/github/v/release/HorizenOfficial/myzenwallet)](https://github.com/HorizenOfficial/myzenwallet/releases/latest) [![GitHub All Releases](https://img.shields.io/github/downloads/zencashofficial/myzenwallet/total)](https://github.com/HorizenOfficial/myzenwallet/releases/latest)
 # myzenwallet
 
