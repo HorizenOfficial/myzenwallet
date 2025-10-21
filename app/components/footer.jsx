@@ -31,7 +31,7 @@ export default class ZFooter extends React.Component {
             <a href="https://horizen.global/">website</a><br/>
             <a href="https://blog.horizen.global/">blog</a><br/>
             <a href="https://forum.horizen.global/">forum</a><br/>
-            <a href="https://github.com/ZencashOfficial/">github</a><br/>
+            <a href="https://github.com/HorizenOfficial/">github</a><br/>
             <a href="https://discordapp.com/invite/Hu5mQxR">discord</a><br/>
           </Col>
         </Row>
